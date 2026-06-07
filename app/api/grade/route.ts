@@ -39,6 +39,8 @@ General guidance:
 - Do NOT reveal the full correct formula in follow_up.
 - Do NOT add any text outside the JSON.`;
 
+export const maxDuration = 60;
+
 export async function POST(req: Request) {
   const {
     topic,

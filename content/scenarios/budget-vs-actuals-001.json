@@ -1,0 +1,953 @@
+{
+  "scenario_id": "real-budget-vs-actuals-001",
+  "scenario_type": "real_scenario",
+  "version": "1.0.0",
+  "title": "Monthly Budget vs Actuals — October Close",
+  "subtitle": "FP&A Month-End Variance Analysis — Northwind SaaS Inc.",
+  "domain": "FP&A / Financial Reporting",
+  "business_story": "It's Monday morning, November 4th, 2024 — the third business day of the month. Two attachments landed in your inbox at 7 AM: an ERP actuals dump for October and the annual budget file, both pulled by IT overnight. Your manager stopped by before standup: 'CFO needs the October variance deck before the 4 PM all-hands — workings to me by 2?' You open the files. Different column names, different department code formats, one line item that looks posted twice, and three accounts that have no budget at all. Six hours. One deliverable. This is what month-end close actually looks like.",
+  "scenario_family": "variance_analysis",
+  "difficulty": 4,
+  "estimated_time_minutes": 65,
+  "xp_reward": 200,
+  "points_total": 265,
+  "shared_across_branches": true,
+  "recommended_branches": ["sumifs", "xlookup", "if", "iferror", "countifs", "index-match", "abs", "large"],
+  "prerequisites": {
+    "required_concepts": ["SUMIFS basics", "XLOOKUP or VLOOKUP", "IF with AND", "IFERROR"],
+    "recommended_micro_drills": ["sumifs-micro-01", "xlookup-micro-01", "if-micro-02", "iferror-micro-01", "countifs-micro-01"]
+  },
+
+  "tabs": [
+    {
+      "tab_id": "budget",
+      "tab_name": "Budget",
+      "display_name": "Annual Budget",
+      "purpose": "Annual operating budget exported from the FP&A planning tool. One row per DeptCode × AccountCode × Month. Revenue and expense amounts are both positive (planning tool management accounting convention).",
+      "pre_filled": true,
+      "learner_editable": false,
+      "tab_color": "#93c47d",
+      "columns": [
+        { "col": "A", "field": "DeptCode",     "type": "text",   "description": "Budget department code — D-prefix format (D-SALES, D-MKTG, D-ENG, D-CS, D-GNA, D-OPS)" },
+        { "col": "B", "field": "AccountCode",  "type": "text",   "description": "GL account code at parent level only — no sub-accounts in Budget" },
+        { "col": "C", "field": "Month",        "type": "text",   "description": "ISO month string YYYY-MM" },
+        { "col": "D", "field": "BudgetAmount", "type": "number", "description": "Budget amount USD. Positive for both revenue and expenses. Never negative." }
+      ],
+      "row_count_range": [80, 120],
+      "sample_rows": [
+        { "DeptCode": "D-SALES", "AccountCode": "6100-01", "Month": "2024-10", "BudgetAmount": 87500 },
+        { "DeptCode": "D-SALES", "AccountCode": "7100-01", "Month": "2024-10", "BudgetAmount": 15000 },
+        { "DeptCode": "D-MKTG",  "AccountCode": "7200-01", "Month": "2024-10", "BudgetAmount": 42000 },
+        { "DeptCode": "D-ENG",   "AccountCode": "6100-01", "Month": "2024-10", "BudgetAmount": 145000 },
+        { "DeptCode": "D-GNA",   "AccountCode": "4000-01", "Month": "2024-10", "BudgetAmount": 410000 },
+        { "DeptCode": "D-OPS",   "AccountCode": "5000-01", "Month": "2024-10", "BudgetAmount": 28000 }
+      ],
+      "notes": "Sparse by design — not every department has every account. Covers Jan-Dec 2024. Two account codes (5000-03 and 9100-05) exist in Budget for all months but have zero rows in October Actuals — discontinued mid-year. AccountCode is always at parent level (no 6100-01-A in Budget).",
+      "messiness": ["accounts_in_budget_not_in_actuals", "revenue_positive_convention"]
+    },
+    {
+      "tab_id": "actuals",
+      "tab_name": "Actuals",
+      "display_name": "October Actuals (ERP Export)",
+      "purpose": "Transaction-level ERP export for October 2024 only. One row per journal line. Revenue amounts are NEGATIVE (ERP double-entry credit convention). Expense amounts are POSITIVE.",
+      "pre_filled": true,
+      "learner_editable": false,
+      "tab_color": "#6fa8dc",
+      "note_cell": "A1",
+      "note_text": "Note: Revenue accounts (4xxx) are stored as NEGATIVE values in this ERP export (credit convention). All expense accounts are POSITIVE.",
+      "columns": [
+        { "col": "A", "field": "JournalID",    "type": "text",   "description": "Journal entry identifier — should be unique per posting. One is duplicated intentionally." },
+        { "col": "B", "field": "PostingDate",  "type": "date",   "description": "Date posted — all rows are October 2024 dates" },
+        { "col": "C", "field": "Department",   "type": "text",   "description": "ERP department code — DEPT-NNN format. Different from Budget DeptCode. One row has a trailing space." },
+        { "col": "D", "field": "Account",      "type": "text",   "description": "GL account or sub-account code. Sub-accounts 6100-01-A and 6100-01-B roll up to parent 6100-01." },
+        { "col": "E", "field": "Amount",       "type": "number", "description": "Transaction amount USD. Revenue accounts NEGATIVE (ERP credit). Expense accounts POSITIVE." },
+        { "col": "F", "field": "Description",  "type": "text",   "description": "Line item description from ERP" },
+        { "col": "G", "field": "Vendor",       "type": "text",   "description": "Vendor name or payee" }
+      ],
+      "row_count_range": [220, 290],
+      "sample_rows": [
+        { "JournalID": "JE-2024-10-0001", "PostingDate": "2024-10-01", "Department": "DEPT-101", "Account": "6100-01-A", "Amount": 63750, "Description": "Oct Payroll — Base Salaries", "Vendor": "ADP Payroll Services" },
+        { "JournalID": "JE-2024-10-0002", "PostingDate": "2024-10-01", "Department": "DEPT-101", "Account": "6100-01-B", "Amount": 23450, "Description": "Oct Payroll — Variable Comp", "Vendor": "ADP Payroll Services" },
+        { "JournalID": "JE-2024-10-0048", "PostingDate": "2024-10-05", "Department": "DEPT-102", "Account": "7200-01",   "Amount": 47200, "Description": "Google Ads October",          "Vendor": "Google LLC" },
+        { "JournalID": "JE-2024-10-0892", "PostingDate": "2024-10-22", "Department": "DEPT-401", "Account": "9100-02",   "Amount": 12400, "Description": "Outside Counsel — NDA Review (October)", "Vendor": "Whitmore & Steele LLP" },
+        { "JournalID": "JE-2024-10-0892", "PostingDate": "2024-10-22", "Department": "DEPT-401", "Account": "9100-02",   "Amount": 12400, "Description": "Outside Counsel — NDA Review (October)", "Vendor": "Whitmore & Steele LLP", "_note": "DUPLICATE — same JournalID and all fields identical. Double-posted in AP." },
+        { "JournalID": "JE-2024-10-1014", "PostingDate": "2024-10-28", "Department": "DEPT-201 ", "Account": "8100-04",  "Amount": 14200, "Description": "OpenAI API Usage October",   "Vendor": "OpenAI Inc.", "_note": "DEPT-201 has trailing space — whitespace artifact" },
+        { "JournalID": "JE-2024-10-0110", "PostingDate": "2024-10-03", "Department": "DEPT-401", "Account": "4000-01",   "Amount": -437500, "Description": "SaaS Revenue Recognition Oct", "Vendor": "" }
+      ],
+      "notes": "October 2024 only. Duplicate: JE-2024-10-0892 appears exactly twice — same PostingDate, Department, Account, Amount, Description, Vendor. New accounts 8100-04, 9300-01, 7200-04 appear here but NOT in Budget. One row has 'DEPT-201 ' with trailing space.",
+      "messiness": ["duplicate_journal_entry", "accounts_in_actuals_not_in_budget", "whitespace_in_codes", "revenue_negative_convention"]
+    },
+    {
+      "tab_id": "deptmap",
+      "tab_name": "DeptMap",
+      "display_name": "Department Map",
+      "purpose": "Cross-reference mapping ERP department codes to Budget department codes and human-readable names. Six rows — one per department.",
+      "pre_filled": true,
+      "learner_editable": false,
+      "tab_color": "#ffd966",
+      "columns": [
+        { "col": "A", "field": "ERPCode",        "type": "text", "description": "ERP department code matching Actuals.Department after TRIM" },
+        { "col": "B", "field": "BudgetCode",     "type": "text", "description": "Budget department code matching Budget.DeptCode" },
+        { "col": "C", "field": "DepartmentName", "type": "text", "description": "Human-readable department name" },
+        { "col": "D", "field": "Owner",          "type": "text", "description": "Department head" },
+        { "col": "E", "field": "PLGroup",        "type": "text", "description": "P&L grouping for summary rollups" }
+      ],
+      "data": [
+        { "ERPCode": "DEPT-101", "BudgetCode": "D-SALES", "DepartmentName": "Sales",            "Owner": "VP of Sales",            "PLGroup": "S&M" },
+        { "ERPCode": "DEPT-102", "BudgetCode": "D-MKTG",  "DepartmentName": "Marketing",        "Owner": "VP of Marketing",        "PLGroup": "S&M" },
+        { "ERPCode": "DEPT-201", "BudgetCode": "D-ENG",   "DepartmentName": "Engineering",      "Owner": "VP of Engineering",      "PLGroup": "R&D" },
+        { "ERPCode": "DEPT-301", "BudgetCode": "D-CS",    "DepartmentName": "Customer Success", "Owner": "VP of Customer Success", "PLGroup": "S&M" },
+        { "ERPCode": "DEPT-401", "BudgetCode": "D-GNA",   "DepartmentName": "G&A",              "Owner": "CFO",                    "PLGroup": "G&A" },
+        { "ERPCode": "DEPT-501", "BudgetCode": "D-OPS",   "DepartmentName": "Operations",       "Owner": "COO",                    "PLGroup": "COGS" }
+      ],
+      "row_count": 6,
+      "header_row": 1,
+      "data_start_row": 2,
+      "notes": "Exactly 6 rows. No missing entries. ERPCode values are clean — whitespace issue is only in Actuals. XLOOKUP on this table should use TRIM on the lookup value from Actuals."
+    },
+    {
+      "tab_id": "accountmap",
+      "tab_name": "AccountMap",
+      "display_name": "Account Map",
+      "purpose": "Master chart of accounts. Maps account codes to names, categories, types, and sub-account rollup relationships.",
+      "pre_filled": true,
+      "learner_editable": false,
+      "tab_color": "#ffd966",
+      "columns": [
+        { "col": "A", "field": "AccountCode",  "type": "text",    "description": "GL account code — parent and sub-account levels" },
+        { "col": "B", "field": "AccountName",  "type": "text",    "description": "Human-readable account name" },
+        { "col": "C", "field": "Category",     "type": "text",    "description": "Account category for management grouping" },
+        { "col": "D", "field": "AccountType",  "type": "text",    "description": "Revenue or Expense — drives Favorable/Unfavorable logic" },
+        { "col": "E", "field": "IsCOGS",       "type": "boolean", "description": "True if cost of goods sold or cost of revenue" },
+        { "col": "F", "field": "ParentAccount","type": "text",    "description": "Parent account code for rollup. Empty if this row is itself a parent." }
+      ],
+      "data": [
+        { "AccountCode": "4000-01",   "AccountName": "SaaS Subscription Revenue",        "Category": "Revenue",       "AccountType": "Revenue", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "4000-02",   "AccountName": "Professional Services Revenue",     "Category": "Revenue",       "AccountType": "Revenue", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "5000-01",   "AccountName": "Cost of Revenue — Hosting",         "Category": "COGS",          "AccountType": "Expense", "IsCOGS": true,  "ParentAccount": "" },
+        { "AccountCode": "5000-02",   "AccountName": "Cost of Revenue — Support",         "Category": "COGS",          "AccountType": "Expense", "IsCOGS": true,  "ParentAccount": "" },
+        { "AccountCode": "5000-03",   "AccountName": "Cost of Revenue — Legacy Support",  "Category": "COGS",          "AccountType": "Expense", "IsCOGS": true,  "ParentAccount": "", "_note": "DISCONTINUED — budget exists but zero Oct actuals" },
+        { "AccountCode": "5500-01",   "AccountName": "Customer Hosting / Infrastructure", "Category": "COGS",          "AccountType": "Expense", "IsCOGS": true,  "ParentAccount": "" },
+        { "AccountCode": "5500-02",   "AccountName": "Third-party Integrations",          "Category": "COGS",          "AccountType": "Expense", "IsCOGS": true,  "ParentAccount": "" },
+        { "AccountCode": "6100-01",   "AccountName": "Salaries",                          "Category": "Personnel",     "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "6100-01-A", "AccountName": "Base Salaries",                     "Category": "Personnel",     "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "6100-01" },
+        { "AccountCode": "6100-01-B", "AccountName": "Bonus & Variable Comp",             "Category": "Personnel",     "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "6100-01" },
+        { "AccountCode": "6100-02",   "AccountName": "Payroll Taxes & Benefits",          "Category": "Personnel",     "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "6100-03",   "AccountName": "Contractor / Temp Labor",           "Category": "Personnel",     "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "7100-01",   "AccountName": "Sales Commissions",                 "Category": "S&M",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "7200-01",   "AccountName": "Digital Advertising",               "Category": "S&M",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "7200-02",   "AccountName": "Events & Sponsorships",             "Category": "S&M",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "7200-03",   "AccountName": "Content & Creative",                "Category": "S&M",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "7200-04",   "AccountName": "Influencer Marketing",              "Category": "S&M",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "", "_note": "NEW — not in Budget (opened mid-year)" },
+        { "AccountCode": "8100-01",   "AccountName": "Software Licenses — Dev",           "Category": "R&D Tools",     "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "8100-02",   "AccountName": "Cloud Infrastructure (Dev/Test)",   "Category": "R&D Tools",     "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "8100-03",   "AccountName": "R&D Contractor",                    "Category": "R&D Tools",     "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "8100-04",   "AccountName": "AI/ML Tooling",                     "Category": "R&D Tools",     "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "", "_note": "NEW — not in Budget (opened Q3)" },
+        { "AccountCode": "9100-01",   "AccountName": "Accounting & Audit Fees",           "Category": "G&A",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "9100-02",   "AccountName": "Legal Fees",                        "Category": "G&A",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "9100-03",   "AccountName": "Office & Facilities",               "Category": "G&A",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "9100-04",   "AccountName": "Insurance",                         "Category": "G&A",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "9100-05",   "AccountName": "Depreciation — Legacy Equipment",   "Category": "G&A",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "", "_note": "DISCONTINUED — budget exists but zero Oct actuals" },
+        { "AccountCode": "9200-01",   "AccountName": "T&E — Exec",                        "Category": "G&A",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "9200-02",   "AccountName": "T&E — Team",                        "Category": "G&A",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "" },
+        { "AccountCode": "9300-01",   "AccountName": "Recruiting Fees",                   "Category": "G&A",           "AccountType": "Expense", "IsCOGS": false, "ParentAccount": "", "_note": "NEW — not in Budget (retained search opened Q3)" }
+      ],
+      "row_count": 29,
+      "header_row": 1,
+      "data_start_row": 2,
+      "notes": "Includes all accounts used in Budget and Actuals. Three new accounts (8100-04, 9300-01, 7200-04) have no Budget rows. Two discontinued accounts (5000-03, 9100-05) have Budget rows but zero Oct Actuals. AccountType column drives Task 10 F/U logic."
+    },
+    {
+      "tab_id": "variance_workings",
+      "tab_name": "Variance_Workings",
+      "display_name": "Variance Workings",
+      "purpose": "Main working sheet. Pre-filled with dimension rows (Department × Account combinations). Learner populates all formula columns.",
+      "pre_filled_columns": ["A", "D", "G"],
+      "learner_columns": ["B", "C", "E", "F", "H", "I", "J", "K", "L", "M"],
+      "learner_editable": true,
+      "tab_color": "#f4cccc",
+      "columns": [
+        { "col": "A", "field": "ERPDeptCode",          "type": "text",   "pre_filled": true,  "task_fills": null,    "description": "ERP department code — pre-filled" },
+        { "col": "B", "field": "BudgetDeptCode",       "type": "text",   "pre_filled": false, "task_fills": "T02",   "description": "Mapped budget dept code — XLOOKUP on DeptMap using TRIM(A2)" },
+        { "col": "C", "field": "DepartmentName",       "type": "text",   "pre_filled": false, "task_fills": "T02",   "description": "Human-readable dept name — XLOOKUP on DeptMap" },
+        { "col": "D", "field": "AccountCode",          "type": "text",   "pre_filled": true,  "task_fills": null,    "description": "GL account code at parent level — pre-filled" },
+        { "col": "E", "field": "AccountName",          "type": "text",   "pre_filled": false, "task_fills": "T03",   "description": "Account name — XLOOKUP on AccountMap" },
+        { "col": "F", "field": "AccountType",          "type": "text",   "pre_filled": false, "task_fills": "T03",   "description": "Revenue or Expense — XLOOKUP on AccountMap. Critical for Task 10." },
+        { "col": "G", "field": "Month",                "type": "text",   "pre_filled": true,  "task_fills": null,    "description": "Report period — always 2024-10 for this exercise" },
+        { "col": "H", "field": "Actual",               "type": "number", "pre_filled": false, "task_fills": "T04",   "description": "SUMIFS sum of Actuals for this dept+account. Revenue rows will be negative (ERP sign)." },
+        { "col": "I", "field": "Budget",               "type": "mixed",  "pre_filled": false, "task_fills": "T05_T06", "description": "Budget amount. Text 'Not Budgeted' for 3 new accounts." },
+        { "col": "J", "field": "DollarVariance",       "type": "number", "pre_filled": false, "task_fills": "T07",   "description": "Actual minus Budget. IFERROR handles Not Budgeted rows." },
+        { "col": "K", "field": "PercentVariance",      "type": "mixed",  "pre_filled": false, "task_fills": "T08",   "description": "Dollar variance / Budget as decimal. N/A text for Not Budgeted rows." },
+        { "col": "L", "field": "IsMaterial",           "type": "text",   "pre_filled": false, "task_fills": "T09",   "description": "Yes or No — both ABS dollar and ABS percent thresholds must be met." },
+        { "col": "M", "field": "FavorableUnfavorable", "type": "text",   "pre_filled": false, "task_fills": "T10",   "description": "F or U for material rows. Blank for non-material rows." },
+        { "col": "N", "field": "Commentary",           "type": "text",   "pre_filled": false, "task_fills": "optional", "description": "Analyst narrative — free text, optional." }
+      ],
+      "pre_filled_data": [
+        { "row": 2,  "ERPDeptCode": "DEPT-101", "AccountCode": "6100-01", "Month": "2024-10" },
+        { "row": 3,  "ERPDeptCode": "DEPT-101", "AccountCode": "7100-01", "Month": "2024-10" },
+        { "row": 4,  "ERPDeptCode": "DEPT-101", "AccountCode": "9200-02", "Month": "2024-10" },
+        { "row": 5,  "ERPDeptCode": "DEPT-102", "AccountCode": "6100-01", "Month": "2024-10" },
+        { "row": 6,  "ERPDeptCode": "DEPT-102", "AccountCode": "7200-01", "Month": "2024-10" },
+        { "row": 7,  "ERPDeptCode": "DEPT-102", "AccountCode": "7200-02", "Month": "2024-10" },
+        { "row": 8,  "ERPDeptCode": "DEPT-102", "AccountCode": "7200-03", "Month": "2024-10" },
+        { "row": 9,  "ERPDeptCode": "DEPT-201", "AccountCode": "6100-01", "Month": "2024-10" },
+        { "row": 10, "ERPDeptCode": "DEPT-201", "AccountCode": "8100-01", "Month": "2024-10" },
+        { "row": 11, "ERPDeptCode": "DEPT-201", "AccountCode": "8100-02", "Month": "2024-10" },
+        { "row": 12, "ERPDeptCode": "DEPT-201", "AccountCode": "8100-03", "Month": "2024-10" },
+        { "row": 13, "ERPDeptCode": "DEPT-301", "AccountCode": "6100-01", "Month": "2024-10" },
+        { "row": 14, "ERPDeptCode": "DEPT-301", "AccountCode": "6100-03", "Month": "2024-10" },
+        { "row": 15, "ERPDeptCode": "DEPT-301", "AccountCode": "8100-01", "Month": "2024-10" },
+        { "row": 16, "ERPDeptCode": "DEPT-401", "AccountCode": "6100-01", "Month": "2024-10" },
+        { "row": 17, "ERPDeptCode": "DEPT-401", "AccountCode": "9100-01", "Month": "2024-10" },
+        { "row": 18, "ERPDeptCode": "DEPT-401", "AccountCode": "9100-02", "Month": "2024-10" },
+        { "row": 19, "ERPDeptCode": "DEPT-401", "AccountCode": "9100-03", "Month": "2024-10" },
+        { "row": 20, "ERPDeptCode": "DEPT-401", "AccountCode": "9100-04", "Month": "2024-10" },
+        { "row": 21, "ERPDeptCode": "DEPT-401", "AccountCode": "9200-01", "Month": "2024-10" },
+        { "row": 22, "ERPDeptCode": "DEPT-401", "AccountCode": "4000-01", "Month": "2024-10" },
+        { "row": 23, "ERPDeptCode": "DEPT-401", "AccountCode": "4000-02", "Month": "2024-10" },
+        { "row": 24, "ERPDeptCode": "DEPT-501", "AccountCode": "5000-01", "Month": "2024-10" },
+        { "row": 25, "ERPDeptCode": "DEPT-501", "AccountCode": "5000-02", "Month": "2024-10" },
+        { "row": 26, "ERPDeptCode": "DEPT-501", "AccountCode": "5500-01", "Month": "2024-10" },
+        { "row": 27, "ERPDeptCode": "DEPT-501", "AccountCode": "5500-02", "Month": "2024-10" },
+        { "row": 28, "ERPDeptCode": "DEPT-201", "AccountCode": "8100-04", "Month": "2024-10", "_note": "NEW — not in Budget" },
+        { "row": 29, "ERPDeptCode": "DEPT-401", "AccountCode": "9300-01", "Month": "2024-10", "_note": "NEW — not in Budget" },
+        { "row": 30, "ERPDeptCode": "DEPT-102", "AccountCode": "7200-04", "Month": "2024-10", "_note": "NEW — not in Budget" },
+        { "row": 31, "ERPDeptCode": "DEPT-501", "AccountCode": "5000-03", "Month": "2024-10", "_note": "DISCONTINUED — Budget exists, Actual = 0" },
+        { "row": 32, "ERPDeptCode": "DEPT-401", "AccountCode": "9100-05", "Month": "2024-10", "_note": "DISCONTINUED — Budget exists, Actual = 0" }
+      ],
+      "header_row": 1,
+      "data_start_row": 2,
+      "last_data_row": 32,
+      "helper_column": { "col": "O", "purpose": "Task 12 helper: =IF(L2='Yes', ABS(J2), 0). Used for LARGE+INDEX/MATCH Top 5 ranking." },
+      "notes": "Rows 28-30: new accounts with No Budget rows — column I will show 'Not Budgeted', column K shows 'N/A'. Rows 31-32: discontinued accounts with zero Actuals but positive Budget — Favorable variance (under-spend vs budget). Revenue rows 22-23: column H will be negative (ERP sign), column I positive (Budget convention) — sign trap handled in Task 10."
+    },
+    {
+      "tab_id": "mgmt_summary",
+      "tab_name": "Mgmt_Summary",
+      "display_name": "Management Summary",
+      "purpose": "CFO-ready summary page. Pre-filled with section labels and table headers. Learner populates all formula cells highlighted in yellow.",
+      "pre_filled_columns": ["A"],
+      "learner_columns": ["B", "C", "D", "E"],
+      "learner_editable": true,
+      "tab_color": "#d9ead3",
+      "pre_filled_labels": {
+        "A1":  "COMPANY TOTALS — OCTOBER 2024",
+        "A2":  "Total Actual ($)",
+        "A3":  "Total Budget ($)",
+        "A4":  "Total Dollar Variance ($)",
+        "A5":  "Total Percent Variance (%)",
+        "A6":  "Count of Material Variances",
+        "A8":  "VARIANCE BY DEPARTMENT",
+        "A9":  "Department",
+        "B9":  "Total Actual ($)",
+        "C9":  "Total Budget ($)",
+        "D9":  "Dollar Variance ($)",
+        "E9":  "Material Count",
+        "A10": "Sales",
+        "A11": "Marketing",
+        "A12": "Engineering",
+        "A13": "Customer Success",
+        "A14": "G&A",
+        "A15": "Operations",
+        "A17": "TOP 5 MATERIAL VARIANCES — by absolute dollar",
+        "A18": "Department",
+        "B18": "Account",
+        "C18": "Dollar Variance ($)",
+        "D18": "F/U"
+      },
+      "learner_target_cells": {
+        "company_totals": ["B2", "B3", "B4", "B5", "B6"],
+        "dept_rollup": ["B10:E15"],
+        "top5": ["A19:D23"]
+      },
+      "header_row": 1,
+      "last_data_row": 23,
+      "notes": "All learner-fill cells highlighted yellow. Top 5 table (rows 19-23) requires LARGE+INDEX/MATCH or equivalent using helper column O from Variance_Workings. Section headers pre-formatted with dark background."
+    }
+  ],
+
+  "tasks": [
+    {
+      "task_id": "T01",
+      "task_number": 1,
+      "title": "Spot the Duplicate Journal Entry",
+      "prompt": "Before you calculate anything, validate the Actuals data. One vendor invoice was accidentally posted twice — same JournalID, same amount, same vendor, same date. In Actuals column P (starting at P2), write a COUNTIFS formula that counts how many times each JournalID appears in column A. Fill it down for all rows. Rows showing a count of 2 are duplicates.",
+      "deliverable": "COUNTIFS formula in Actuals!P2 filled down to last Actuals row. Duplicate JournalID rows each show value 2. All other rows show value 1.",
+      "allowed_functions": ["COUNTIFS", "COUNTIF"],
+      "target_sheet": "Actuals",
+      "target_cells": "P2:P{last_actuals_row}",
+      "points": 15,
+      "depends_on_previous_task_ids": [],
+      "expected_result_description": "Column P shows frequency of each JournalID. Exactly two rows show value 2 — the duplicate JournalID JE-2024-10-0892. All other rows show 1.",
+      "validation_type": "formula_pattern",
+      "validation_detail": {
+        "formula_must_contain": ["COUNTIFS", "$A$", "A2"],
+        "formula_pattern_regex": "=COUNTIFS\\(\\$A\\$\\d+:\\$A\\$\\d+,A\\d+\\)",
+        "expected_duplicate_count": 2,
+        "expected_duplicate_journal_id": "JE-2024-10-0892"
+      },
+      "tutor_hint": "COUNTIFS can count how many times a value appears in a range. Use the JournalID column as both the criteria range and the criteria value. Lock the range with $ so it does not drift when you copy down.",
+      "tutor_progressive_hints": [
+        "In P2: =COUNTIFS($A$2:$A$300, A2). Lock the range ($A$2:$A$300) so it stays fixed as you fill down. The criteria (A2) is relative and updates each row.",
+        "Any row showing 2 in column P means that JournalID was posted twice. Scan column P for the value 2 — you should find exactly two rows with the same JournalID.",
+        "The duplicate is JE-2024-10-0892 — a vendor invoice for outside legal counsel that went through AP approval twice. Both rows are identical across all columns."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "Hardcoded value 2 instead of formula",              "tutor_response": "That gives the right number for today, but hardcoding won't detect new duplicates when next month's Actuals land. Use COUNTIFS so the formula detects any duplicate automatically." },
+        { "pattern": "COUNTIF without locked range — drifts when copied", "tutor_response": "Without locking the range ($A$2:$A$300), the range shifts as you copy the formula down. Lock it with $ signs so every row counts against the full column." },
+        { "pattern": "Counting on Description or Amount instead of JournalID", "tutor_response": "JournalID is the cleanest duplicate key — it should be unique per posting by design. Amount or Description could give false positives." }
+      ]
+    },
+    {
+      "task_id": "T02",
+      "task_number": 2,
+      "title": "Map ERP Department Codes to Budget Codes",
+      "prompt": "The Budget tab uses codes like D-SALES but your Variance_Workings column A has DEPT-101 format. The DeptMap tab is your cross-reference. Fill column B (BudgetDeptCode) and column C (DepartmentName) in Variance_Workings using XLOOKUP or VLOOKUP against DeptMap. Important: one row in Variance_Workings column A has a trailing space — wrap your lookup value with TRIM to avoid a surprise #N/A.",
+      "deliverable": "Formulas in Variance_Workings!B2:B32 returning BudgetDeptCode and Variance_Workings!C2:C32 returning DepartmentName. No #N/A errors.",
+      "allowed_functions": ["XLOOKUP", "VLOOKUP", "INDEX", "MATCH", "TRIM"],
+      "target_sheet": "Variance_Workings",
+      "target_cells": ["B2:B32", "C2:C32"],
+      "points": 20,
+      "depends_on_previous_task_ids": [],
+      "expected_result_description": "Column B returns budget codes (D-SALES, D-MKTG, etc.) for all rows. Column C returns department names. No #N/A anywhere. The TRIM-affected row resolves correctly.",
+      "validation_type": "all_cells_populated",
+      "validation_detail": {
+        "formula_must_contain_one_of": ["XLOOKUP", "VLOOKUP", "INDEX"],
+        "must_reference_sheet": "DeptMap",
+        "no_na_errors_allowed": true,
+        "trim_required_for_full_credit": true,
+        "relative_drift_check": true
+      },
+      "tutor_hint": "=XLOOKUP(TRIM(A2), DeptMap!$A:$A, DeptMap!$B:$B) for column B. The TRIM strips any leading or trailing spaces before the lookup so you do not get a surprise #N/A.",
+      "tutor_progressive_hints": [
+        "Column B: =XLOOKUP(TRIM(A2), DeptMap!$A:$A, DeptMap!$B:$B). Lock the DeptMap ranges with $ so they do not shift when copied down.",
+        "Column C is the same pattern — just swap the return array to DeptMap!$C:$C for DepartmentName.",
+        "If you are getting #N/A on exactly one row, that is the row with a trailing space in column A. Adding TRIM around A2 fixes it: XLOOKUP(TRIM(A2), ...)."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "#N/A on one row",                                  "tutor_response": "That #N/A is the row with a trailing space in the department code. Wrap your lookup value with TRIM: =XLOOKUP(TRIM(A2), DeptMap!$A:$A, ...). TRIM strips leading and trailing spaces before the lookup." },
+        { "pattern": "VLOOKUP returning wrong column",                   "tutor_response": "With VLOOKUP, col_index_num controls which column returns. Column 2 returns BudgetCode, column 3 returns DepartmentName. Switch to XLOOKUP for clarity — you specify the return column directly." },
+        { "pattern": "DeptMap range not locked — drifts when copied",    "tutor_response": "When you copy this formula down, the DeptMap reference is shifting. Lock the reference: DeptMap!$A:$A instead of DeptMap!A:A." }
+      ]
+    },
+    {
+      "task_id": "T03",
+      "task_number": 3,
+      "title": "Map Account Codes to Names and Types",
+      "prompt": "Look up account details from AccountMap for each row in Variance_Workings. Fill column E (AccountName) and column F (AccountType) using the AccountCode in column D. AccountType returns Revenue or Expense — you will need this in Task 10 to correctly classify Favorable vs Unfavorable.",
+      "deliverable": "Formulas in Variance_Workings!E2:E32 and F2:F32. No #N/A errors.",
+      "allowed_functions": ["XLOOKUP", "VLOOKUP", "INDEX", "MATCH"],
+      "target_sheet": "Variance_Workings",
+      "target_cells": ["E2:E32", "F2:F32"],
+      "points": 20,
+      "depends_on_previous_task_ids": [],
+      "expected_result_description": "Column E returns account names. Column F returns Revenue or Expense for every row. No errors.",
+      "validation_type": "all_cells_populated",
+      "validation_detail": {
+        "formula_must_contain_one_of": ["XLOOKUP", "VLOOKUP", "INDEX"],
+        "must_reference_sheet": "AccountMap",
+        "column_f_allowed_values": ["Revenue", "Expense"],
+        "no_na_errors_allowed": true,
+        "relative_drift_check": true
+      },
+      "tutor_hint": "=XLOOKUP(D2, AccountMap!$A:$A, AccountMap!$B:$B) for AccountName. For AccountType, swap the return array to AccountMap!$D:$D. AccountCode in column D is clean — no TRIM needed here.",
+      "tutor_progressive_hints": [
+        "AccountName: =XLOOKUP(D2, AccountMap!$A:$A, AccountMap!$B:$B). AccountType: =XLOOKUP(D2, AccountMap!$A:$A, AccountMap!$D:$D). Same structure, different return column.",
+        "No TRIM needed on D2 — the AccountCode values in column D are clean. The whitespace issue is only in the ERP department code column (A).",
+        "The AccountType result — Revenue or Expense — is the key to Task 10. Revenue and expense have opposite favorable directions."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "Returning IsCOGS instead of AccountType", "tutor_response": "Check your return column reference in AccountMap. Column D is AccountType (Revenue/Expense). Column E is IsCOGS (TRUE/FALSE). You want column D for Task 10 to work correctly." },
+        { "pattern": "#N/A on new account rows",                "tutor_response": "All account codes in your Variance_Workings column D should exist in AccountMap — including the new ones (8100-04, 9300-01, 7200-04). Confirm those three codes are present in AccountMap column A." }
+      ]
+    },
+    {
+      "task_id": "T04",
+      "task_number": 4,
+      "title": "Pull October Actuals into Variance_Workings",
+      "prompt": "For each row, sum all matching transactions from the Actuals tab. Match on ERP Department (Actuals column C) and Account (Actuals column D). Important: Actuals has sub-accounts like 6100-01-A and 6100-01-B that should roll into parent account 6100-01. Use a wildcard in the account criteria (D2&\"*\") to capture sub-accounts. The duplicate journal entry will be included in your sum — that is expected for now.",
+      "deliverable": "SUMIFS formula in Variance_Workings!H2:H32.",
+      "allowed_functions": ["SUMIFS", "SUMIF"],
+      "target_sheet": "Variance_Workings",
+      "target_cells": "H2:H32",
+      "points": 25,
+      "depends_on_previous_task_ids": ["T02"],
+      "expected_result_description": "Column H shows sum of all October Actuals transactions per dept-account. Revenue rows are negative. Sub-account rows aggregate to parent. Duplicate row inflates one account by the duplicate amount.",
+      "validation_type": "formula_pattern",
+      "validation_detail": {
+        "formula_must_contain": ["SUMIFS"],
+        "must_reference_actuals_amount_col": "Actuals!$E:$E",
+        "wildcard_usage_expected": true,
+        "formula_pattern_regex": "=SUMIFS\\(Actuals!\\$E:\\$E,Actuals!\\$C:\\$C,.*A\\d+.*,Actuals!\\$D:\\$D,.*D\\d+.*\\*.*\\)",
+        "relative_drift_check": true
+      },
+      "example_correct_formula": "=SUMIFS(Actuals!$E:$E, Actuals!$C:$C, TRIM(A2), Actuals!$D:$D, D2&\"*\")",
+      "tutor_hint": "=SUMIFS(Actuals!$E:$E, Actuals!$C:$C, TRIM(A2), Actuals!$D:$D, D2&\"*\"). The D2&\"*\" wildcard captures both the exact parent code and sub-accounts starting with the same prefix. TRIM handles the one whitespace row.",
+      "tutor_progressive_hints": [
+        "Basic structure: =SUMIFS(Actuals!$E:$E, Actuals!$C:$C, A2, Actuals!$D:$D, D2). This only matches exact account codes — sub-accounts like 6100-01-A won't be captured.",
+        "Add the wildcard: replace D2 with D2&\"*\" in the account criteria. This matches 6100-01, 6100-01-A, 6100-01-B, and anything starting with 6100-01.",
+        "Wrap the department lookup value with TRIM: SUMIFS(Actuals!$E:$E, Actuals!$C:$C, TRIM(A2), ...) — this handles the one row in Variance_Workings column A that has a trailing space."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "No wildcard — sub-account transactions missing, salaries too low", "tutor_response": "Your Actuals has salary transactions split across sub-accounts 6100-01-A and 6100-01-B. Without a wildcard, those sub-account rows do not match parent code 6100-01. Use D2&\"*\" as your account criteria." },
+        { "pattern": "Using BudgetDeptCode (col B) instead of ERPDeptCode (col A)",     "tutor_response": "The Actuals tab uses ERP department codes (DEPT-101 format), not Budget codes (D-SALES). Your SUMIFS department criteria should reference column A — the ERP code." },
+        { "pattern": "Revenue rows show 0",                                               "tutor_response": "Revenue account transactions exist in Actuals with negative amounts. A zero result usually means the account criteria is not matching. Check that your AccountCode in column D matches exactly what is in Actuals column D." }
+      ]
+    },
+    {
+      "task_id": "T05",
+      "task_number": 5,
+      "title": "Pull Budget for Each Row",
+      "prompt": "Pull the budget amount for each row from the Budget tab. Match on all three keys: BudgetDeptCode (your column B from Task 2), AccountCode (column D), and Month (2024-10). Some rows will return 0 because the account was not budgeted — you will handle those in Task 6.",
+      "deliverable": "SUMIFS formula in Variance_Workings!I2:I32.",
+      "allowed_functions": ["SUMIFS", "XLOOKUP", "INDEX", "MATCH"],
+      "target_sheet": "Variance_Workings",
+      "target_cells": "I2:I32",
+      "points": 25,
+      "depends_on_previous_task_ids": ["T02", "T03"],
+      "expected_result_description": "Column I shows the October budget amount for each dept-account combination. Rows for new accounts return 0. Revenue rows are positive (Budget planning tool convention).",
+      "validation_type": "formula_pattern",
+      "validation_detail": {
+        "formula_must_contain": ["SUMIFS"],
+        "must_reference_budget_amount_col": "Budget!$D:$D",
+        "must_use_three_criteria": true,
+        "month_criteria_expected": "2024-10",
+        "formula_pattern_regex": "=SUMIFS\\(Budget!\\$D:\\$D,Budget!\\$A:\\$A,.*B\\d+.*,Budget!\\$B:\\$B,.*D\\d+.*,Budget!\\$C:\\$C,.*2024-10.*\\)",
+        "relative_drift_check": true
+      },
+      "example_correct_formula": "=SUMIFS(Budget!$D:$D, Budget!$A:$A, B2, Budget!$B:$B, D2, Budget!$C:$C, \"2024-10\")",
+      "tutor_hint": "=SUMIFS(Budget!$D:$D, Budget!$A:$A, B2, Budget!$B:$B, D2, Budget!$C:$C, \"2024-10\"). Three criteria: DeptCode matches col B, AccountCode matches col D, Month = 2024-10.",
+      "tutor_progressive_hints": [
+        "The composite key is DeptCode + AccountCode + Month. Without all three, you would sum multiple months or multiple departments — giving 12x or 6x the right number.",
+        "Use column B (BudgetDeptCode) for the department match — not column A (ERPDeptCode). Budget uses D-SALES format. Column B is the bridge you built in Task 2.",
+        "The month can be hardcoded as '2024-10' since this analysis is October-specific. Budget column order: A=DeptCode, B=AccountCode, C=Month, D=BudgetAmount."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "Using ERPDeptCode (col A) — returns 0 for all rows",         "tutor_response": "Budget uses D-SALES format for departments, not DEPT-101. Use column B (BudgetDeptCode) as your department criteria — that is the whole point of the mapping you did in Task 2." },
+        { "pattern": "Missing month filter — returns full-year budget total",        "tutor_response": "Without the Month = '2024-10' criteria, you are summing all 12 months of budget into one cell. Add a third SUMIFS condition: Budget!$C:$C, \"2024-10\"." },
+        { "pattern": "Returns 0 for all rows — wrong column reference for amount",  "tutor_response": "Check the sum_range column. Budget has: A=DeptCode, B=AccountCode, C=Month, D=BudgetAmount. Your first argument should be Budget!$D:$D." }
+      ]
+    },
+    {
+      "task_id": "T06",
+      "task_number": 6,
+      "title": "Handle Accounts with No Budget",
+      "prompt": "Three account codes in your Variance_Workings do not exist in the Budget tab — they were opened mid-year after the annual budget was locked. Currently those rows show 0 in column I. Modify your column I formulas to return the text 'Not Budgeted' when the SUMIFS returns 0. This makes it clear to reviewers that the absence of budget is intentional, not a formula error.",
+      "deliverable": "Modified formulas in Variance_Workings!I2:I32 that return 'Not Budgeted' for unbudgeted accounts and the numeric budget amount for all others.",
+      "allowed_functions": ["IF", "IFERROR", "IFNA"],
+      "target_sheet": "Variance_Workings",
+      "target_cells": "I2:I32",
+      "points": 15,
+      "depends_on_previous_task_ids": ["T05"],
+      "expected_result_description": "Rows for accounts 8100-04, 9300-01, and 7200-04 show text 'Not Budgeted' in column I. All other rows show numeric budget amounts.",
+      "validation_type": "cell_value_exact",
+      "validation_detail": {
+        "cells_that_must_show_not_budgeted": "rows where AccountCode in D column equals 8100-04 or 9300-01 or 7200-04",
+        "expected_text_value": "Not Budgeted",
+        "alternative_accepted_value": "0",
+        "note": "0 accepted as alternative if IFERROR is applied in Task 8 division step — Not Budgeted is best practice"
+      },
+      "example_correct_formula": "=IF(SUMIFS(Budget!$D:$D, Budget!$A:$A, B2, Budget!$B:$B, D2, Budget!$C:$C, \"2024-10\")=0, \"Not Budgeted\", SUMIFS(Budget!$D:$D, Budget!$A:$A, B2, Budget!$B:$B, D2, Budget!$C:$C, \"2024-10\"))",
+      "tutor_hint": "Wrap your SUMIFS with IF: =IF(SUMIFS(...)=0, \"Not Budgeted\", SUMIFS(...)). Note: IFERROR will not work here because SUMIFS returns 0 (not an error) when nothing matches.",
+      "tutor_progressive_hints": [
+        "SUMIFS returns 0 when no matching row exists in Budget — it does not return an error. So IFERROR will not catch it. Use IF: =IF(SUMIFS(Budget!$D:$D,...)=0, \"Not Budgeted\", SUMIFS(Budget!$D:$D,...)).",
+        "To avoid writing SUMIFS twice, use LET: =LET(b, SUMIFS(Budget!$D:$D,...), IF(b=0, \"Not Budgeted\", b)). LET computes b once and reuses it.",
+        "Warning: once column I has text in some rows, your Task 7 formula (H2-I2) will return #VALUE! on those rows. Plan ahead — you will need IFERROR in Task 7."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "IFERROR around SUMIFS — but SUMIFS returns 0 not an error", "tutor_response": "IFERROR catches formula errors like #N/A, not zero values. SUMIFS returns 0 when no matching budget row exists. Use IF(SUMIFS(...)=0, \"Not Budgeted\", SUMIFS(...)) instead." },
+        { "pattern": "Hardcodes the three account codes",                          "tutor_response": "IF(SUMIFS(...)=0, \"Not Budgeted\", ...) is more robust — it automatically catches any account with zero budget without you having to maintain a list." }
+      ]
+    },
+    {
+      "task_id": "T07",
+      "task_number": 7,
+      "title": "Calculate Dollar Variance",
+      "prompt": "Calculate Dollar Variance = Actual minus Budget in column J. For 'Not Budgeted' rows, H2-I2 will return #VALUE! because I2 is text. Wrap with IFERROR to return just the Actual amount as the full variance for those rows. Do not correct the sign for revenue rows yet — you will handle sign interpretation in Task 10.",
+      "deliverable": "Formula in Variance_Workings!J2:J32. No errors in any cell.",
+      "allowed_functions": ["IFERROR", "IF"],
+      "target_sheet": "Variance_Workings",
+      "target_cells": "J2:J32",
+      "points": 15,
+      "depends_on_previous_task_ids": ["T04", "T06"],
+      "expected_result_description": "Column J shows Actual minus Budget for all rows. Revenue rows show large negative (Actual negative plus Budget positive). Not Budgeted rows show Actual as full variance. No errors.",
+      "validation_type": "formula_pattern",
+      "validation_detail": {
+        "formula_pattern_regex": "=IFERROR\\(H\\d+-I\\d+,H\\d+\\)",
+        "must_be_h_minus_i": true,
+        "iferror_required": true,
+        "relative_drift_check": true
+      },
+      "example_correct_formula": "=IFERROR(H2-I2, H2)",
+      "tutor_hint": "=IFERROR(H2-I2, H2). If H2-I2 produces an error (because I2 says 'Not Budgeted'), return H2 instead — treating the full Actual as variance for unbudgeted accounts.",
+      "tutor_progressive_hints": [
+        "For budgeted rows: H2-I2 is all you need. The problem is 'Not Budgeted' rows where I2 is text — subtracting text causes #VALUE!.",
+        "Wrap with IFERROR: =IFERROR(H2-I2, H2). This says try H2-I2 first; if it errors, return H2. The Actual amount becomes the full variance for unbudgeted spend.",
+        "Do not use ABS or flip any signs here. Task 10 handles sign interpretation using AccountType. For now compute Actual-Budget mechanically, even for revenue rows."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "#VALUE! in Not Budgeted rows",               "tutor_response": "Column I has 'Not Budgeted' text for three rows — subtracting text from a number causes #VALUE!. Wrap: =IFERROR(H2-I2, H2) to return the Actual as variance for those rows." },
+        { "pattern": "ABS applied to result or sign flipped early", "tutor_response": "Keep the raw signed arithmetic here. Revenue rows will show a large negative variance — that looks alarming but is expected at this stage. Task 10 will correctly classify it using AccountType logic." }
+      ]
+    },
+    {
+      "task_id": "T08",
+      "task_number": 8,
+      "title": "Calculate Percent Variance with Divide-by-Zero Protection",
+      "prompt": "Calculate % Variance = Dollar Variance divided by Budget in column K. Two problems: Budget could be 0 (which causes #DIV/0!) and Budget could be the text 'Not Budgeted' (which causes #VALUE!). Handle both by wrapping with IFERROR and returning the text 'N/A' when division fails. Format column K as Percentage.",
+      "deliverable": "Formula in Variance_Workings!K2:K32. No #DIV/0! or #VALUE! anywhere.",
+      "allowed_functions": ["IFERROR", "IFNA", "IF", "ISNUMBER"],
+      "target_sheet": "Variance_Workings",
+      "target_cells": "K2:K32",
+      "points": 20,
+      "depends_on_previous_task_ids": ["T07"],
+      "expected_result_description": "Column K shows decimal ratios for all budgeted rows. Not Budgeted rows and zero-budget rows show text 'N/A'. No error values anywhere.",
+      "validation_type": "formula_pattern",
+      "validation_detail": {
+        "formula_pattern_regex": "=IFERROR\\(J\\d+\\/I\\d+,.*N/A.*\\)",
+        "must_divide_j_by_i": true,
+        "must_handle_divide_by_zero": true,
+        "na_for_not_budgeted": true,
+        "relative_drift_check": true
+      },
+      "example_correct_formula": "=IFERROR(J2/I2, \"N/A\")",
+      "tutor_hint": "=IFERROR(J2/I2, \"N/A\"). IFERROR catches both #DIV/0! (zero denominator) and #VALUE! (text denominator). Format the column as percentage so 0.15 displays as 15.0%.",
+      "tutor_progressive_hints": [
+        "Start with J2/I2. It errors when I2 is 0 or 'Not Budgeted'. IFERROR is the cleanest fix: =IFERROR(J2/I2, \"N/A\").",
+        "Alternatively: =IF(ISNUMBER(I2), IF(I2=0, \"N/A\", J2/I2), \"N/A\"). Both approaches are valid — IFERROR is shorter, the IF/ISNUMBER version is more explicit.",
+        "Format column K as Percentage (0.0%) from the number format menu. The underlying cell value stays as a decimal (0.15) — the display becomes 15.0%."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "#DIV/0! error",                                                      "tutor_response": "Budget is 0 for some rows or text for others — both cause division errors. Wrap with IFERROR(J2/I2, \"N/A\") to handle all error cases in one step." },
+        { "pattern": "Returning 100% for Not Budgeted rows instead of N/A",                "tutor_response": "Showing 100% over-budget for unbudgeted accounts is misleading — it implies a budget existed and was fully exceeded. 'N/A' communicates that no budget was set." }
+      ]
+    },
+    {
+      "task_id": "T09",
+      "task_number": 9,
+      "title": "Apply Materiality Flag",
+      "prompt": "A variance is material only when BOTH conditions are true simultaneously: absolute Dollar Variance >= $25,000 AND absolute Percent Variance >= 10%. Return 'Yes' if material, 'No' otherwise. Use ABS() for threshold comparisons — without it, large negative variances (under budget) will fail the >= test incorrectly. For 'N/A' percent rows, use ISNUMBER to treat them as non-material by default.",
+      "deliverable": "Formula in Variance_Workings!L2:L32 returning Yes or No for every row.",
+      "allowed_functions": ["IF", "AND", "ABS", "IFERROR", "ISNUMBER"],
+      "target_sheet": "Variance_Workings",
+      "target_cells": "L2:L32",
+      "points": 25,
+      "depends_on_previous_task_ids": ["T07", "T08"],
+      "expected_result_description": "Column L shows Yes for rows meeting both thresholds. No for all others. Expect 4-8 Yes rows. Not Budgeted rows show No.",
+      "validation_type": "all_cells_populated",
+      "validation_detail": {
+        "allowed_values": ["Yes", "No"],
+        "materiality_dollar_threshold": 25000,
+        "materiality_pct_threshold": 0.10,
+        "both_conditions_required": true,
+        "must_use_abs": true,
+        "formula_pattern_regex": "=IF\\(AND\\(ABS\\(J\\d+\\)>=25000,ISNUMBER\\(K\\d+\\),ABS\\(K\\d+\\)>=0\\.1\\),\"Yes\",\"No\"\\)",
+        "relative_drift_check": true
+      },
+      "example_correct_formula": "=IF(AND(ABS(J2)>=25000, ISNUMBER(K2), ABS(K2)>=0.1), \"Yes\", \"No\")",
+      "tutor_hint": "=IF(AND(ABS(J2)>=25000, ISNUMBER(K2), ABS(K2)>=0.1), \"Yes\", \"No\"). The ISNUMBER check short-circuits the AND for N/A rows so ABS won't error on text.",
+      "tutor_progressive_hints": [
+        "Two conditions: ABS(J2)>=25000 and ABS(K2)>=0.1 (10%). Both must be true inside an AND function for the row to be material.",
+        "Problem: when K2 = 'N/A', ABS(K2) throws an error. Add ISNUMBER(K2) inside the AND — it returns FALSE for text, which makes the whole AND return FALSE, giving 'No' cleanly.",
+        "Full formula: =IF(AND(ABS(J2)>=25000, ISNUMBER(K2), ABS(K2)>=0.1), \"Yes\", \"No\"). The three-condition AND handles dollar threshold, type check, and percent threshold in order."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "Dollar threshold only — no percent check",   "tutor_response": "Materiality requires both thresholds. A $30,000 variance on a $5M budget line is only 0.6% — not material to management. Use AND(ABS(J2)>=25000, ABS(K2)>=0.1) so both must be true." },
+        { "pattern": "No ABS — large negative variances missed",   "tutor_response": "Without ABS, a -$60,000 variance (spending $60K less than budget) fails the >=25000 test because -60000 is not >= 25000. ABS(-60000)=60000 correctly passes. Always use ABS for threshold comparisons on signed values." },
+        { "pattern": "Error on N/A percent rows",                   "tutor_response": "When K2 contains the text 'N/A', ABS(K2) errors. Add ISNUMBER(K2) as the second condition in your AND: AND(ABS(J2)>=25000, ISNUMBER(K2), ABS(K2)>=0.1)." }
+      ]
+    },
+    {
+      "task_id": "T10",
+      "task_number": 10,
+      "title": "Classify Favorable vs Unfavorable",
+      "prompt": "For material rows (IsMaterial = Yes), classify each variance as F (Favorable) or U (Unfavorable). Leave non-material rows blank. The logic depends on AccountType in column F: Revenue accounts — more Actual than Budget is Favorable. Expense accounts — less Actual than Budget is Favorable. Sign trap: column H Actual is negative for revenue rows (ERP convention), but column I Budget is positive. Compare using ABS(H2) > I2 for revenue rows to avoid comparing a negative to a positive.",
+      "deliverable": "Formula in Variance_Workings!M2:M32 returning F, U, or empty string.",
+      "allowed_functions": ["IF", "IFS", "AND", "ABS"],
+      "target_sheet": "Variance_Workings",
+      "target_cells": "M2:M32",
+      "points": 30,
+      "depends_on_previous_task_ids": ["T03", "T09"],
+      "expected_result_description": "Material rows show F or U. Non-material rows are blank. Revenue rows correctly flagged Favorable when ABS(Actual)>Budget. Expense rows correctly flagged Favorable when Actual<Budget.",
+      "validation_type": "all_cells_populated",
+      "validation_detail": {
+        "allowed_values": ["F", "U", ""],
+        "non_material_must_be_blank": true,
+        "must_use_account_type_logic": true,
+        "formula_pattern_regex": "=IF\\(L\\d+<>\"Yes\",\"\",IF\\(F\\d+=\"Revenue\",IF\\(ABS\\(H\\d+\\)>I\\d+,\"F\",\"U\"\\),IF\\(H\\d+<I\\d+,\"F\",\"U\"\\)\\)\\)",
+        "relative_drift_check": true
+      },
+      "example_correct_formula": "=IF(L2<>\"Yes\", \"\", IF(F2=\"Revenue\", IF(ABS(H2)>I2, \"F\", \"U\"), IF(H2<I2, \"F\", \"U\")))",
+      "tutor_hint": "=IF(L2<>\"Yes\", \"\", IF(F2=\"Revenue\", IF(ABS(H2)>I2, \"F\", \"U\"), IF(H2<I2, \"F\", \"U\"))). Outer IF blanks non-material rows. Middle IF splits Revenue vs Expense. Inner IFs apply the correct direction test.",
+      "tutor_progressive_hints": [
+        "Start with the outer shell: =IF(L2<>\"Yes\", \"\", [F/U logic]). This blanks non-material rows first — no point classifying variances that do not matter.",
+        "For Revenue rows: Favorable means ABS(H2) > I2. Actual revenue is stored negative in column H — ABS flips it positive so you can compare it to the positive Budget value.",
+        "Full formula: =IF(L2<>\"Yes\", \"\", IF(F2=\"Revenue\", IF(ABS(H2)>I2, \"F\", \"U\"), IF(H2<I2, \"F\", \"U\"))). For expense: Actual < Budget = less spending = Favorable."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "Same direction logic for both Revenue and Expense",          "tutor_response": "Revenue and Expense have opposite favorable directions. For Revenue: more actual = good. For Expense: less actual = good. Your formula needs to branch on F2='Revenue' and apply different comparisons for each type." },
+        { "pattern": "Revenue rows always show U due to sign trap",                "tutor_response": "Revenue in column H is negative (ERP credit). Comparing H2 > I2 directly means -437,500 > 410,000 is always FALSE — every revenue row gets U regardless of actual performance. Use ABS(H2) > I2 to compare magnitudes correctly." },
+        { "pattern": "F/U shown on non-material rows — column M not blank",        "tutor_response": "Non-material variances should not be classified — they add noise to the management report. Wrap the entire formula: =IF(L2<>\"Yes\", \"\", [your F/U logic])." }
+      ]
+    },
+    {
+      "task_id": "T11",
+      "task_number": 11,
+      "title": "Roll Up Variance by Department",
+      "prompt": "In Mgmt_Summary, populate the company totals section (cells B2:B6) and the departmental rollup table (B10:E15). For company totals, sum Variance_Workings columns H and I, compute variance and percent, and count Yes rows in column L. For the department table, use SUMIFS keyed on DepartmentName (column C) to aggregate each department's totals. Note: Excel's SUM naturally ignores text cells, so SUM(Variance_Workings!I:I) safely skips 'Not Budgeted' rows.",
+      "deliverable": "Formulas in Mgmt_Summary!B2:B6 and Mgmt_Summary!B10:E15.",
+      "allowed_functions": ["SUMIFS", "SUMIF", "COUNTIFS", "SUM", "IFERROR"],
+      "target_sheet": "Mgmt_Summary",
+      "target_cells": ["B2:B6", "B10:E15"],
+      "points": 25,
+      "depends_on_previous_task_ids": ["T07", "T09"],
+      "expected_result_description": "B2: sum of all Actuals. B3: sum of all numeric Budget amounts. B4: B2-B3. B5: IFERROR(B4/B3, N/A). B6: COUNTIF of Yes in column L. Department table rows match SUMIFS against DepartmentName.",
+      "validation_type": "cell_value_tolerance",
+      "validation_detail": {
+        "tolerance_dollars": 0.01,
+        "b2_formula": "=SUM(Variance_Workings!H2:H32)",
+        "b3_note": "SUM ignores text — =SUM(Variance_Workings!I2:I32) safely skips Not Budgeted cells",
+        "b6_formula_pattern": "=COUNTIF(Variance_Workings!$L:$L,\"Yes\")",
+        "dept_table_must_use_sumifs": true
+      },
+      "example_correct_formula_b2": "=SUM(Variance_Workings!H2:H32)",
+      "example_correct_formula_b3": "=SUM(Variance_Workings!I2:I32)",
+      "example_correct_formula_b4": "=B2-B3",
+      "example_correct_formula_b5": "=IFERROR(B4/B3, \"N/A\")",
+      "example_correct_formula_b6": "=COUNTIF(Variance_Workings!$L$2:$L$32, \"Yes\")",
+      "example_correct_formula_dept": "=SUMIFS(Variance_Workings!$H:$H, Variance_Workings!$C:$C, A10)",
+      "tutor_hint": "B2: =SUM(Variance_Workings!H2:H32). B3: =SUM(Variance_Workings!I2:I32) — SUM ignores text. B4: =B2-B3. B5: =IFERROR(B4/B3,\"N/A\"). B6: =COUNTIF(Variance_Workings!$L:$L,\"Yes\"). Dept table: =SUMIFS(Variance_Workings!$H:$H, Variance_Workings!$C:$C, A10).",
+      "tutor_progressive_hints": [
+        "B2 and B3 are simple SUM formulas. Excel's SUM ignores text values, so Not Budgeted rows in column I are automatically excluded from the budget total — no special handling needed.",
+        "B4 = B2-B3. B5 = IFERROR(B4/B3, \"N/A\"). B6 = COUNTIF(Variance_Workings!$L:$L, \"Yes\").",
+        "For the department table: =SUMIFS(Variance_Workings!$H:$H, Variance_Workings!$C:$C, A10) sums column H (Actuals) where column C (DepartmentName) matches the label in A10. Copy across for Budget (col I), Variance (col J), and use COUNTIFS for material count (col L)."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "Department SUMIFS returns 0 — department name mismatch", "tutor_response": "SUMIFS on DepartmentName is sensitive to spelling and spaces. Confirm the names in Mgmt_Summary column A exactly match Variance_Workings column C — both should reference the same DeptMap.DepartmentName values." },
+        { "pattern": "Total Actual inflated — duplicate transaction included",  "tutor_response": "Your column H totals include the duplicate journal entry from Task 1. In a production close you would remove the dupe from Actuals first. For scoring purposes this is accepted — add a note in your Commentary column flagging the known inflation." }
+      ]
+    },
+    {
+      "task_id": "T12",
+      "task_number": 12,
+      "title": "Identify Top 5 Material Variances by Absolute Dollar",
+      "prompt": "In Mgmt_Summary rows 19-23, fill the Top 5 Material Variances table. Rank by absolute dollar variance, largest first, restricted to rows where IsMaterial = 'Yes'. Recommended approach: in Variance_Workings column O (helper), calculate =IF(L2=\"Yes\", ABS(J2), 0) for each row. Then in Mgmt_Summary use LARGE to get the Nth threshold and INDEX+MATCH to retrieve Department, AccountName, DollarVariance, and FavorableUnfavorable for each rank.",
+      "deliverable": "Formulas in Mgmt_Summary!A19:D23 returning the top 5 material variances.",
+      "allowed_functions": ["LARGE", "INDEX", "MATCH", "ABS", "IF", "XLOOKUP"],
+      "target_sheet": "Mgmt_Summary",
+      "target_cells": "A19:D23",
+      "points": 30,
+      "depends_on_previous_task_ids": ["T09", "T10"],
+      "expected_result_description": "Five rows ranked largest to smallest by absolute dollar variance. Each row has DepartmentName, AccountName, DollarVariance, and F/U classification. All five rows are material (IsMaterial=Yes).",
+      "validation_type": "column_count_match",
+      "validation_detail": {
+        "expected_row_count": 5,
+        "all_rows_must_be_material": true,
+        "must_be_ranked_by_abs_dollar_desc": true,
+        "helper_column_allowed": true,
+        "helper_column_suggested": "Variance_Workings column O"
+      },
+      "example_helper_formula": "=IF(Variance_Workings!L2=\"Yes\", ABS(Variance_Workings!J2), 0)",
+      "example_correct_formula_dept": "=INDEX(Variance_Workings!$C:$C, MATCH(LARGE(Variance_Workings!$O:$O, ROW()-18), Variance_Workings!$O:$O, 0))",
+      "tutor_hint": "Step 1 — helper column O in Variance_Workings: =IF(L2=\"Yes\", ABS(J2), 0). Step 2 — in Mgmt_Summary row 19: =LARGE(Variance_Workings!$O:$O, 1) gets rank 1. Step 3 — INDEX+MATCH: =INDEX(Variance_Workings!$C:$C, MATCH(LARGE(Variance_Workings!$O:$O,1), Variance_Workings!$O:$O, 0)).",
+      "tutor_progressive_hints": [
+        "Helper column first: in Variance_Workings!O2, write =IF(L2=\"Yes\", ABS(J2), 0). Fill down through O32. This isolates absolute material variance amounts — non-material rows get 0 and will not appear in LARGE results.",
+        "In Mgmt_Summary row 19, get rank 1: =LARGE(Variance_Workings!$O:$O, 1). For row 20, rank 2: =LARGE(..., 2). Use ROW()-18 as the rank argument so it is dynamic when copying down.",
+        "For DepartmentName: =INDEX(Variance_Workings!$C:$C, MATCH(LARGE(Variance_Workings!$O:$O, ROW()-18), Variance_Workings!$O:$O, 0)). Repeat for AccountName (col E), DollarVariance (col J), F/U (col M) by changing the INDEX array."
+      ],
+      "common_wrong_answers": [
+        { "pattern": "Non-material rows appear in top 5 — no material filter",        "tutor_response": "Without restricting to IsMaterial=Yes, your LARGE is ranking all rows. Use the helper column: =IF(L2=\"Yes\", ABS(J2), 0) — non-material rows get 0 and will not rank in the top 5." },
+        { "pattern": "LARGE on signed variance — large negative variances ranked low", "tutor_response": "LARGE on signed values treats -$80,000 as less than +$1,000. Use ABS in the helper column so LARGE ranks by magnitude regardless of direction." },
+        { "pattern": "Duplicate in top 5 due to tied values",                          "tutor_response": "When two rows share the same absolute variance, MATCH always returns the first match — you get the same row twice. This is a known LARGE+INDEX/MATCH limitation. For this exercise it is acceptable." }
+      ]
+    }
+  ],
+
+  "task_dependencies": {
+    "T01": [],
+    "T02": [],
+    "T03": [],
+    "T04": ["T02"],
+    "T05": ["T02", "T03"],
+    "T06": ["T05"],
+    "T07": ["T04", "T06"],
+    "T08": ["T07"],
+    "T09": ["T07", "T08"],
+    "T10": ["T03", "T09"],
+    "T11": ["T07", "T09"],
+    "T12": ["T09", "T10"]
+  },
+
+  "progress_steps": [
+    { "step_id": "S1", "milestone": "Data Quality Check",          "tasks_required": ["T01"],             "unlock_message": "You caught the duplicate before it corrupted your totals. That is exactly what month-end QA looks like — most analysts skip this step." },
+    { "step_id": "S2", "milestone": "Mappings Complete",           "tasks_required": ["T02", "T03"],      "unlock_message": "Department and account codes are mapped. Your Variance_Workings is starting to look like real analysis, not a raw dump." },
+    { "step_id": "S3", "milestone": "Actuals and Budget Loaded",   "tasks_required": ["T04", "T05", "T06"], "unlock_message": "Actuals and budget are populated. Three accounts flagged as Not Budgeted — noted and handled cleanly. Core data is ready." },
+    { "step_id": "S4", "milestone": "Variances Calculated",        "tasks_required": ["T07", "T08"],      "unlock_message": "Dollar and percent variances are done. No errors, no #DIV/0!. Now flag what the CFO actually needs to see." },
+    { "step_id": "S5", "milestone": "Materiality and F/U Complete","tasks_required": ["T09", "T10"],      "unlock_message": "Material variances identified, Favorable and Unfavorable classified. You have done the hard analytic work. Summary is the last mile." },
+    { "step_id": "S6", "milestone": "Management Summary Ready",    "tasks_required": ["T11", "T12"],      "unlock_message": "Scenario complete. The CFO summary is ready. This is the deliverable that goes into the 4 PM all-hands." }
+  ],
+
+  "scoring": {
+    "total_points": 265,
+    "xp_reward": 200,
+    "points_per_task_average": 22,
+    "passing_threshold": 185,
+    "partial_credit_allowed": true,
+    "partial_credit_rules": "Column-fill tasks award partial credit proportionally: (correct_cells / total_cells) * task_points rounded to nearest integer. Minimum 5 points per attempted task with at least one correct cell."
+  },
+
+  "tutor_messages": {
+    "on_entry": "It is Monday morning, November 4th. Two raw exports just landed in your inbox — an ERP actuals dump and the budget file. Different column names, different department code formats, a duplicate journal entry hiding in the data, and three accounts that nobody budgeted. Take it one task at a time. Start with Task 1 — always validate your data before you calculate anything. I am here if you get stuck.",
+    "mid_scenario_encouragement": [
+      "You have mapped the codes and pulled your actuals — you are past the plumbing and into the real analysis now. This is the part that separates FP&A analysts from spreadsheet operators.",
+      "Three tasks down. The error handling in Tasks 6 through 8 might feel tedious, but IFERROR and divide-by-zero protection are what stop a CFO report from looking like a red sea of formula errors. The details are the job.",
+      "Halfway there. The variance math is straightforward — the subtlety is in the sign conventions and the dual threshold logic. Read the task prompts carefully before you formula-jump."
+    ],
+    "near_completion": "You have the variances, the materiality flags, and the F/U classifications. The summary is literally the last step — roll it up, pull the top 5, and you are done. This is exactly what the finance team walks into the all-hands with."
+  },
+
+  "celebration_messages": [
+    "You just ran a full FP&A variance close from raw exports to CFO summary. This is the work that happens inside every finance team at every month-end. Now you know exactly how it is built.",
+    "From two messy exports to a management-ready variance report. Data cleaning, mapping, aggregation, error handling, materiality logic, and presentation layer — the full analyst stack.",
+    "The duplicate journal entry, the sign convention trap, the missing budget lines, the wildcard sub-account rollup — you handled every curveball. Month-end close is never clean. Now you know how to deal with it.",
+    "SUMIFS, XLOOKUP, IF and AND, IFERROR, LARGE, INDEX and MATCH — all used in a real workflow. Not isolated drills. An actual deliverable.",
+    "This is the muscle that gets people promoted. You built the October variance report from scratch in one sitting. Put it in your portfolio."
+  ],
+
+  "messiness_flags": [
+    {
+      "flag_id": "duplicate_journal_entry",
+      "type": "duplicate_row",
+      "affected_tab": "actuals",
+      "duplicate_journal_id": "JE-2024-10-0892",
+      "duplicate_fields": { "PostingDate": "2024-10-22", "Department": "DEPT-401", "Account": "9100-02", "Amount": 12400, "Description": "Outside Counsel — NDA Review (October)", "Vendor": "Whitmore & Steele LLP" },
+      "teaching_point": "A double-posted vendor invoice that passed AP approval twice in the same month. Inflates both Actual spend for 9100-02 and any dependent totals by $12,400.",
+      "detection_task": "T01",
+      "python_generator_instruction": "Insert the duplicate as two rows separated by at least 5 other rows — not adjacent. Vary the JournalID string and vendor name but keep all other field values identical between the two rows. Amount should be in the $8,000-$18,000 range."
+    },
+    {
+      "flag_id": "accounts_in_actuals_not_in_budget",
+      "type": "missing_budget_lines",
+      "new_accounts": [
+        { "code": "8100-04", "name": "AI/ML Tooling",         "erp_department": "DEPT-201", "monthly_amount_range": [8000, 22000],  "reason": "Engineering spun up LLM API usage in Q3 after budget was set" },
+        { "code": "9300-01", "name": "Recruiting Fees",        "erp_department": "DEPT-401", "monthly_amount_range": [15000, 45000], "reason": "Retained search engagement opened Q3" },
+        { "code": "7200-04", "name": "Influencer Marketing",   "erp_department": "DEPT-102", "monthly_amount_range": [12000, 35000], "reason": "New channel opened mid-year — not in original budget" }
+      ],
+      "teaching_point": "Three accounts opened mid-year after the annual budget was locked. Variance_Workings rows show 'Not Budgeted' in column I and 'N/A' in column K — handled cleanly by Tasks 6 and 8.",
+      "python_generator_instruction": "These three codes must be present in Actuals and AccountMap but absent from Budget."
+    },
+    {
+      "flag_id": "accounts_in_budget_not_in_actuals",
+      "type": "discontinued_accounts",
+      "discontinued_accounts": [
+        { "code": "5000-03", "name": "Cost of Revenue — Legacy Support",  "budget_amount_range": [5000, 15000],  "reason": "Legacy product support contract ended in June" },
+        { "code": "9100-05", "name": "Depreciation — Legacy Equipment",   "budget_amount_range": [2000, 6000],   "reason": "Assets fully depreciated as of Q2" }
+      ],
+      "teaching_point": "Two accounts have Budget rows for all months but zero Actuals in October — discontinued mid-year. Variance = 0 - Budget. For Expense accounts, zero spend vs positive budget = Favorable.",
+      "python_generator_instruction": "These codes must have Budget rows for Jan-Dec 2024 but zero rows in October Actuals."
+    },
+    {
+      "flag_id": "department_code_format_mismatch",
+      "type": "code_format_mismatch",
+      "budget_format": "D-prefix (D-SALES, D-MKTG, D-ENG, D-CS, D-GNA, D-OPS)",
+      "actuals_format": "DEPT-NNN (DEPT-101, DEPT-102, DEPT-201, DEPT-301, DEPT-401, DEPT-501)",
+      "teaching_point": "Completely different formats requiring DeptMap lookup. This is realistic — ERP and FP&A tools rarely use the same dimension codes.",
+      "python_generator_instruction": "Preserve both format conventions. Numeric suffixes in DEPT-NNN can be varied as long as DeptMap is updated consistently."
+    },
+    {
+      "flag_id": "revenue_sign_convention",
+      "type": "sign_convention_mismatch",
+      "budget_convention": "Revenue is POSITIVE in Budget (planning tool management accounting)",
+      "actuals_convention": "Revenue is NEGATIVE in Actuals (ERP double-entry credit convention)",
+      "affected_accounts": ["4000-01", "4000-02"],
+      "teaching_point": "Classic real-world gotcha. Raw arithmetic Actual - Budget for revenue produces a misleading large negative. Task 10 handles this by checking AccountType and using ABS(H2) > I2 for revenue rows.",
+      "python_generator_instruction": "All revenue line items in Actuals must be negative. All revenue line items in Budget must be positive. Place a visible note in cell A1 of the Actuals tab explaining the sign convention."
+    },
+    {
+      "flag_id": "sub_account_rollups",
+      "type": "sub_account_hierarchy",
+      "parent_account": "6100-01",
+      "sub_accounts": ["6100-01-A", "6100-01-B"],
+      "split_ratio": "~70-80% base salaries (A), ~20-30% variable comp (B)",
+      "teaching_point": "Budget uses only the parent code 6100-01. Actuals splits salary spend into sub-accounts. SUMIFS must use wildcard D2&'*' to aggregate both sub-accounts into the parent row.",
+      "python_generator_instruction": "Always split 6100-01 into sub-accounts A and B in Actuals across all departments with salary spend. Budget always uses the parent code only."
+    },
+    {
+      "flag_id": "materiality_thresholds",
+      "type": "dual_threshold_rule",
+      "dollar_threshold": 25000,
+      "pct_threshold": 0.10,
+      "logic": "AND — both must be true simultaneously",
+      "expected_material_row_count": "4-8 rows",
+      "teaching_point": "A $50K variance on a $5M line is only 1% — not material. A 50% variance on a $10K line is only $5K — also not material. Both thresholds must be met simultaneously.",
+      "python_generator_instruction": "When generating amounts, calibrate so 4-8 rows pass both thresholds. Include at least one row that passes only the dollar threshold and one that passes only the percent threshold to make the AND logic non-trivial."
+    },
+    {
+      "flag_id": "whitespace_in_codes",
+      "type": "data_quality_whitespace",
+      "affected_tab": "actuals",
+      "affected_field": "Department",
+      "affected_value": "DEPT-201 ",
+      "correct_value": "DEPT-201",
+      "teaching_point": "A trailing space in one ERP export row causes XLOOKUP and SUMIFS to fail silently (returning #N/A or 0) unless the learner wraps with TRIM. One row, significant impact if missed.",
+      "python_generator_instruction": "Insert the trailing space in exactly one Actuals row. It should be a row with transaction amount greater than $5,000 so the data quality impact is visible when results look wrong. Never add whitespace to DeptMap."
+    }
+  ],
+
+  "common_mistakes": [
+    {
+      "mistake_id": "hardcoded_values",
+      "title": "Hardcoding values instead of formulas",
+      "description": "Learner types the answer directly into cells instead of writing a formula.",
+      "tutor_response": "That value looks right, but it is hardcoded — type an equals sign and build a formula instead. When next month's Actuals replace this file, hardcoded values will not update. Every cell in columns B, C, E, F, H, I, J, K, L, and M should start with an equals sign.",
+      "detection": "formula_presence_check — cell has value but formula string is empty or does not start with =",
+      "affected_tasks": ["T02", "T03", "T04", "T05", "T07", "T08", "T09", "T10"]
+    },
+    {
+      "mistake_id": "missing_absolute_references",
+      "title": "Reference ranges not locked with $ — drifts when copied",
+      "description": "Learner writes correct formula in row 2 but omits $ locks — ranges shift systematically when copied down.",
+      "tutor_response": "Your formula in row 2 looks correct, but when you click on rows further down, you can see the DeptMap or AccountMap reference range is shifting. Lock the reference with dollar signs: DeptMap!$A:$A instead of DeptMap!A:A.",
+      "detection": "detectRelativeRefDrift() on formula arrays — consecutive formulas show systematic +1 row drift",
+      "affected_tasks": ["T02", "T03", "T04", "T05", "T07", "T08", "T09", "T10"]
+    },
+    {
+      "mistake_id": "na_not_handled_in_budget_column",
+      "title": "Not Budgeted case produces errors that cascade downstream",
+      "description": "Column I shows errors for new accounts, causing Tasks 7, 8, 9 to also error.",
+      "tutor_response": "Those errors will cascade into Tasks 7, 8, and 9. Clean up column I first: wrap your lookup with IF(SUMIFS(...)=0, \"Not Budgeted\", SUMIFS(...)) for missing budget rows. Fix the source, not the downstream cells.",
+      "detection": "error_value check on column I",
+      "affected_tasks": ["T06"]
+    },
+    {
+      "mistake_id": "divide_by_zero_unprotected",
+      "title": "Percent variance shows #DIV/0! or #VALUE!",
+      "description": "Column K shows division errors when Budget is zero or text.",
+      "tutor_response": "A #DIV/0! in a CFO report is an instant credibility problem. Wrap your percent variance with IFERROR: =IFERROR(J2/I2, \"N/A\"). This protects against both zero denominators and text denominators in one step.",
+      "detection": "error_value check on column K",
+      "affected_tasks": ["T08"]
+    },
+    {
+      "mistake_id": "wrong_fu_direction_for_revenue",
+      "title": "Revenue rows classified with expense logic — F/U direction wrong",
+      "description": "Learner applied expense F/U logic to revenue accounts — more actual revenue than budget flags as Unfavorable.",
+      "tutor_response": "For revenue accounts, having more actual revenue than budget is the good outcome — that is Favorable, not Unfavorable. Your formula needs to check AccountType in column F and flip the comparison direction for Revenue rows.",
+      "detection": "cell_value check on revenue rows in column M — expected F returned U",
+      "affected_tasks": ["T10"]
+    },
+    {
+      "mistake_id": "no_abs_in_materiality",
+      "title": "ABS missing from materiality formula — under-budget variances slip through",
+      "description": "Materiality formula uses J2>=25000 without ABS — large negative (under-budget) variances fail the test.",
+      "tutor_response": "Without ABS, a variance of -$60,000 — spending $60K less than budget — fails the >=25000 test because -60000 is not >= 25000. That is a significant under-spend management needs to see. Use ABS(J2)>=25000 to test magnitude regardless of sign.",
+      "detection": "formula_pattern check — materiality formula missing ABS function",
+      "affected_tasks": ["T09"]
+    },
+    {
+      "mistake_id": "single_threshold_only",
+      "title": "Only one materiality threshold used instead of AND of both",
+      "description": "Learner uses only dollar OR only percent threshold.",
+      "tutor_response": "The materiality rule requires both thresholds simultaneously. A $50,000 variance on a $5M budget line is only 1 percent — not worth calling out. Use AND(ABS(J2)>=25000, ABS(K2)>=0.1) so both must be true at the same time.",
+      "detection": "formula_pattern check — materiality formula missing AND or contains only one threshold condition",
+      "affected_tasks": ["T09"]
+    },
+    {
+      "mistake_id": "wrong_dept_code_in_sumifs",
+      "title": "ERPDeptCode used against Budget, or BudgetDeptCode used against Actuals",
+      "description": "Task 4 uses BudgetDeptCode (col B) as criteria against Actuals which uses ERP codes, or Task 5 uses ERPDeptCode (col A) against Budget which uses Budget codes.",
+      "tutor_response": "Double-check which column you are using for department criteria and which tab you are matching against. Actuals uses ERP codes like DEPT-101 — match that with column A. Budget uses Budget codes like D-SALES — match that with column B.",
+      "detection": "formula_pattern check — SUMIFS criteria column reference does not match expected column for the target sheet",
+      "affected_tasks": ["T04", "T05"]
+    }
+  ],
+
+  "allowed_functions": {
+    "global": ["SUM", "IF", "IFERROR", "IFNA", "AND", "OR", "arithmetic"],
+    "lookup": ["XLOOKUP", "VLOOKUP", "INDEX", "MATCH"],
+    "conditional_sum": ["SUMIFS", "SUMIF"],
+    "conditional_count": ["COUNTIFS", "COUNTIF"],
+    "text": ["TRIM"],
+    "logical": ["IFS", "ISNUMBER"],
+    "math": ["ABS"],
+    "ranking": ["LARGE", "SMALL"],
+    "advanced": ["LET", "ROW"]
+  },
+
+  "validation_rules": {
+    "formula_presence_check": "All learner-fill cells must contain formulas beginning with = not static values",
+    "relative_drift_check": "Applied to all column-fill tasks — uses detectRelativeRefDrift() to catch missing dollar-sign locks on reference ranges",
+    "error_value_check": "No formula errors (#N/A, #DIV/0!, #VALUE!, #REF!) allowed in submitted cells",
+    "currency_tolerance": 0.01,
+    "text_match_case_sensitive": false,
+    "percentage_tolerance": 0.001
+  },
+
+  "expected_outputs": {
+    "actuals_col_p": "All rows have COUNTIFS formula showing JournalID frequency. Duplicate rows show 2. All other rows show 1.",
+    "variance_workings": {
+      "col_b": "All 31 data rows populated with valid Budget dept codes. No #N/A.",
+      "col_c": "All 31 data rows populated with department names. No #N/A.",
+      "col_e": "All 31 data rows populated with account names. No #N/A.",
+      "col_f": "All 31 data rows show Revenue or Expense only.",
+      "col_h": "All rows numeric. Revenue rows (accounts 4000-01, 4000-02) are negative.",
+      "col_i": "Numeric for budgeted rows. Text 'Not Budgeted' for rows 28, 29, 30 (accounts 8100-04, 9300-01, 7200-04).",
+      "col_j": "All rows numeric. IFERROR handles Not Budgeted rows (returns Actual as full variance).",
+      "col_k": "Decimal ratios for budgeted rows. Text 'N/A' for Not Budgeted rows. No division errors.",
+      "col_l": "All rows show Yes or No only. Expected 4-8 Yes rows.",
+      "col_m": "Material rows show F or U. Non-material rows are empty string."
+    },
+    "mgmt_summary": {
+      "B2": "Sum of all Actual amounts from Variance_Workings column H",
+      "B3": "Sum of all numeric Budget amounts from Variance_Workings column I (text rows excluded by SUM)",
+      "B4": "B2 minus B3",
+      "B5": "B4 divided by B3 as decimal percent, IFERROR-protected",
+      "B6": "Integer count of Yes rows in Variance_Workings column L (expected range 4-8)",
+      "B10_E15": "6 department rows with Total Actual, Total Budget, Dollar Variance, Material Count from SUMIFS",
+      "A19_D23": "5 rows ranked by absolute material dollar variance with Department, Account, Variance, and F/U"
+    }
+  },
+
+  "workbook_notes": {
+    "number_formats": {
+      "currency_columns": ["H", "I", "J"],
+      "currency_format": "$#,##0",
+      "percentage_column": "K",
+      "percentage_format": "0.0%"
+    },
+    "column_widths": {
+      "variance_workings": { "A": 80, "B": 80, "C": 130, "D": 80, "E": 200, "F": 80, "G": 65, "H": 110, "I": 110, "J": 110, "K": 80, "L": 75, "M": 75, "N": 220 },
+      "actuals": { "A": 130, "B": 90, "C": 80, "D": 90, "E": 100, "F": 220, "G": 160 },
+      "budget": { "A": 80, "B": 90, "C": 75, "D": 110 }
+    },
+    "tab_colors": {
+      "Budget": "#93c47d",
+      "Actuals": "#6fa8dc",
+      "DeptMap": "#ffd966",
+      "AccountMap": "#ffd966",
+      "Variance_Workings": "#f4cccc",
+      "Mgmt_Summary": "#d9ead3"
+    },
+    "tab_order": ["Budget", "Actuals", "DeptMap", "AccountMap", "Variance_Workings", "Mgmt_Summary"],
+    "learner_cell_highlight": { "fill_color": "#fff2cc", "applies_to": "all pre_filled=false cells" },
+    "freeze_panes": {
+      "Variance_Workings": "A2",
+      "Actuals": "A2",
+      "Budget": "A2",
+      "AccountMap": "A2"
+    },
+    "lock_prefilled_tabs": ["Budget", "Actuals", "DeptMap", "AccountMap"],
+    "print_area": "Mgmt_Summary!A1:E25",
+    "python_generator_notes": [
+      "Vary vendor names, transaction descriptions, amounts, and department numeric codes while preserving all structure and all messiness flags",
+      "Calibrate generated amounts so 4-8 rows satisfy both materiality thresholds — include at least one row passing only $ and one passing only % to make AND logic non-trivial",
+      "Duplicate journal entry must not be on adjacent rows — separate by at least 5 rows",
+      "Revenue account amounts in Actuals must always be negative. Revenue amounts in Budget must always be positive",
+      "Always split account 6100-01 into sub-accounts -A and -B in Actuals across all departments with salary spend",
+      "Trailing space whitespace issue must appear in exactly one Actuals row in the Department column",
+      "Budget tab should include all 12 months of 2024 — learner filters to October via Month criteria in SUMIFS",
+      "Discontinued accounts (5000-03, 9100-05) must have Budget rows for all months but zero Actuals rows in October",
+      "Use openpyxl or xlsxwriter. Load tabs from the tabs array. Apply tab_color and freeze_panes from workbook_notes. Lock pre_filled tabs.",
+      "Store scenario header fields at scenario level. Store tabs in scenario_tabs table. Store tasks in scenario_tasks table with scenario_id foreign key."
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+[
+  { "erp_code": "DEPT-101", "budget_code": "D-SALES", "dept_name": "Sales",             "owner": "VP of Sales",            "pl_group": "S&M"   },
+  { "erp_code": "DEPT-102", "budget_code": "D-MKTG",  "dept_name": "Marketing",         "owner": "VP of Marketing",        "pl_group": "S&M"   },
+  { "erp_code": "DEPT-201", "budget_code": "D-ENG",   "dept_name": "Engineering",       "owner": "VP of Engineering",      "pl_group": "R&D"   },
+  { "erp_code": "DEPT-301", "budget_code": "D-CS",    "dept_name": "Customer Success",  "owner": "VP of Customer Success", "pl_group": "S&M"   },
+  { "erp_code": "DEPT-401", "budget_code": "D-GNA",   "dept_name": "G&A",               "owner": "CFO",                    "pl_group": "G&A"   },
+  { "erp_code": "DEPT-501", "budget_code": "D-OPS",   "dept_name": "Operations",        "owner": "COO",                    "pl_group": "COGS"  },
+  { "erp_code": "DEPT-601", "budget_code": "D-PROD",  "dept_name": "Product",           "owner": "VP of Product",          "pl_group": "R&D"   },
+  { "erp_code": "DEPT-701", "budget_code": "D-HR",    "dept_name": "Human Resources",   "owner": "Chief People Officer",   "pl_group": "G&A"   },
+  { "erp_code": "DEPT-801", "budget_code": "D-LEG",   "dept_name": "Legal",             "owner": "General Counsel",        "pl_group": "G&A"   },
+  { "erp_code": "DEPT-901", "budget_code": "D-FIN",   "dept_name": "Finance",           "owner": "CFO",                    "pl_group": "G&A"   }
+]

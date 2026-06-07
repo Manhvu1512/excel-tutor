@@ -1,0 +1,236 @@
+[
+  {
+    "invoice_id": "INV-2024-0001",
+    "invoice_date": "2024-07-09",
+    "due_date": "2024-08-08",
+    "vendor_id": "V020",
+    "dept_id": "D04",
+    "amount": 6508,
+    "description": "Facilities services - 2024-07"
+  },
+  {
+    "invoice_id": "INV-2024-0006",
+    "invoice_date": "2024-07-19",
+    "due_date": "2024-08-03",
+    "vendor_id": "V004",
+    "dept_id": "D11",
+    "amount": 25096,
+    "description": "Supplies services - 2024-07"
+  },
+  {
+    "invoice_id": "INV-2024-0011",
+    "invoice_date": "2024-07-21",
+    "due_date": "2024-09-04",
+    "vendor_id": "V012",
+    "dept_id": "D05",
+    "amount": 2439,
+    "description": "Marketing services - 2024-07"
+  },
+  {
+    "invoice_id": "INV-2024-0020",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-09-15",
+    "vendor_id": "V016",
+    "dept_id": "D09",
+    "amount": 5048,
+    "description": "Training services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0020",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-09-15",
+    "vendor_id": "V016",
+    "dept_id": "D09",
+    "amount": 5048,
+    "description": "Training services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0002",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-09-30",
+    "vendor_id": "V012",
+    "dept_id": "D09",
+    "amount": 3096,
+    "description": "Marketing services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0003",
+    "invoice_date": "2024-07-24",
+    "due_date": "2024-09-07",
+    "vendor_id": "V002",
+    "dept_id": "D03",
+    "amount": 18017,
+    "description": "IT Services services - 2024-07"
+  },
+  {
+    "invoice_id": "INV-2024-0004",
+    "invoice_date": "2024-08-17",
+    "due_date": "2024-09-16",
+    "vendor_id": "V003",
+    "dept_id": "D13",
+    "amount": 22522,
+    "description": "Analytics services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0005",
+    "invoice_date": "2024-07-20",
+    "due_date": "2024-09-03",
+    "vendor_id": "V015",
+    "dept_id": "D06",
+    "amount": 9062,
+    "description": "IT Services services - 2024-07"
+  },
+  {
+    "invoice_id": "INV-2024-0007",
+    "invoice_date": "2024-07-19",
+    "due_date": "2024-08-18",
+    "vendor_id": "V005",
+    "dept_id": "D10",
+    "amount": 2830,
+    "description": "Logistics services - 2024-07"
+  },
+  {
+    "invoice_id": "INV-2024-0008",
+    "invoice_date": "2024-08-14",
+    "due_date": "2024-09-28",
+    "vendor_id": "V010",
+    "dept_id": "D05",
+    "amount": 1565,
+    "description": "IT Services services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0009",
+    "invoice_date": "2024-08-08",
+    "due_date": "2024-09-07",
+    "vendor_id": "V009",
+    "dept_id": "D04",
+    "amount": 8529,
+    "description": "Security services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0010",
+    "invoice_date": "2024-08-29",
+    "due_date": "2024-10-13",
+    "vendor_id": "V012",
+    "dept_id": "D06",
+    "amount": 1822,
+    "description": "Marketing services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0012",
+    "invoice_date": "2024-08-08",
+    "due_date": "2024-09-07",
+    "vendor_id": "V003",
+    "dept_id": "D02",
+    "amount": 2091,
+    "description": "Analytics services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0013",
+    "invoice_date": "2024-08-21",
+    "due_date": "2024-09-20",
+    "vendor_id": "V009",
+    "dept_id": "D08",
+    "amount": 9675,
+    "description": "Security services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0014",
+    "invoice_date": "2024-08-07",
+    "due_date": "2024-09-06",
+    "vendor_id": "V019",
+    "dept_id": "D05",
+    "amount": 25073,
+    "description": "Accounting services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0015",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-08-31",
+    "vendor_id": "V018",
+    "dept_id": "D06",
+    "amount": 3087,
+    "description": "Logistics services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0016",
+    "invoice_date": "2024-08-03",
+    "due_date": "2024-08-18",
+    "vendor_id": "V014",
+    "dept_id": "D08",
+    "amount": 20035,
+    "description": "Catering services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0017",
+    "invoice_date": "2024-08-02",
+    "due_date": "2024-09-16",
+    "vendor_id": "V002",
+    "dept_id": "D05",
+    "amount": 20029,
+    "description": "IT Services services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0018",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-09-15",
+    "vendor_id": "V019",
+    "dept_id": "D15",
+    "amount": 3025,
+    "description": "Accounting services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0019",
+    "invoice_date": "2024-07-02",
+    "due_date": "2024-08-16",
+    "vendor_id": "V007",
+    "dept_id": "D09",
+    "amount": 2479,
+    "description": "Marketing services - 2024-07"
+  },
+  {
+    "invoice_id": "INV-2024-0021",
+    "invoice_date": "2024-08-11",
+    "due_date": "2024-08-26",
+    "vendor_id": "V014",
+    "dept_id": "D15",
+    "amount": 1879,
+    "description": "Catering services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0064",
+    "invoice_date": "2024-08-18",
+    "due_date": "2024-09-17",
+    "vendor_id": "V011",
+    "dept_id": "D01",
+    "amount": 16036,
+    "description": "Facilities services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0064",
+    "invoice_date": "2024-08-18",
+    "due_date": "2024-09-17",
+    "vendor_id": "V011",
+    "dept_id": "D01",
+    "amount": 16036,
+    "description": "Facilities services - 2024-08"
+  },
+  {
+    "invoice_id": "INV-2024-0149",
+    "invoice_date": "2024-08-02",
+    "due_date": "2024-09-25",
+    "vendor_id": "",
+    "dept_id": "D02",
+    "amount": 1800,
+    "description": "Consulting services - unknown vendor"
+  },
+  {
+    "invoice_id": "INV-2024-0150",
+    "invoice_date": "2024-07-27",
+    "due_date": "2024-09-27",
+    "vendor_id": "",
+    "dept_id": "D07",
+    "amount": 17500,
+    "description": "IT support - vendor TBD"
+  }
+]

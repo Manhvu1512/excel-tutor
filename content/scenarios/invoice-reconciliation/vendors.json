@@ -1,0 +1,122 @@
+[
+  {
+    "vendor_id": "V001",
+    "vendor_name": "Apex Consulting Group",
+    "category": "Consulting",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V002",
+    "vendor_name": "BlueSky Technologies",
+    "category": "IT Services",
+    "payment_terms": "Net 45"
+  },
+  {
+    "vendor_id": "V003",
+    "vendor_name": "Clearview Analytics",
+    "category": "Analytics",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V004",
+    "vendor_name": "Delta Office Supplies",
+    "category": "Supplies",
+    "payment_terms": "Net 15"
+  },
+  {
+    "vendor_id": "V005",
+    "vendor_name": "Eagle Freight Solutions",
+    "category": "Logistics",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V006",
+    "vendor_name": "Falcon HR Partners",
+    "category": "HR Services",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V007",
+    "vendor_name": "Global Print Media",
+    "category": "Marketing",
+    "payment_terms": "Net 45"
+  },
+  {
+    "vendor_id": "V008",
+    "vendor_name": "Harbor Legal LLP",
+    "category": "Legal",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V009",
+    "vendor_name": "Ironclad Security",
+    "category": "Security",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V010",
+    "vendor_name": "Jade Software Solutions",
+    "category": "IT Services",
+    "payment_terms": "Net 45"
+  },
+  {
+    "vendor_id": "V011",
+    "vendor_name": "Keystone Facilities",
+    "category": "Facilities",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V012",
+    "vendor_name": "Luminary Advertising",
+    "category": "Marketing",
+    "payment_terms": "Net 45"
+  },
+  {
+    "vendor_id": "V013",
+    "vendor_name": "Metro Cloud Services",
+    "category": "IT Services",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V014",
+    "vendor_name": "NorthStar Catering",
+    "category": "Catering",
+    "payment_terms": "Net 15"
+  },
+  {
+    "vendor_id": "V015",
+    "vendor_name": "Omega Data Systems",
+    "category": "IT Services",
+    "payment_terms": "Net 45"
+  },
+  {
+    "vendor_id": "V016",
+    "vendor_name": "Pinnacle Training Co.",
+    "category": "Training",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V017",
+    "vendor_name": "Quest Telecom",
+    "category": "Telecom",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V018",
+    "vendor_name": "Redline Couriers",
+    "category": "Logistics",
+    "payment_terms": "Net 15"
+  },
+  {
+    "vendor_id": "V019",
+    "vendor_name": "Summit Accounting Svcs",
+    "category": "Accounting",
+    "payment_terms": "Net 30"
+  },
+  {
+    "vendor_id": "V020",
+    "vendor_name": "Titan Building Mgmt",
+    "category": "Facilities",
+    "payment_terms": "Net 30"
+  }
+]

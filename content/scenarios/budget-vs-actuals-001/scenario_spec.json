@@ -1,0 +1,175 @@
+{
+  "scenario_id": "budget-vs-actuals-001",
+  "title": "Budget vs Actuals — Monthly Variance Analysis",
+  "description": "Finance analysts comparing October 2024 actual spend against budget across departments and accounts. Models a real FP&A month-end close workflow.",
+
+  "sheets": [
+    {
+      "name": "Actuals",
+      "role": "Raw ERP journal export — source of October actual amounts",
+      "columns": [
+        { "name": "JournalID",   "col": "A", "format": "JE-2024-10-XXXX", "example": "JE-2024-10-0001" },
+        { "name": "PostingDate", "col": "B", "format": "YYYY-MM-DD" },
+        { "name": "Department",  "col": "C", "format": "DEPT-NNN (e.g. DEPT-101, DEPT-102)", "note": "One row intentionally has a trailing space — causes a silent SUMIFS miss, learner should note it but not fix it" },
+        { "name": "Account",     "col": "D", "format": "NNNN-NN or NNNN-NN-X for sub-accounts (e.g. 6100-01-A, 6100-01-B)", "note": "Account 6100-01 only exists as sub-accounts 6100-01-A and 6100-01-B in this sheet — no parent row" },
+        { "name": "Amount",      "col": "E", "format": "Number — Revenue accounts (4xxx) are NEGATIVE, Expense accounts are POSITIVE" },
+        { "name": "Description", "col": "F" },
+        { "name": "Vendor",      "col": "G" },
+        { "name": "DupFlag",     "col": "H", "role": "Learner fills T01 COUNTIFS formula here" }
+      ],
+      "data_characteristics": [
+        "53 journal rows — data in rows 3-55, header at row 2, note banner at row 1",
+        "Multiple rows per dept/account combination (e.g. two rows for DEPT-101/6100-01-A and DEPT-101/6100-01-B)",
+        "Two JournalIDs each appear exactly twice (duplicates for T01)",
+        "Revenue accounts (4xxx) stored as negative — budget stores them as positive (planning convention)"
+      ]
+    },
+    {
+      "name": "Budget",
+      "role": "Planned budget amounts by department and account code for October 2024",
+      "columns": [
+        { "name": "DeptCode",      "col": "A", "format": "D-prefix (e.g. D-SALES, D-MKTG, D-ENG, D-CS, D-GNA, D-OPS, D-PROD, D-HR, D-LEG, D-FIN)" },
+        { "name": "AccountCode",   "col": "B", "format": "NNNN-NN parent codes only (e.g. 6100-01) — never sub-accounts like 6100-01-A" },
+        { "name": "Month",         "col": "C", "format": "YYYY-MM" },
+        { "name": "BudgetAmount",  "col": "D", "format": "Always a positive number for both Revenue and Expense (planning convention — opposite of Actuals sign)" }
+      ],
+      "data_characteristics": [
+        "42 budget rows — data in rows 3-44, header at row 2, note at row 1",
+        "No zero BudgetAmount values exist — a SUMIFS result of 0 always means no matching row was found",
+        "5 dept+account combinations in Variance_Workings have NO matching row in Budget (these should return 'Not Budgeted')",
+        "3 discontinued accounts exist in Budget with non-zero amounts but have zero Actuals"
+      ]
+    },
+    {
+      "name": "DeptMap",
+      "role": "Cross-reference mapping ERP dept codes to Budget dept codes",
+      "columns": [
+        { "name": "ERPCode",        "col": "A", "format": "DEPT-NNN (e.g. DEPT-101)" },
+        { "name": "BudgetCode",     "col": "B", "format": "D-prefix (e.g. D-SALES)" },
+        { "name": "DepartmentName", "col": "C", "format": "Text (e.g. Sales, Marketing)" }
+      ],
+      "data_characteristics": [
+        "One ERPCode row has a trailing space — TRIM() required in XLOOKUP to avoid silent miss"
+      ]
+    },
+    {
+      "name": "AccountMap",
+      "role": "Chart of accounts — maps account codes to names and types",
+      "columns": [
+        { "name": "AccountCode",  "col": "A", "format": "NNNN-NN" },
+        { "name": "AccountName",  "col": "B", "format": "Text (e.g. Salaries, Software Licenses)" },
+        { "name": "Category",     "col": "C" },
+        { "name": "AccountType",  "col": "D", "values": ["Revenue", "Expense"] },
+        { "name": "ParentAccount","col": "E" }
+      ]
+    },
+    {
+      "name": "Variance_Workings",
+      "role": "Main analysis sheet — learner progressively fills columns B, C, E, F, I through M",
+      "columns": [
+        { "name": "ERPDeptCode",    "col": "A", "format": "DEPT-NNN — pre-filled, read-only" },
+        { "name": "BudgetDeptCode", "col": "B", "format": "D-prefix — learner fills via XLOOKUP (T02)" },
+        { "name": "DepartmentName", "col": "C", "format": "Text — learner fills" },
+        { "name": "AccountCode",    "col": "D", "format": "NNNN-NN — pre-filled, read-only" },
+        { "name": "AccountName",    "col": "E", "format": "Text — learner fills via XLOOKUP (T03)" },
+        { "name": "AccountType",    "col": "F", "format": "'Revenue' or 'Expense' — learner fills" },
+        { "name": "Month",          "col": "G", "format": "2024-10 — pre-filled" },
+        { "name": "Actual",         "col": "H", "format": "Number — pre-filled with October actuals (aggregated from Actuals sheet)" },
+        { "name": "Budget",         "col": "I", "format": "Positive number or text 'Not Budgeted' — learner fills (T04)" },
+        { "name": "DollarVariance", "col": "J", "format": "Number — learner fills (T05)" },
+        { "name": "PctVariance",    "col": "K", "format": "Decimal ratio or text 'N/A' — learner fills (T06)" },
+        { "name": "IsMaterial",     "col": "L", "format": "'Yes' or 'No' — learner fills (T07)" },
+        { "name": "FavUnfav",       "col": "M", "format": "'F', 'U', or empty string — learner fills (T08)" }
+      ],
+      "data_characteristics": [
+        "47 data rows — rows 2-48, header at row 1",
+        "Rows 41-45 are accounts with no matching Budget row — col I should show 'Not Budgeted' for these",
+        "Rows 46-48 are discontinued accounts — non-zero budget, zero actuals",
+        "Col H (Actual) is pre-populated — learner does NOT fill this column"
+      ]
+    }
+  ],
+
+  "tasks": [
+    {
+      "id": "T01",
+      "number": 1,
+      "title": "Spot the Duplicate Journal Entry",
+      "answer_sheet": "Actuals",
+      "answer_range": "H3:H55",
+      "controllerAsk": "In H3:H55 on the Actuals sheet, enter a COUNTIFS formula that counts how many times each JournalID (column A) appears in A3:A55. Cells with count > 1 are duplicates.",
+      "tutorFocus": "=COUNTIFS($A$3:$A$55,A3). Lock the range with $. Any cell showing 2 is a duplicate. Copy down H3:H55.",
+      "sample_expected": [1, 1, 2, 1, 2, 1, 1, 1, 1, 1]
+    },
+    {
+      "id": "T02",
+      "number": 2,
+      "title": "Map ERP Dept Codes to Budget Codes",
+      "answer_sheet": "Variance_Workings",
+      "answer_range": "B2:B48",
+      "controllerAsk": "Fill B2:B48 on Variance_Workings with an XLOOKUP (or VLOOKUP) that maps each ERP dept code (col A) to its Budget dept code using the DeptMap tab. Use TRIM() to handle potential trailing spaces.",
+      "tutorFocus": "=XLOOKUP(TRIM(A2),DeptMap!A:A,DeptMap!B:B,\"#N/A\"). TRIM protects against the trailing-space trap on row 16. Copy down to B48.",
+      "sample_expected": ["D-SALES", "D-SALES", "D-SALES", "D-MKTG", "D-MKTG", "D-MKTG", "D-MKTG", "D-ENG"]
+    },
+    {
+      "id": "T03",
+      "number": 3,
+      "title": "Look Up Account Names",
+      "answer_sheet": "Variance_Workings",
+      "answer_range": "E2:E48",
+      "controllerAsk": "Fill E2:E48 with an XLOOKUP that returns the Account_Name from AccountMap for each account code in column D.",
+      "tutorFocus": "=XLOOKUP(D2,AccountMap!A:A,AccountMap!B:B,\"#N/A\"). Copy down to E48.",
+      "sample_expected": ["Salaries", "Sales Commissions", "T&E — Team", "Salaries", "Digital Advertising"]
+    },
+    {
+      "id": "T05",
+      "number": 4,
+      "title": "Pull Budget Amounts",
+      "answer_sheet": "Variance_Workings",
+      "answer_range": "I2:I48",
+      "controllerAsk": "Fill I2:I48 with a formula that looks up the budget amount from the Budget tab matching dept code (col B) AND account code (col D). Return 'Not Budgeted' with IFERROR if no match exists.",
+      "tutorFocus": "=IFERROR(IF(SUMIFS(Budget!D:D,Budget!A:A,B2,Budget!B:B,D2)=0,\"Not Budgeted\",SUMIFS(Budget!D:D,Budget!A:A,B2,Budget!B:B,D2)),\"Not Budgeted\")",
+      "sample_expected": [90000, 15000, 2500, 55000, 42000, 10000, 7500, 105000, 12000, 20000, 30000, 58000, 25000, 5000, 100000, 20000, 25000, 16000, 9000, 5000, 110000, 437500, 85000, 120000, 75000, 90000, 86500, 48000, 32000, 102000, 28000, 22000, 18000, 48000, 20000, 8000, 65000, 12000, 38000, "Not Budgeted", "Not Budgeted", "Not Budgeted", "Not Budgeted", "Not Budgeted", 5000, 8000, 6000]
+    },
+    {
+      "id": "T06",
+      "number": 5,
+      "title": "Calculate Dollar Variance",
+      "answer_sheet": "Variance_Workings",
+      "answer_range": "J2:J48",
+      "controllerAsk": "Fill J2:J48 with: IFERROR(H2-I2, H2). This handles 'Not Budgeted' rows — IFERROR catches the text-subtraction error and returns H2.",
+      "tutorFocus": "=IFERROR(H2-I2,H2). If I2 is 'Not Budgeted' (text), H2-I2 errors — IFERROR returns H2. Copy down to J48.",
+      "sample_expected": [450, 3500, 700, -3200, 30000, 2500, 1300, 27000, 500, -1300, 32000]
+    },
+    {
+      "id": "T07",
+      "number": 6,
+      "title": "Calculate % Variance",
+      "answer_sheet": "Variance_Workings",
+      "answer_range": "K2:K48",
+      "controllerAsk": "Fill K2:K48 with: IFERROR(J2/I2, \"N/A\"). Rows with 'Not Budgeted' in col I will return 'N/A'.",
+      "tutorFocus": "=IFERROR(J2/I2,\"N/A\"). Division by text or zero errors — returns 'N/A'. Format col K as percentage. Copy down to K48.",
+      "sample_expected": [0.005, 0.2333, 0.28, -0.0582, 0.7143, 0.25, 0.1733, 0.2571, "N/A", "N/A"]
+    },
+    {
+      "id": "T08",
+      "number": 7,
+      "title": "Flag Material Variances",
+      "answer_sheet": "Variance_Workings",
+      "answer_range": "L2:L48",
+      "controllerAsk": "Fill L2:L48 with: IF(AND(ABS(J2)>=25000, ISNUMBER(K2), ABS(K2)>=0.1), \"Yes\", \"No\").",
+      "tutorFocus": "=IF(AND(ABS(J2)>=25000,ISNUMBER(K2),ABS(K2)>=0.1),\"Yes\",\"No\"). ISNUMBER(K2) filters out 'N/A' rows. Copy down to L48.",
+      "sample_expected": ["No", "No", "No", "No", "Yes", "No", "No", "Yes", "No", "No", "Yes"]
+    },
+    {
+      "id": "T09",
+      "number": 8,
+      "title": "Classify Favorable / Unfavorable",
+      "answer_sheet": "Variance_Workings",
+      "answer_range": "M2:M48",
+      "controllerAsk": "Fill M2:M48 with: IF(L2<>\"Yes\",\"\", IF(F2=\"Revenue\", IF(ABS(H2)>I2,\"F\",\"U\"), IF(H2<I2,\"F\",\"U\"))). Col F holds AccountType.",
+      "tutorFocus": "=IF(L2<>\"Yes\",\"\",IF(F2=\"Revenue\",IF(ABS(H2)>I2,\"F\",\"U\"),IF(H2<I2,\"F\",\"U\"))). Revenue: ABS(actuals) vs budget — ERP stores revenue negative. Expenses: direct comparison. Copy to M48.",
+      "sample_expected": ["", "", "", "", "U", "", "", "U", "", "", "F"]
+    }
+  ]
+}

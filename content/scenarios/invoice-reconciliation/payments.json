@@ -1,0 +1,1010 @@
+[
+  {
+    "payment_id": "PMT-0001",
+    "invoice_id": "INV-2024-0098",
+    "payment_date": "2024-07-16",
+    "amount_paid": 5079,
+    "payment_method": "ACH",
+    "reference": "REF-89450",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0002",
+    "invoice_id": "INV-2024-0088",
+    "payment_date": "2024-08-05",
+    "amount_paid": 2078,
+    "payment_method": "Check",
+    "reference": "REF-60679",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0003",
+    "invoice_id": "INV-2024-0096",
+    "payment_date": "2024-08-18",
+    "amount_paid": 1233,
+    "payment_method": "Wire",
+    "reference": "REF-30245",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0004",
+    "invoice_id": "INV-2024-0084",
+    "payment_date": "2024-08-14",
+    "amount_paid": 6092,
+    "payment_method": "ACH",
+    "reference": "REF-87117",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0005",
+    "invoice_id": "INV-2024-0028",
+    "payment_date": "2024-07-26",
+    "amount_paid": 22518,
+    "payment_method": "Check",
+    "reference": "REF-97687",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0006",
+    "invoice_id": "INV-2024-0078",
+    "payment_date": "2024-09-04",
+    "amount_paid": 2433,
+    "payment_method": "ACH",
+    "reference": "REF-60753",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0007",
+    "invoice_id": "INV-2024-0045",
+    "payment_date": "2024-09-19",
+    "amount_paid": 8082,
+    "payment_method": "Wire",
+    "reference": "REF-74213",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0008",
+    "invoice_id": "INV-2024-0100",
+    "payment_date": "2024-09-06",
+    "amount_paid": 5048,
+    "payment_method": "Check",
+    "reference": "REF-40246",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0009",
+    "invoice_id": "INV-2024-0039",
+    "payment_date": "2024-07-30",
+    "amount_paid": 13057,
+    "payment_method": "ACH",
+    "reference": "REF-21380",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0010",
+    "invoice_id": "INV-2024-0093",
+    "payment_date": "2024-08-17",
+    "amount_paid": 4094,
+    "payment_method": "Wire",
+    "reference": "REF-30429",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0011",
+    "invoice_id": "INV-2024-0021",
+    "payment_date": "2024-08-22",
+    "amount_paid": 1879,
+    "payment_method": "ACH",
+    "reference": "REF-36044",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0012",
+    "invoice_id": "INV-2024-0080",
+    "payment_date": "2024-09-09",
+    "amount_paid": 2806,
+    "payment_method": "Wire",
+    "reference": "REF-40207",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0013",
+    "invoice_id": "INV-2024-0114",
+    "payment_date": "2024-09-08",
+    "amount_paid": 9641,
+    "payment_method": "ACH",
+    "reference": "REF-25067",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0014",
+    "invoice_id": "INV-2024-0069",
+    "payment_date": "2024-07-13",
+    "amount_paid": 2480,
+    "payment_method": "ACH",
+    "reference": "REF-60813",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0015",
+    "invoice_id": "INV-2024-0082",
+    "payment_date": "2024-08-24",
+    "amount_paid": 10058,
+    "payment_method": "Check",
+    "reference": "REF-37316",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0016",
+    "invoice_id": "INV-2024-0058",
+    "payment_date": "2024-08-31",
+    "amount_paid": 18062,
+    "payment_method": "ACH",
+    "reference": "REF-67151",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0017",
+    "invoice_id": "INV-2024-0110",
+    "payment_date": "2024-08-10",
+    "amount_paid": 7285,
+    "payment_method": "ACH",
+    "reference": "REF-93780",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0018",
+    "invoice_id": "INV-2024-0111",
+    "payment_date": "2024-07-31",
+    "amount_paid": 6582,
+    "payment_method": "ACH",
+    "reference": "REF-26695",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0019",
+    "invoice_id": "INV-2024-0056",
+    "payment_date": "2024-08-07",
+    "amount_paid": 6080,
+    "payment_method": "Check",
+    "reference": "REF-22781",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0020",
+    "invoice_id": "INV-2024-0108",
+    "payment_date": "2024-07-25",
+    "amount_paid": 12088,
+    "payment_method": "Check",
+    "reference": "REF-10498",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0021",
+    "invoice_id": "INV-2024-0113",
+    "payment_date": "2024-08-04",
+    "amount_paid": 3510,
+    "payment_method": "ACH",
+    "reference": "REF-53257",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0022",
+    "invoice_id": "INV-2024-0061",
+    "payment_date": "2024-08-26",
+    "amount_paid": 14572,
+    "payment_method": "ACH",
+    "reference": "REF-43615",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0023",
+    "invoice_id": "INV-2024-0101",
+    "payment_date": "2024-07-16",
+    "amount_paid": 4500,
+    "payment_method": "ACH",
+    "reference": "REF-61694",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0024",
+    "invoice_id": "INV-2024-0063",
+    "payment_date": "2024-07-22",
+    "amount_paid": 15041,
+    "payment_method": "ACH",
+    "reference": "REF-45152",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0025",
+    "invoice_id": "INV-2024-0070",
+    "payment_date": "2024-07-21",
+    "amount_paid": 8551,
+    "payment_method": "ACH",
+    "reference": "REF-42566",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0026",
+    "invoice_id": "INV-2024-0048",
+    "payment_date": "2024-08-11",
+    "amount_paid": 9699,
+    "payment_method": "Wire",
+    "reference": "REF-58708",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0027",
+    "invoice_id": "INV-2024-0050",
+    "payment_date": "2024-07-19",
+    "amount_paid": 22585,
+    "payment_method": "Check",
+    "reference": "REF-47187",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0028",
+    "invoice_id": "INV-2024-0112",
+    "payment_date": "2024-08-30",
+    "amount_paid": 25070,
+    "payment_method": "ACH",
+    "reference": "REF-27018",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0029",
+    "invoice_id": "INV-2024-0081",
+    "payment_date": "2024-07-20",
+    "amount_paid": 20049,
+    "payment_method": "Check",
+    "reference": "REF-21357",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0030",
+    "invoice_id": "INV-2024-0003",
+    "payment_date": "2024-08-05",
+    "amount_paid": 18017,
+    "payment_method": "Check",
+    "reference": "REF-22889",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0031",
+    "invoice_id": "INV-2024-0107",
+    "payment_date": "2024-08-31",
+    "amount_paid": 16011,
+    "payment_method": "ACH",
+    "reference": "REF-50999",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0032",
+    "invoice_id": "INV-2024-0091",
+    "payment_date": "2024-08-18",
+    "amount_paid": 2033,
+    "payment_method": "ACH",
+    "reference": "REF-79247",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0033",
+    "invoice_id": "INV-2024-0051",
+    "payment_date": "2024-08-31",
+    "amount_paid": 10074,
+    "payment_method": "ACH",
+    "reference": "REF-92584",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0034",
+    "invoice_id": "INV-2024-0077",
+    "payment_date": "2024-07-31",
+    "amount_paid": 3044,
+    "payment_method": "ACH",
+    "reference": "REF-26053",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0035",
+    "invoice_id": "INV-2024-0071",
+    "payment_date": "2024-07-10",
+    "amount_paid": 8066,
+    "payment_method": "Check",
+    "reference": "REF-92245",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0036",
+    "invoice_id": "INV-2024-0072",
+    "payment_date": "2024-07-13",
+    "amount_paid": 7250,
+    "payment_method": "Check",
+    "reference": "REF-97466",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0037",
+    "invoice_id": "INV-2024-0033",
+    "payment_date": "2024-07-23",
+    "amount_paid": 13011,
+    "payment_method": "ACH",
+    "reference": "REF-81601",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0038",
+    "invoice_id": "INV-2024-0026",
+    "payment_date": "2024-09-13",
+    "amount_paid": 1554,
+    "payment_method": "Check",
+    "reference": "REF-98582",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0039",
+    "invoice_id": "INV-2024-0079",
+    "payment_date": "2024-09-15",
+    "amount_paid": 8558,
+    "payment_method": "ACH",
+    "reference": "REF-53554",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0040",
+    "invoice_id": "INV-2024-0025",
+    "payment_date": "2024-08-23",
+    "amount_paid": 22512,
+    "payment_method": "ACH",
+    "reference": "REF-99094",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0041",
+    "invoice_id": "INV-2024-0036",
+    "payment_date": "2024-07-12",
+    "amount_paid": 2795,
+    "payment_method": "ACH",
+    "reference": "REF-88316",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0042",
+    "invoice_id": "INV-2024-0038",
+    "payment_date": "2024-08-01",
+    "amount_paid": 4507,
+    "payment_method": "ACH",
+    "reference": "REF-24403",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0043",
+    "invoice_id": "INV-2024-0083",
+    "payment_date": "2024-09-02",
+    "amount_paid": 1582,
+    "payment_method": "Wire",
+    "reference": "REF-10032",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0044",
+    "invoice_id": "INV-2024-0042",
+    "payment_date": "2024-09-18",
+    "amount_paid": 2000,
+    "payment_method": "ACH",
+    "reference": "REF-94605",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0045",
+    "invoice_id": "INV-2024-0085",
+    "payment_date": "2024-09-09",
+    "amount_paid": 1262,
+    "payment_method": "ACH",
+    "reference": "REF-66435",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0046",
+    "invoice_id": "INV-2024-0059",
+    "payment_date": "2024-09-09",
+    "amount_paid": 12036,
+    "payment_method": "ACH",
+    "reference": "REF-96424",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0047",
+    "invoice_id": "INV-2024-0057",
+    "payment_date": "2024-08-03",
+    "amount_paid": 6549,
+    "payment_method": "Wire",
+    "reference": "REF-76493",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0048",
+    "invoice_id": "INV-2024-0126",
+    "payment_date": "2024-08-20",
+    "amount_paid": 2445,
+    "payment_method": "ACH",
+    "reference": "REF-57731",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0049",
+    "invoice_id": "INV-2024-0099",
+    "payment_date": "2024-07-26",
+    "amount_paid": 6592,
+    "payment_method": "Check",
+    "reference": "REF-28451",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0050",
+    "invoice_id": "INV-2024-0068",
+    "payment_date": "2024-08-20",
+    "amount_paid": 8576,
+    "payment_method": "Check",
+    "reference": "REF-43760",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0051",
+    "invoice_id": "INV-2024-0062",
+    "payment_date": "2024-09-11",
+    "amount_paid": 1570,
+    "payment_method": "Check",
+    "reference": "REF-40389",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0052",
+    "invoice_id": "INV-2024-0040",
+    "payment_date": "2024-07-21",
+    "amount_paid": 6005,
+    "payment_method": "Check",
+    "reference": "REF-46287",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0053",
+    "invoice_id": "INV-2024-0043",
+    "payment_date": "2024-08-10",
+    "amount_paid": 9666,
+    "payment_method": "ACH",
+    "reference": "REF-62524",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0054",
+    "invoice_id": "INV-2024-0055",
+    "payment_date": "2024-07-20",
+    "amount_paid": 15013,
+    "payment_method": "Check",
+    "reference": "REF-78300",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0055",
+    "invoice_id": "INV-2024-0018",
+    "payment_date": "2024-08-26",
+    "amount_paid": 3025,
+    "payment_method": "ACH",
+    "reference": "REF-58699",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0056",
+    "invoice_id": "INV-2024-0142",
+    "payment_date": "2024-07-31",
+    "amount_paid": 15044,
+    "payment_method": "ACH",
+    "reference": "REF-55710",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0057",
+    "invoice_id": "INV-2024-0054",
+    "payment_date": "2024-07-10",
+    "amount_paid": 4050,
+    "payment_method": "Check",
+    "reference": "REF-84008",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0058",
+    "invoice_id": "INV-2024-0029",
+    "payment_date": "2024-08-19",
+    "amount_paid": 1598,
+    "payment_method": "ACH",
+    "reference": "REF-97595",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0059",
+    "invoice_id": "INV-2024-0046",
+    "payment_date": "2024-08-24",
+    "amount_paid": 4540,
+    "payment_method": "ACH",
+    "reference": "REF-82408",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0060",
+    "invoice_id": "INV-2024-0115",
+    "payment_date": "2024-08-28",
+    "amount_paid": 25047,
+    "payment_method": "Check",
+    "reference": "REF-55672",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0061",
+    "invoice_id": "INV-2024-0047",
+    "payment_date": "2024-07-24",
+    "amount_paid": 2009,
+    "payment_method": "ACH",
+    "reference": "REF-39515",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0062",
+    "invoice_id": "INV-2024-0073",
+    "payment_date": "2024-08-15",
+    "amount_paid": 9645,
+    "payment_method": "ACH",
+    "reference": "REF-63216",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0063",
+    "invoice_id": "INV-2024-0001",
+    "payment_date": "2024-08-01",
+    "amount_paid": 6508,
+    "payment_method": "Wire",
+    "reference": "REF-86316",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0064",
+    "invoice_id": "INV-2024-0133",
+    "payment_date": "2024-07-16",
+    "amount_paid": 2431,
+    "payment_method": "ACH",
+    "reference": "REF-26554",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0065",
+    "invoice_id": "INV-2024-0109",
+    "payment_date": "2024-09-24",
+    "amount_paid": 4052,
+    "payment_method": "ACH",
+    "reference": "REF-56956",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0066",
+    "invoice_id": "INV-2024-0034",
+    "payment_date": "2024-08-07",
+    "amount_paid": 20047,
+    "payment_method": "ACH",
+    "reference": "REF-59221",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0067",
+    "invoice_id": "INV-2024-0116",
+    "payment_date": "2024-09-13",
+    "amount_paid": 4000,
+    "payment_method": "Check",
+    "reference": "REF-63835",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0068",
+    "invoice_id": "INV-2024-0124",
+    "payment_date": "2024-07-27",
+    "amount_paid": 8001,
+    "payment_method": "ACH",
+    "reference": "REF-68949",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0069",
+    "invoice_id": "INV-2024-0087",
+    "payment_date": "2024-07-31",
+    "amount_paid": 8589,
+    "payment_method": "ACH",
+    "reference": "REF-60557",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0070",
+    "invoice_id": "INV-2024-0076",
+    "payment_date": "2024-08-21",
+    "amount_paid": 18021,
+    "payment_method": "ACH",
+    "reference": "REF-92853",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0071",
+    "invoice_id": "INV-2024-0041",
+    "payment_date": "2024-08-22",
+    "amount_paid": 10072,
+    "payment_method": "Wire",
+    "reference": "REF-95493",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0072",
+    "invoice_id": "INV-2024-0008",
+    "payment_date": "2024-08-20",
+    "amount_paid": 1565,
+    "payment_method": "Wire",
+    "reference": "REF-91876",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0073",
+    "invoice_id": "INV-2024-0147",
+    "payment_date": "2024-08-16",
+    "amount_paid": 3582,
+    "payment_method": "Wire",
+    "reference": "REF-54721",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0074",
+    "invoice_id": "INV-2024-0141",
+    "payment_date": "2024-08-21",
+    "amount_paid": 8002,
+    "payment_method": "ACH",
+    "reference": "REF-58382",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0075",
+    "invoice_id": "INV-2024-0064",
+    "payment_date": "2024-08-28",
+    "amount_paid": 16036,
+    "payment_method": "ACH",
+    "reference": "REF-21432",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0076",
+    "invoice_id": "INV-2024-0117",
+    "payment_date": "2024-08-03",
+    "amount_paid": 9602,
+    "payment_method": "ACH",
+    "reference": "REF-28417",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0077",
+    "invoice_id": "INV-2024-0092",
+    "payment_date": "2024-08-07",
+    "amount_paid": 4536,
+    "payment_method": "ACH",
+    "reference": "REF-76767",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0078",
+    "invoice_id": "INV-2024-0119",
+    "payment_date": "2024-07-06",
+    "amount_paid": 8055,
+    "payment_method": "ACH",
+    "reference": "REF-54356",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0079",
+    "invoice_id": "INV-2024-0140",
+    "payment_date": "2024-09-02",
+    "amount_paid": 2849,
+    "payment_method": "Wire",
+    "reference": "REF-89026",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0080",
+    "invoice_id": "INV-2024-0144",
+    "payment_date": "2024-09-13",
+    "amount_paid": 1864,
+    "payment_method": "ACH",
+    "reference": "REF-43588",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0081",
+    "invoice_id": "INV-2024-0123",
+    "payment_date": "2024-07-30",
+    "amount_paid": 14547,
+    "payment_method": "ACH",
+    "reference": "REF-34431",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0082",
+    "invoice_id": "INV-2024-0012",
+    "payment_date": "2024-08-21",
+    "amount_paid": 2091,
+    "payment_method": "ACH",
+    "reference": "REF-54766",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0083",
+    "invoice_id": "INV-2024-0044",
+    "payment_date": "2024-08-31",
+    "amount_paid": 1550,
+    "payment_method": "Check",
+    "reference": "REF-67431",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0084",
+    "invoice_id": "INV-2024-0067",
+    "payment_date": "2024-08-19",
+    "amount_paid": 15067,
+    "payment_method": "ACH",
+    "reference": "REF-26541",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0085",
+    "invoice_id": "INV-2024-0102",
+    "payment_date": "2024-07-11",
+    "amount_paid": 9600,
+    "payment_method": "ACH",
+    "reference": "REF-38980",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0086",
+    "invoice_id": "INV-2024-0103",
+    "payment_date": "2024-08-01",
+    "amount_paid": 8560,
+    "payment_method": "Check",
+    "reference": "REF-72899",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0087",
+    "invoice_id": "INV-2024-0104",
+    "payment_date": "2024-09-13",
+    "amount_paid": 3091,
+    "payment_method": "ACH",
+    "reference": "REF-36210",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0088",
+    "invoice_id": "INV-2024-0004",
+    "payment_date": "2024-09-03",
+    "amount_paid": 22522,
+    "payment_method": "ACH",
+    "reference": "REF-51529",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0089",
+    "invoice_id": "INV-2024-0149",
+    "payment_date": "2024-08-18",
+    "amount_paid": 1800,
+    "payment_method": "ACH",
+    "reference": "REF-74018",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0090",
+    "invoice_id": "INV-2024-0053",
+    "payment_date": "2024-09-02",
+    "amount_paid": 12078,
+    "payment_method": "ACH",
+    "reference": "REF-93077",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0091",
+    "invoice_id": "INV-2024-0095",
+    "payment_date": "2024-08-19",
+    "amount_paid": 15048,
+    "payment_method": "ACH",
+    "reference": "REF-46734",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0092",
+    "invoice_id": "INV-2024-0022",
+    "payment_date": "2024-07-23",
+    "amount_paid": 14584,
+    "payment_method": "ACH",
+    "reference": "REF-34260",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0093",
+    "invoice_id": "INV-2024-0010",
+    "payment_date": "2024-09-08",
+    "amount_paid": 1822,
+    "payment_method": "ACH",
+    "reference": "REF-39129",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0094",
+    "invoice_id": "INV-2024-0060",
+    "payment_date": "2024-08-31",
+    "amount_paid": 11594,
+    "payment_method": "ACH",
+    "reference": "REF-86762",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0095",
+    "invoice_id": "INV-2024-0090",
+    "payment_date": "2024-08-04",
+    "amount_paid": 7217,
+    "payment_method": "ACH",
+    "reference": "REF-71242",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0096",
+    "invoice_id": "INV-2024-0135",
+    "payment_date": "2024-08-26",
+    "amount_paid": 4283.86,
+    "payment_method": "Check",
+    "reference": "REF-36902",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0097",
+    "invoice_id": "INV-2024-0075",
+    "payment_date": "2024-08-30",
+    "amount_paid": 881.58,
+    "payment_method": "ACH",
+    "reference": "REF-32040",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0098",
+    "invoice_id": "INV-2024-0086",
+    "payment_date": "2024-07-29",
+    "amount_paid": 3442.8,
+    "payment_method": "ACH",
+    "reference": "REF-21432",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0099",
+    "invoice_id": "INV-2024-0105",
+    "payment_date": "2024-08-10",
+    "amount_paid": 478.04,
+    "payment_method": "Wire",
+    "reference": "REF-41500",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0100",
+    "invoice_id": "INV-2024-0097",
+    "payment_date": "2024-08-05",
+    "amount_paid": 5334.16,
+    "payment_method": "Check",
+    "reference": "REF-76284",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0101",
+    "invoice_id": "INV-2024-0139",
+    "payment_date": "2024-09-02",
+    "amount_paid": 11271,
+    "payment_method": "Check",
+    "reference": "REF-20246",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0102",
+    "invoice_id": "INV-2024-0146",
+    "payment_date": "2024-09-03",
+    "amount_paid": 1422.78,
+    "payment_method": "Wire",
+    "reference": "REF-86182",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0103",
+    "invoice_id": "INV-2024-0074",
+    "payment_date": "2024-08-25",
+    "amount_paid": 6840,
+    "payment_method": "Wire",
+    "reference": "REF-13758",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0104",
+    "invoice_id": "INV-2024-0014",
+    "payment_date": "2024-08-15",
+    "amount_paid": 8775.55,
+    "payment_method": "ACH",
+    "reference": "REF-41566",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0105",
+    "invoice_id": "INV-2024-0066",
+    "payment_date": "2024-09-07",
+    "amount_paid": 1300.55,
+    "payment_method": "Wire",
+    "reference": "REF-63384",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0106",
+    "invoice_id": "INV-2024-0030",
+    "payment_date": "2024-08-06",
+    "amount_paid": 3426.3,
+    "payment_method": "Check",
+    "reference": "REF-12580",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0107",
+    "invoice_id": "INV-2024-0011",
+    "payment_date": "2024-07-26",
+    "amount_paid": 1219.5,
+    "payment_method": "Wire",
+    "reference": "REF-33299",
+    "status": "Cleared"
+  },
+  {
+    "payment_id": "PMT-0108",
+    "invoice_id": "INV-2024-VOID-0001",
+    "payment_date": "2024-07-01",
+    "amount_paid": 9000,
+    "payment_method": "ACH",
+    "reference": "REF-23400",
+    "status": "Reversed"
+  },
+  {
+    "payment_id": "PMT-0109",
+    "invoice_id": "INV-2024-VOID-0002",
+    "payment_date": "2024-07-29",
+    "amount_paid": 9600,
+    "payment_method": "ACH",
+    "reference": "REF-40949",
+    "status": "Reversed"
+  },
+  {
+    "payment_id": "PMT-0110",
+    "invoice_id": "INV-2024-VOID-0003",
+    "payment_date": "2024-07-22",
+    "amount_paid": 2400,
+    "payment_method": "ACH",
+    "reference": "REF-20141",
+    "status": "Reversed"
+  },
+  {
+    "payment_id": "PMT-0111",
+    "invoice_id": "INV-2024-VOID-0004",
+    "payment_date": "2024-07-12",
+    "amount_paid": 6000,
+    "payment_method": "ACH",
+    "reference": "REF-61206",
+    "status": "Reversed"
+  },
+  {
+    "payment_id": "PMT-0112",
+    "invoice_id": "INV-2024-VOID-0005",
+    "payment_date": "2024-08-28",
+    "amount_paid": 4000,
+    "payment_method": "ACH",
+    "reference": "REF-65645",
+    "status": "Reversed"
+  }
+]

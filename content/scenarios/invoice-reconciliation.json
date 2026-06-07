@@ -1,0 +1,768 @@
+{
+  "scenario_id": "SCEN-INV-001",
+  "scenario_type": "real_scenario",
+  "version": "1.0.0",
+  "title": "Invoice Reconciliation",
+  "subtitle": "Month-End AP Reconciliation — July–August 2024",
+  "domain": "Finance / Accounts Payable",
+  "business_story": "You are an Accounts Payable analyst at Meridian Group, a mid-size professional services firm. It is September 1, 2024 — the close of the August reporting period. Your controller has asked you to reconcile all vendor invoices issued in July and August against the payment ledger, identify outstanding balances, flag overdue and problematic records, and produce a clean summary for the CFO review meeting tomorrow morning. The raw invoice export has 15 rows. The payment ledger has 12 entries. There are duplicates, a missing vendor code, and two partially paid invoices hiding in the data. Your job is to find them, quantify them, and present a clear picture of the company's AP position.",
+  "scenario_family": "accounts_payable",
+  "difficulty": "intermediate",
+  "estimated_time_minutes": 45,
+  "xp_reward": 500,
+  "points_total": 725,
+  "shared_across_branches": ["SUMIFS", "XLOOKUP", "IF", "COUNTIF", "IFERROR"],
+  "recommended_branches": ["SUMIFS", "XLOOKUP", "IF_IFERROR", "data_cleaning"],
+  "prerequisites": {
+    "required_concepts": ["basic cell references", "absolute vs relative references", "named ranges optional"],
+    "recommended_skills": ["VLOOKUP or XLOOKUP basics", "IF statements", "SUMIFS basic syntax"]
+  },
+
+  "tabs": [
+    {
+      "tab_id": "invoices",
+      "tab_name": "Invoices",
+      "display_name": "Raw Invoices",
+      "description": "Raw invoice export from the ERP system. Pre-filled. Do not edit.",
+      "pre_filled": true,
+      "learner_editable": false,
+      "tab_color": "#4472C4",
+      "columns": [
+        { "col": "A", "field": "Invoice_ID",    "type": "string",  "nullable": false },
+        { "col": "B", "field": "Invoice_Date",  "type": "date",    "nullable": false, "format": "YYYY-MM-DD" },
+        { "col": "C", "field": "Due_Date",      "type": "date",    "nullable": false, "format": "YYYY-MM-DD" },
+        { "col": "D", "field": "Vendor_ID",     "type": "string",  "nullable": true,  "note": "One row is intentionally blank — missing vendor code" },
+        { "col": "E", "field": "Dept_Code",     "type": "string",  "nullable": false },
+        { "col": "F", "field": "Description",   "type": "string",  "nullable": false },
+        { "col": "G", "field": "Invoice_Amount","type": "currency", "nullable": false }
+      ],
+      "data": [
+        { "Invoice_ID": "INV-2024-001", "Invoice_Date": "2024-07-03", "Due_Date": "2024-08-02", "Vendor_ID": "V001", "Dept_Code": "D02", "Description": "Office Supplies Q3",               "Invoice_Amount": 4250.00 },
+        { "Invoice_ID": "INV-2024-002", "Invoice_Date": "2024-07-08", "Due_Date": "2024-08-07", "Vendor_ID": "V002", "Dept_Code": "D02", "Description": "Freight - July Batch",             "Invoice_Amount": 12800.00 },
+        { "Invoice_ID": "INV-2024-003", "Invoice_Date": "2024-07-10", "Due_Date": "2024-08-09", "Vendor_ID": "V003", "Dept_Code": "D03", "Description": "IT Support Services",              "Invoice_Amount": 8500.00 },
+        { "Invoice_ID": "INV-2024-004", "Invoice_Date": "2024-07-15", "Due_Date": "2024-08-14", "Vendor_ID": "V004", "Dept_Code": "D01", "Description": "Consulting Retainer",              "Invoice_Amount": 22000.00 },
+        { "Invoice_ID": "INV-2024-005", "Invoice_Date": "2024-07-18", "Due_Date": "2024-08-17", "Vendor_ID": "V005", "Dept_Code": "D06", "Description": "Security Monitoring",              "Invoice_Amount": 3600.00 },
+        { "Invoice_ID": "INV-2024-006", "Invoice_Date": "2024-07-22", "Due_Date": "2024-08-21", "Vendor_ID": "V001", "Dept_Code": "D04", "Description": "Marketing Materials Print Run",   "Invoice_Amount": 1875.00 },
+        { "Invoice_ID": "INV-2024-007", "Invoice_Date": "2024-07-25", "Due_Date": "2024-08-24", "Vendor_ID": "V006", "Dept_Code": "D03", "Description": "Analytics Platform Subscription", "Invoice_Amount": 15000.00 },
+        { "Invoice_ID": "INV-2024-008", "Invoice_Date": "2024-07-28", "Due_Date": "2024-08-27", "Vendor_ID": "V002", "Dept_Code": "D02", "Description": "Freight - Urgent Shipment",       "Invoice_Amount": 6400.00 },
+        { "Invoice_ID": "INV-2024-009", "Invoice_Date": "2024-08-01", "Due_Date": "2024-08-31", "Vendor_ID": "V007", "Dept_Code": "D04", "Description": "Media Buy August",                 "Invoice_Amount": 28500.00 },
+        { "Invoice_ID": "INV-2024-010", "Invoice_Date": "2024-08-05", "Due_Date": "2024-09-04", "Vendor_ID": "V003", "Dept_Code": "D03", "Description": "Software Licenses Annual",         "Invoice_Amount": 11200.00 },
+        { "Invoice_ID": "INV-2024-011", "Invoice_Date": "2024-08-08", "Due_Date": "2024-09-07", "Vendor_ID": "V004", "Dept_Code": "D01", "Description": "Strategy Review Session",          "Invoice_Amount": 9500.00 },
+        { "Invoice_ID": "INV-2024-012", "Invoice_Date": "2024-08-12", "Due_Date": "2024-09-11", "Vendor_ID": "V005", "Dept_Code": "D06", "Description": "Security System Upgrade",          "Invoice_Amount": 7200.00 },
+        { "Invoice_ID": "INV-2024-003", "Invoice_Date": "2024-07-10", "Due_Date": "2024-08-09", "Vendor_ID": "V003", "Dept_Code": "D03", "Description": "IT Support Services",              "Invoice_Amount": 8500.00,  "_note": "DUPLICATE — same as row 3, entered twice by data entry error" },
+        { "Invoice_ID": "INV-2024-014", "Invoice_Date": "2024-08-15", "Due_Date": "2024-09-14", "Vendor_ID": "V007", "Dept_Code": "D04", "Description": "Campaign Design and Assets",       "Invoice_Amount": 5600.00 },
+        { "Invoice_ID": "INV-2024-015", "Invoice_Date": "2024-08-20", "Due_Date": "2024-09-19", "Vendor_ID": "",     "Dept_Code": "D02", "Description": "Miscellaneous Supplies",           "Invoice_Amount": 890.00,   "_note": "MISSING VENDOR ID — needs investigation" }
+      ],
+      "row_count": 15,
+      "header_row": 1,
+      "data_start_row": 2,
+      "messiness": ["one_duplicate_invoice_id", "one_missing_vendor_id"]
+    },
+
+    {
+      "tab_id": "payments",
+      "tab_name": "Payments",
+      "display_name": "Payment Ledger",
+      "description": "Payment records exported from the bank ledger. Pre-filled. Do not edit.",
+      "pre_filled": true,
+      "learner_editable": false,
+      "tab_color": "#70AD47",
+      "columns": [
+        { "col": "A", "field": "Payment_ID",     "type": "string",  "nullable": false },
+        { "col": "B", "field": "Payment_Date",   "type": "date",    "nullable": false, "format": "YYYY-MM-DD" },
+        { "col": "C", "field": "Invoice_Ref",    "type": "string",  "nullable": false, "note": "References Invoice_ID in Invoices tab" },
+        { "col": "D", "field": "Vendor_ID",      "type": "string",  "nullable": false },
+        { "col": "E", "field": "Amount_Paid",    "type": "currency","nullable": false },
+        { "col": "F", "field": "Payment_Method", "type": "string",  "nullable": false },
+        { "col": "G", "field": "Notes",          "type": "string",  "nullable": true }
+      ],
+      "data": [
+        { "Payment_ID": "PAY-001", "Payment_Date": "2024-07-30", "Invoice_Ref": "INV-2024-001", "Vendor_ID": "V001", "Amount_Paid": 4250.00,  "Payment_Method": "Wire Transfer", "Notes": "Full payment" },
+        { "Payment_ID": "PAY-002", "Payment_Date": "2024-07-30", "Invoice_Ref": "INV-2024-002", "Vendor_ID": "V002", "Amount_Paid": 6400.00,  "Payment_Method": "Wire Transfer", "Notes": "Partial — held pending dispute resolution" },
+        { "Payment_ID": "PAY-003", "Payment_Date": "2024-08-05", "Invoice_Ref": "INV-2024-003", "Vendor_ID": "V003", "Amount_Paid": 8500.00,  "Payment_Method": "Wire Transfer", "Notes": "Full payment" },
+        { "Payment_ID": "PAY-004", "Payment_Date": "2024-08-10", "Invoice_Ref": "INV-2024-004", "Vendor_ID": "V004", "Amount_Paid": 22000.00, "Payment_Method": "Wire Transfer", "Notes": "Full payment" },
+        { "Payment_ID": "PAY-005", "Payment_Date": "2024-08-12", "Invoice_Ref": "INV-2024-005", "Vendor_ID": "V005", "Amount_Paid": 3600.00,  "Payment_Method": "Check",         "Notes": "Full payment" },
+        { "Payment_ID": "PAY-006", "Payment_Date": "2024-08-15", "Invoice_Ref": "INV-2024-006", "Vendor_ID": "V001", "Amount_Paid": 1875.00,  "Payment_Method": "Wire Transfer", "Notes": "Full payment" },
+        { "Payment_ID": "PAY-007", "Payment_Date": "2024-08-20", "Invoice_Ref": "INV-2024-008", "Vendor_ID": "V002", "Amount_Paid": 6400.00,  "Payment_Method": "Wire Transfer", "Notes": "Full payment" },
+        { "Payment_ID": "PAY-008", "Payment_Date": "2024-08-25", "Invoice_Ref": "INV-2024-009", "Vendor_ID": "V007", "Amount_Paid": 15000.00, "Payment_Method": "Wire Transfer", "Notes": "Partial — 1st installment per signed payment plan" },
+        { "Payment_ID": "PAY-009", "Payment_Date": "2024-08-30", "Invoice_Ref": "INV-2024-010", "Vendor_ID": "V003", "Amount_Paid": 11200.00, "Payment_Method": "Wire Transfer", "Notes": "Full payment" },
+        { "Payment_ID": "PAY-010", "Payment_Date": "2024-09-02", "Invoice_Ref": "INV-2024-011", "Vendor_ID": "V004", "Amount_Paid": 9500.00,  "Payment_Method": "Wire Transfer", "Notes": "Full payment" },
+        { "Payment_ID": "PAY-011", "Payment_Date": "2024-09-05", "Invoice_Ref": "INV-2024-012", "Vendor_ID": "V005", "Amount_Paid": 7200.00,  "Payment_Method": "Wire Transfer", "Notes": "Full payment" },
+        { "Payment_ID": "PAY-012", "Payment_Date": "2024-09-10", "Invoice_Ref": "INV-2024-014", "Vendor_ID": "V007", "Amount_Paid": 5600.00,  "Payment_Method": "Wire Transfer", "Notes": "Full payment" }
+      ],
+      "row_count": 12,
+      "header_row": 1,
+      "data_start_row": 2,
+      "note": "INV-2024-007 and INV-2024-015 have no payment record — intentionally absent."
+    },
+
+    {
+      "tab_id": "vendor_map",
+      "tab_name": "Vendor_Map",
+      "display_name": "Vendor Master",
+      "description": "Vendor reference table. Used for lookups. Pre-filled.",
+      "pre_filled": true,
+      "learner_editable": false,
+      "tab_color": "#FFC000",
+      "columns": [
+        { "col": "A", "field": "Vendor_ID",       "type": "string", "nullable": false },
+        { "col": "B", "field": "Vendor_Name",      "type": "string", "nullable": false },
+        { "col": "C", "field": "Category",         "type": "string", "nullable": false },
+        { "col": "D", "field": "Payment_Terms",    "type": "string", "nullable": false },
+        { "col": "E", "field": "Contact_Email",    "type": "string", "nullable": true }
+      ],
+      "data": [
+        { "Vendor_ID": "V001", "Vendor_Name": "Apex Office Solutions",   "Category": "Office Supplies",        "Payment_Terms": "Net 30", "Contact_Email": "ap@apexoffice.com" },
+        { "Vendor_ID": "V002", "Vendor_Name": "Global Freight Partners", "Category": "Logistics",              "Payment_Terms": "Net 30", "Contact_Email": "billing@globalfreight.com" },
+        { "Vendor_ID": "V003", "Vendor_Name": "TechPro Services Ltd",    "Category": "IT Services",            "Payment_Terms": "Net 45", "Contact_Email": "invoices@techpro.com" },
+        { "Vendor_ID": "V004", "Vendor_Name": "Meridian Consulting",     "Category": "Professional Services",  "Payment_Terms": "Net 30", "Contact_Email": "accounts@meridianconsulting.com" },
+        { "Vendor_ID": "V005", "Vendor_Name": "Summit Security Inc",     "Category": "Security",               "Payment_Terms": "Net 30", "Contact_Email": "billing@summitsecurity.com" },
+        { "Vendor_ID": "V006", "Vendor_Name": "Clearview Analytics",     "Category": "Software / SaaS",        "Payment_Terms": "Net 45", "Contact_Email": "ar@clearviewanalytics.com" },
+        { "Vendor_ID": "V007", "Vendor_Name": "BlueSky Media Group",     "Category": "Marketing / Media",      "Payment_Terms": "Net 30", "Contact_Email": "finance@blueskymedia.com" }
+      ],
+      "row_count": 7,
+      "header_row": 1,
+      "data_start_row": 2
+    },
+
+    {
+      "tab_id": "dept_map",
+      "tab_name": "Dept_Map",
+      "display_name": "Department Master",
+      "description": "Department reference table. Used for lookups. Pre-filled.",
+      "pre_filled": true,
+      "learner_editable": false,
+      "tab_color": "#FF7C80",
+      "columns": [
+        { "col": "A", "field": "Dept_Code",    "type": "string", "nullable": false },
+        { "col": "B", "field": "Dept_Name",    "type": "string", "nullable": false },
+        { "col": "C", "field": "Cost_Center",  "type": "string", "nullable": false },
+        { "col": "D", "field": "Manager",      "type": "string", "nullable": false }
+      ],
+      "data": [
+        { "Dept_Code": "D01", "Dept_Name": "Finance",    "Cost_Center": "CC-100", "Manager": "Sarah Chen" },
+        { "Dept_Code": "D02", "Dept_Name": "Operations", "Cost_Center": "CC-200", "Manager": "Marcus Webb" },
+        { "Dept_Code": "D03", "Dept_Name": "IT",         "Cost_Center": "CC-300", "Manager": "Priya Nair" },
+        { "Dept_Code": "D04", "Dept_Name": "Marketing",  "Cost_Center": "CC-400", "Manager": "James Okonkwo" },
+        { "Dept_Code": "D05", "Dept_Name": "HR",         "Cost_Center": "CC-500", "Manager": "Linda Torres" },
+        { "Dept_Code": "D06", "Dept_Name": "Legal",      "Cost_Center": "CC-600", "Manager": "David Kim" }
+      ],
+      "row_count": 6,
+      "header_row": 1,
+      "data_start_row": 2
+    },
+
+    {
+      "tab_id": "recon_working",
+      "tab_name": "Recon_Working",
+      "display_name": "Reconciliation Working Sheet",
+      "description": "Main working area. Columns A, B, C, D pre-filled from Invoices. Learner builds columns E through K.",
+      "pre_filled_columns": ["A", "B", "C", "D"],
+      "learner_columns": ["E", "F", "G", "H", "I", "J", "K"],
+      "learner_editable": true,
+      "tab_color": "#ED7D31",
+      "columns": [
+        { "col": "A", "field": "Invoice_ID",          "type": "string",   "source": "Invoices!A", "pre_filled": true },
+        { "col": "B", "field": "Invoice_Date",         "type": "date",     "source": "Invoices!B", "pre_filled": true },
+        { "col": "C", "field": "Due_Date",             "type": "date",     "source": "Invoices!C", "pre_filled": true },
+        { "col": "D", "field": "Invoice_Amount",       "type": "currency", "source": "Invoices!G", "pre_filled": true },
+        { "col": "E", "field": "Vendor_Name",          "type": "string",   "pre_filled": false, "task_id": "T01", "note": "Lookup from Vendor_Map using Vendor_ID in Invoices tab" },
+        { "col": "F", "field": "Dept_Name",            "type": "string",   "pre_filled": false, "task_id": "T02" },
+        { "col": "G", "field": "Amount_Paid",          "type": "currency", "pre_filled": false, "task_id": "T03", "note": "0 if no matching payment found" },
+        { "col": "H", "field": "Payment_Status",       "type": "string",   "pre_filled": false, "task_id": "T04", "allowed_values": ["PAID", "PARTIAL", "OUTSTANDING"] },
+        { "col": "I", "field": "Outstanding_Balance",  "type": "currency", "pre_filled": false, "task_id": "T05" },
+        { "col": "J", "field": "Overdue_Flag",         "type": "string",   "pre_filled": false, "task_id": "T06", "allowed_values": ["OVERDUE", "OK"] },
+        { "col": "K", "field": "Duplicate_Flag",       "type": "string",   "pre_filled": false, "task_id": "T07", "allowed_values": ["DUPLICATE", "OK"] }
+      ],
+      "row_count": 15,
+      "header_row": 1,
+      "data_start_row": 2
+    },
+
+    {
+      "tab_id": "summary_report",
+      "tab_name": "Summary_Report",
+      "display_name": "AP Reconciliation Summary",
+      "description": "Executive summary tab. Learner populates formula-driven cells. Structure and labels are pre-filled.",
+      "pre_filled_columns": ["A"],
+      "learner_columns": ["B"],
+      "learner_editable": true,
+      "tab_color": "#7030A0",
+      "sections": [
+        {
+          "section": "outstanding_by_vendor",
+          "label": "Outstanding Balance by Vendor",
+          "row_start": 2,
+          "row_end": 9,
+          "task_id": "T08"
+        },
+        {
+          "section": "count_by_status",
+          "label": "Invoice Count by Payment Status",
+          "row_start": 13,
+          "row_end": 16,
+          "task_id": "T09"
+        },
+        {
+          "section": "grand_totals",
+          "label": "Grand Totals",
+          "row_start": 20,
+          "row_end": 23,
+          "task_id": "T10"
+        }
+      ],
+      "pre_filled_labels": {
+        "B1":  "Outstanding ($)",
+        "A2":  "Apex Office Solutions",
+        "A3":  "Global Freight Partners",
+        "A4":  "TechPro Services Ltd",
+        "A5":  "Meridian Consulting",
+        "A6":  "Summit Security Inc",
+        "A7":  "Clearview Analytics",
+        "A8":  "BlueSky Media Group",
+        "A9":  "Unknown / Missing Vendor",
+        "A12": "Status",
+        "B12": "Count",
+        "A13": "PAID",
+        "A14": "PARTIAL",
+        "A15": "OUTSTANDING",
+        "A16": "TOTAL",
+        "A19": "Metric",
+        "B19": "Amount ($)",
+        "A20": "Total Invoiced",
+        "A21": "Total Paid",
+        "A22": "Total Outstanding",
+        "A23": "Collection Rate (%)"
+      }
+    }
+  ],
+
+  "tasks": [
+    {
+      "task_id": "T01",
+      "sequence": 1,
+      "title": "Look Up Vendor Names",
+      "prompt": "In the Recon_Working tab, column E (Vendor_Name), write a formula that looks up the Vendor_Name for each invoice using the Vendor_ID stored in the Invoices tab and the Vendor_Map reference table. Use IFERROR to return "UNKNOWN" if the Vendor_ID is blank or not found.",
+      "target_sheet": "Recon_Working",
+      "target_range": "E2:E16",
+      "target_cell_primary": "E2",
+      "points": 75,
+      "prerequisite_task_ids": [],
+      "allowed_functions": ["XLOOKUP", "VLOOKUP", "IFERROR", "IFNA", "INDEX", "MATCH"],
+      "forbidden_functions": [],
+      "validation_type": "range_match",
+      "expected_values": [
+        "Apex Office Solutions", "Global Freight Partners", "TechPro Services Ltd",
+        "Meridian Consulting", "Summit Security Inc", "Apex Office Solutions",
+        "Clearview Analytics", "Global Freight Partners", "BlueSky Media Group",
+        "TechPro Services Ltd", "Meridian Consulting", "Summit Security Inc",
+        "TechPro Services Ltd", "BlueSky Media Group", "UNKNOWN"
+      ],
+      "expected_result_description": "14 vendor names resolved correctly. Row 15 returns UNKNOWN due to missing Vendor_ID.",
+      "example_correct_formula": "=IFERROR(XLOOKUP(Invoices!D2,Vendor_Map!A:A,Vendor_Map!B:B),\"UNKNOWN\")",
+      "example_alternate_formula": "=IFERROR(VLOOKUP(Invoices!D2,Vendor_Map!A:B,2,0),\"UNKNOWN\")",
+      "tutor_hint": "You need to look up the Vendor_ID from the Invoices tab — not from column E of Recon_Working. Think about where the Vendor_ID lives and which column in Vendor_Map you want to return.",
+      "common_wrong_answers": [
+        { "formula": "=XLOOKUP(D2,Vendor_Map!A:A,Vendor_Map!B:B)", "issue": "D2 in Recon_Working has Invoice_Amount, not Vendor_ID — wrong source column" },
+        { "formula": "=VLOOKUP(Invoices!D2,Vendor_Map!A:B,1,0)", "issue": "Returns Vendor_ID not Vendor_Name — col_index should be 2" },
+        { "formula": "=XLOOKUP(Invoices!D2,Vendor_Map!A:A,Vendor_Map!B:B)", "issue": "Correct logic but missing IFERROR — will show #N/A for row 15" }
+      ]
+    },
+
+    {
+      "task_id": "T02",
+      "sequence": 2,
+      "title": "Look Up Department Names",
+      "prompt": "In column F (Dept_Name) of Recon_Working, write a formula that resolves the department name for each invoice using the Dept_Code from the Invoices tab and the Dept_Map reference table.",
+      "target_sheet": "Recon_Working",
+      "target_range": "F2:F16",
+      "target_cell_primary": "F2",
+      "points": 50,
+      "prerequisite_task_ids": ["T01"],
+      "allowed_functions": ["XLOOKUP", "VLOOKUP", "IFERROR", "IFNA", "INDEX", "MATCH"],
+      "forbidden_functions": [],
+      "validation_type": "range_match",
+      "expected_values": [
+        "Operations", "Operations", "IT", "Finance", "Legal",
+        "Marketing", "IT", "Operations", "Marketing", "IT",
+        "Finance", "Legal", "IT", "Marketing", "Operations"
+      ],
+      "expected_result_description": "All 15 department names resolved. All Dept_Codes are valid — no missing values in this column.",
+      "example_correct_formula": "=XLOOKUP(Invoices!E2,Dept_Map!A:A,Dept_Map!B:B)",
+      "example_alternate_formula": "=VLOOKUP(Invoices!E2,Dept_Map!A:B,2,0)",
+      "tutor_hint": "The pattern is identical to Task 1 — but your lookup_value is now the Dept_Code column from Invoices, and your reference table is Dept_Map.",
+      "common_wrong_answers": [
+        { "formula": "=XLOOKUP(Invoices!D2,Dept_Map!A:A,Dept_Map!B:B)", "issue": "D is Vendor_ID, not Dept_Code — use column E from Invoices" }
+      ]
+    },
+
+    {
+      "task_id": "T03",
+      "sequence": 3,
+      "title": "Match Payment Amounts",
+      "prompt": "In column G (Amount_Paid) of Recon_Working, look up the payment amount for each invoice by matching the Invoice_ID against the Invoice_Ref column in the Payments tab. Return 0 if no payment is found.",
+      "target_sheet": "Recon_Working",
+      "target_range": "G2:G16",
+      "target_cell_primary": "G2",
+      "points": 75,
+      "prerequisite_task_ids": ["T01"],
+      "allowed_functions": ["XLOOKUP", "VLOOKUP", "IFERROR", "IFNA", "SUMIF", "INDEX", "MATCH"],
+      "forbidden_functions": [],
+      "validation_type": "range_match",
+      "expected_values": [4250, 6400, 8500, 22000, 3600, 1875, 0, 6400, 15000, 11200, 9500, 7200, 8500, 5600, 0],
+      "expected_result_description": "INV-2024-007 returns 0 (no payment). INV-2024-015 returns 0 (no payment). INV-2024-002 returns 6400 (partial). INV-2024-009 returns 15000 (partial). The duplicate row (INV-2024-003 row 13) also returns 8500.",
+      "example_correct_formula": "=IFERROR(XLOOKUP(A2,Payments!C:C,Payments!E:E),0)",
+      "example_alternate_formula": "=IFERROR(VLOOKUP(A2,Payments!C:E,3,0),0)",
+      "example_alternate_formula_2": "=SUMIF(Payments!C:C,A2,Payments!E:E)",
+      "tutor_hint": "Match the Invoice_ID in column A of this tab against the Invoice_Ref column (C) in Payments. The amount to return is in Payments column E. SUMIF is also valid here — it naturally returns 0 when there is no match.",
+      "common_wrong_answers": [
+        { "formula": "=XLOOKUP(A2,Payments!A:A,Payments!E:E)", "issue": "Payments!A is Payment_ID, not Invoice_Ref — wrong lookup column" },
+        { "formula": "=IFERROR(XLOOKUP(A2,Payments!C:C,Payments!E:E),\"\")", "issue": "Returns empty string instead of 0 — breaks arithmetic in later tasks" }
+      ]
+    },
+
+    {
+      "task_id": "T04",
+      "sequence": 4,
+      "title": "Classify Payment Status",
+      "prompt": "In column H (Payment_Status), write a formula that classifies each invoice as PAID (Amount_Paid equals Invoice_Amount), PARTIAL (Amount_Paid is greater than 0 but less than Invoice_Amount), or OUTSTANDING (Amount_Paid is 0).",
+      "target_sheet": "Recon_Working",
+      "target_range": "H2:H16",
+      "target_cell_primary": "H2",
+      "points": 75,
+      "prerequisite_task_ids": ["T03"],
+      "allowed_functions": ["IF", "IFS", "SWITCH"],
+      "forbidden_functions": [],
+      "validation_type": "range_match",
+      "expected_values": [
+        "PAID", "PARTIAL", "PAID", "PAID", "PAID",
+        "PAID", "OUTSTANDING", "PAID", "PARTIAL", "PAID",
+        "PAID", "PAID", "PAID", "PAID", "OUTSTANDING"
+      ],
+      "expected_result_description": "11 PAID, 2 PARTIAL (rows 2 and 9), 2 OUTSTANDING (rows 7 and 15). The duplicate row 13 shows PAID.",
+      "example_correct_formula": "=IF(G2=D2,\"PAID\",IF(G2>0,\"PARTIAL\",\"OUTSTANDING\"))",
+      "example_alternate_formula": "=IFS(G2=D2,\"PAID\",G2>0,\"PARTIAL\",TRUE,\"OUTSTANDING\")",
+      "tutor_hint": "Build the IF from the clearest case first: if Amount_Paid equals Invoice_Amount it's PAID. If it's greater than zero but not equal, it's PARTIAL. Otherwise OUTSTANDING.",
+      "common_wrong_answers": [
+        { "formula": "=IF(G2>0,\"PAID\",\"OUTSTANDING\")", "issue": "Misses the PARTIAL case — returns PAID even for partially-paid invoices" },
+        { "formula": "=IF(G2=0,\"OUTSTANDING\",\"PAID\")", "issue": "Collapses PARTIAL into PAID — loses data quality information" }
+      ]
+    },
+
+    {
+      "task_id": "T05",
+      "sequence": 5,
+      "title": "Calculate Outstanding Balance",
+      "prompt": "In column I (Outstanding_Balance), calculate how much is still owed on each invoice: Invoice_Amount minus Amount_Paid.",
+      "target_sheet": "Recon_Working",
+      "target_range": "I2:I16",
+      "target_cell_primary": "I2",
+      "points": 50,
+      "prerequisite_task_ids": ["T03"],
+      "allowed_functions": ["arithmetic"],
+      "forbidden_functions": [],
+      "validation_type": "range_match",
+      "expected_values": [0, 6400, 0, 0, 0, 0, 15000, 0, 13500, 0, 0, 0, 0, 0, 890],
+      "expected_result_description": "Total outstanding: $35,790. Four non-zero rows: INV-002 ($6,400), INV-007 ($15,000), INV-009 ($13,500), INV-015 ($890).",
+      "example_correct_formula": "=D2-G2",
+      "tutor_hint": "This is pure arithmetic — Invoice_Amount minus Amount_Paid. Reference the columns you already calculated.",
+      "common_wrong_answers": [
+        { "formula": "=G2-D2", "issue": "Reversed — produces negative values for paid invoices" }
+      ]
+    },
+
+    {
+      "task_id": "T06",
+      "sequence": 6,
+      "title": "Flag Overdue Invoices",
+      "prompt": "In column J (Overdue_Flag), flag each invoice as OVERDUE if the Due_Date has already passed today AND the Outstanding_Balance is greater than zero. Otherwise show OK.",
+      "target_sheet": "Recon_Working",
+      "target_range": "J2:J16",
+      "target_cell_primary": "J2",
+      "points": 75,
+      "prerequisite_task_ids": ["T05"],
+      "allowed_functions": ["IF", "AND", "TODAY", "EDATE", "NOW"],
+      "forbidden_functions": [],
+      "validation_type": "dynamic_date",
+      "validation_note": "Result depends on TODAY() — validate using reference date 2024-09-15. All four non-zero outstanding rows should be OVERDUE as of that date.",
+      "expected_values_as_of_reference_date": [
+        "OK", "OVERDUE", "OK", "OK", "OK",
+        "OK", "OVERDUE", "OK", "OVERDUE", "OK",
+        "OK", "OK", "OK", "OK", "OVERDUE"
+      ],
+      "expected_result_description": "4 OVERDUE rows: INV-002 (due Aug 7), INV-007 (due Aug 24), INV-009 (due Aug 31), INV-015 (due Sep 19 — not yet overdue as of Sep 15, so OK). Adjust depending on reference date.",
+      "example_correct_formula": "=IF(AND(C2<TODAY(),I2>0),\"OVERDUE\",\"OK\")",
+      "tutor_hint": "You need two conditions to be true at once — use AND() inside IF(). The due date is in column C; the outstanding balance you already calculated is in column I.",
+      "common_wrong_answers": [
+        { "formula": "=IF(C2<TODAY(),\"OVERDUE\",\"OK\")", "issue": "Flags all past-due invoices regardless of balance — fully paid invoices would show OVERDUE" },
+        { "formula": "=IF(I2>0,\"OVERDUE\",\"OK\")", "issue": "Ignores the date condition — marks outstanding invoices as OVERDUE even if not yet due" }
+      ]
+    },
+
+    {
+      "task_id": "T07",
+      "sequence": 7,
+      "title": "Identify Duplicate Invoice IDs",
+      "prompt": "In column K (Duplicate_Flag), flag any row where the Invoice_ID appears more than once in the Invoice_ID column. Show DUPLICATE if it appears more than once, otherwise OK.",
+      "target_sheet": "Recon_Working",
+      "target_range": "K2:K16",
+      "target_cell_primary": "K2",
+      "points": 75,
+      "prerequisite_task_ids": [],
+      "allowed_functions": ["COUNTIF", "IF"],
+      "forbidden_functions": [],
+      "validation_type": "range_match",
+      "expected_values": [
+        "OK", "OK", "DUPLICATE", "OK", "OK",
+        "OK", "OK", "OK", "OK", "OK",
+        "OK", "OK", "DUPLICATE", "OK", "OK"
+      ],
+      "expected_result_description": "Two rows flagged DUPLICATE: row 3 and row 13 (both INV-2024-003). All others show OK.",
+      "example_correct_formula": "=IF(COUNTIF($A$2:$A$16,A2)>1,\"DUPLICATE\",\"OK\")",
+      "tutor_hint": "COUNTIF counts how many times a value appears in a range. Count how many times the current Invoice_ID appears in the full Invoice_ID column. If it's more than 1, that's a duplicate.",
+      "common_wrong_answers": [
+        { "formula": "=IF(COUNTIF(A:A,A2)>1,\"DUPLICATE\",\"OK\")", "issue": "Including the header row in the COUNTIF range — use $A$2:$A$16 to avoid counting the header" },
+        { "formula": "=IF(COUNTIF($A$2:$A$16,A2)=2,\"DUPLICATE\",\"OK\")", "issue": "Correct for this dataset but brittle — use >1 to handle triplicates in real data" }
+      ]
+    },
+
+    {
+      "task_id": "T08",
+      "sequence": 8,
+      "title": "Outstanding Balance by Vendor",
+      "prompt": "In the Summary_Report tab, column B rows 2 through 9, calculate the total outstanding balance for each vendor listed in column A using SUMIFS on the Recon_Working tab.",
+      "target_sheet": "Summary_Report",
+      "target_range": "B2:B9",
+      "target_cell_primary": "B2",
+      "points": 100,
+      "prerequisite_task_ids": ["T01", "T05"],
+      "allowed_functions": ["SUMIFS", "SUMIF"],
+      "forbidden_functions": [],
+      "validation_type": "range_match",
+      "expected_values": [0, 6400, 0, 0, 0, 15000, 13500, 890],
+      "expected_values_labels": [
+        "Apex Office Solutions: 0",
+        "Global Freight Partners: 6400",
+        "TechPro Services Ltd: 0",
+        "Meridian Consulting: 0",
+        "Summit Security Inc: 0",
+        "Clearview Analytics: 15000",
+        "BlueSky Media Group: 13500",
+        "Unknown / Missing Vendor: 890"
+      ],
+      "expected_result_description": "Total outstanding $35,790 distributed across four vendors. Three vendors fully settled at $0.",
+      "example_correct_formula": "=SUMIFS(Recon_Working!I:I,Recon_Working!E:E,A2)",
+      "tutor_hint": "You want to SUM the Outstanding_Balance column (I) from Recon_Working where the Vendor_Name column (E) matches the vendor label in column A of this summary. For the UNKNOWN row, your SUMIFS will match the rows where Vendor_Name is 'UNKNOWN'.",
+      "common_wrong_answers": [
+        { "formula": "=SUMIFS(Recon_Working!G:G,Recon_Working!E:E,A2)", "issue": "Sums Amount_Paid (G) not Outstanding_Balance (I) — wrong metric" },
+        { "formula": "=SUMIF(Recon_Working!E:E,A2,Recon_Working!I:I)", "issue": "Correct result but single-criteria — acceptable, though SUMIFS is preferred for consistency" }
+      ]
+    },
+
+    {
+      "task_id": "T09",
+      "sequence": 9,
+      "title": "Count Invoices by Payment Status",
+      "prompt": "In the Summary_Report tab, column B rows 13 through 15, count how many invoices have each Payment_Status (PAID, PARTIAL, OUTSTANDING). In B16 calculate the total. Use COUNTIFS or COUNTIF on the Recon_Working tab.",
+      "target_sheet": "Summary_Report",
+      "target_range": "B13:B16",
+      "target_cell_primary": "B13",
+      "points": 75,
+      "prerequisite_task_ids": ["T04"],
+      "allowed_functions": ["COUNTIFS", "COUNTIF", "SUM"],
+      "forbidden_functions": [],
+      "validation_type": "range_match",
+      "expected_values": [11, 2, 2, 15],
+      "expected_values_labels": ["PAID: 11", "PARTIAL: 2", "OUTSTANDING: 2", "TOTAL: 15"],
+      "expected_result_description": "11 fully paid, 2 partial, 2 outstanding. Total 15 matches the invoice row count.",
+      "example_correct_formula_b13": "=COUNTIFS(Recon_Working!H:H,A13)",
+      "example_correct_formula_b16": "=SUM(B13:B15)",
+      "tutor_hint": "COUNTIFS with one criteria range and one criteria value will count matching rows. The Payment_Status column is H in Recon_Working. Your criteria for each row is the status label in column A of this summary.",
+      "common_wrong_answers": [
+        { "formula": "=COUNTIFS(Recon_Working!H:H,\"PAID\")", "issue": "Hardcoded string — works but does not reference column A, making the summary harder to maintain" }
+      ]
+    },
+
+    {
+      "task_id": "T10",
+      "sequence": 10,
+      "title": "Grand Totals for CFO Summary",
+      "prompt": "In the Summary_Report tab, populate the grand totals section: B20 = Total Invoiced (sum of all Invoice_Amounts from Recon_Working), B21 = Total Paid (sum of Amount_Paid), B22 = Total Outstanding (sum of Outstanding_Balance), B23 = Collection Rate as a percentage (Total Paid divided by Total Invoiced, formatted as %).",
+      "target_sheet": "Summary_Report",
+      "target_range": "B20:B23",
+      "target_cell_primary": "B20",
+      "points": 100,
+      "prerequisite_task_ids": ["T05"],
+      "allowed_functions": ["SUM", "SUMIFS", "arithmetic"],
+      "forbidden_functions": [],
+      "validation_type": "calculated",
+      "expected_values": {
+        "B20": 145815.00,
+        "B21": 110025.00,
+        "B22": 35790.00,
+        "B23": 0.7545
+      },
+      "expected_values_description": {
+        "B20": "Sum of all Invoice_Amounts in Recon_Working (including the duplicate row): $145,815",
+        "B21": "Sum of all Amount_Paid in Recon_Working (duplicate row also looked up $8,500): $110,025",
+        "B22": "Sum of all Outstanding_Balance: $35,790",
+        "B23": "110,025 / 145,815 ≈ 75.5% — note: this includes the duplicate row in both numerator and denominator, so the ratio is consistent"
+      },
+      "example_correct_formula_b20": "=SUM(Recon_Working!D:D)",
+      "example_correct_formula_b21": "=SUM(Recon_Working!G:G)",
+      "example_correct_formula_b22": "=SUM(Recon_Working!I:I)",
+      "example_correct_formula_b23": "=B21/B20",
+      "tutor_hint": "Use SUM on entire columns from Recon_Working — but remember to exclude the header row (row 1) if your SUM range includes it. For the collection rate, divide Total Paid by Total Invoiced and format the cell as Percentage.",
+      "insight_note": "Advanced learners may notice that the duplicate INV-2024-003 inflates both Total Invoiced and Total Paid by $8,500 each, keeping the Outstanding the same. This is exactly the kind of data quality issue real AP analysts need to flag.",
+      "common_wrong_answers": [
+        { "formula": "=B20-B22", "issue": "For B21: gives correct number by coincidence but wrong formula logic — should SUM Amount_Paid directly" },
+        { "formula": "=SUM(Recon_Working!D2:D16)-SUM(Recon_Working!G2:G16)", "issue": "For B22: correct result but bypasses the Outstanding_Balance column the learner already calculated" }
+      ]
+    }
+  ],
+
+  "task_dependencies": {
+    "T01": [],
+    "T02": ["T01"],
+    "T03": ["T01"],
+    "T04": ["T03"],
+    "T05": ["T03"],
+    "T06": ["T05"],
+    "T07": [],
+    "T08": ["T01", "T05"],
+    "T09": ["T04"],
+    "T10": ["T05"]
+  },
+
+  "progress_steps": [
+    { "step": 1, "milestone": "Data Resolved",       "tasks_completed": ["T01", "T02", "T03"], "unlock_message": "Vendor names, departments, and payment amounts resolved — you have a working dataset." },
+    { "step": 2, "milestone": "Status Classified",   "tasks_completed": ["T04", "T05"],        "unlock_message": "Payment statuses and outstanding balances are live. You can now see the AP picture clearly." },
+    { "step": 3, "milestone": "Exceptions Flagged",  "tasks_completed": ["T06", "T07"],        "unlock_message": "Overdue and duplicate flags built. Your data quality section is complete." },
+    { "step": 4, "milestone": "Summary Complete",    "tasks_completed": ["T08", "T09", "T10"], "unlock_message": "CFO summary is ready. Reconciliation complete." }
+  ],
+
+  "scoring": {
+    "points_total": 725,
+    "xp_reward": 500,
+    "xp_breakdown": {
+      "completion_base": 300,
+      "accuracy_bonus": 150,
+      "speed_bonus": 50
+    },
+    "partial_credit": true,
+    "partial_credit_rule": "Each task is scored independently. A wrong formula in T03 does not invalidate T04 if the learner's T04 formula logic is correct given their T03 output.",
+    "bonus_conditions": [
+      { "condition": "Identify the duplicate row in commentary or a note cell", "bonus_xp": 25 },
+      { "condition": "Collection rate within 0.1% of expected value", "bonus_xp": 25 },
+      { "condition": "Complete all 10 tasks without requesting a hint", "bonus_xp": 50 }
+    ]
+  },
+
+  "tutor_messages": {
+    "on_entry": "Welcome to Invoice Reconciliation. You have 15 invoices and 12 payment records. Your job is to match them, classify everything, flag problems, and summarize the AP position for the CFO. Start with column E — get the vendor names in first.",
+    "on_task_start": {
+      "T01": "XLOOKUP and VLOOKUP both work here. The key question: where does the Vendor_ID live that you want to look up? It's not in the Recon_Working tab — it's in the Invoices tab.",
+      "T03": "This is the heart of the reconciliation. Match by Invoice_ID. IFERROR with 0 is important — without it, arithmetic in later columns will break.",
+      "T06": "Think about what OVERDUE really means in AP: the money is still owed AND the due date has passed. Both conditions must be true at the same time.",
+      "T07": "COUNTIF counts occurrences. If an Invoice_ID appears more than once in column A, there's a duplicate. Lock the range with $.",
+      "T10": "The collection rate will surprise some people — look at why the numbers include a duplicate row. That's a real insight about data quality in month-end close."
+    },
+    "on_wrong_attempt": {
+      "default": "Check which tab your lookup_value is pointing to — a common mistake is referencing the wrong tab or column.",
+      "T03_wrong": "If your Amount_Paid column has #N/A instead of 0, your IFERROR fallback might be returning a string. Make sure it returns the number 0, not the text \"0\".",
+      "T04_wrong": "The order of your IF conditions matters. Test for PAID first (exact match), then PARTIAL (greater than zero), then OUTSTANDING (zero).",
+      "T06_wrong": "Are you testing both conditions? One IF without AND will only check one condition — you need both the date and the balance check."
+    },
+    "on_correct": {
+      "T01": "Vendor names resolved. Notice that row 15 returns UNKNOWN — that's your first data quality flag.",
+      "T03": "Payment amounts matched. You can already see which invoices returned 0 — those are your problem children.",
+      "T07": "Duplicate flag complete. Real AP teams run this check every close. You just found the duplicate that got through the ERP.",
+      "T10": "Reconciliation done. The collection rate sitting at 75.5% — with $35,790 outstanding — is exactly what the CFO needs to open the meeting."
+    },
+    "hints": {
+      "T01_h1": "Which column in the Invoices tab contains the Vendor_ID? That's your lookup_value.",
+      "T01_h2": "In Vendor_Map, the Vendor_ID is in column A and the Vendor_Name is in column B. For VLOOKUP, col_index_num should be 2.",
+      "T03_h1": "The Invoice_Ref column in Payments is column C. That's what you match against the Invoice_ID in Recon_Working column A.",
+      "T06_h1": "AND(condition1, condition2) inside an IF lets you test two things at once.",
+      "T08_h1": "Your sum_range is the Outstanding_Balance column (I) in Recon_Working. Your criteria_range is the Vendor_Name column (E). Your criteria is the vendor name in column A of the Summary."
+    }
+  },
+
+  "celebration_messages": [
+    { "trigger": "T01_correct", "tone": "warm",        "message": "Vendor names resolved — that's your foundation. Everything downstream depends on getting this right. 👍", "follow_up": "Notice anything unusual in the Vendor_Name column?" },
+    { "trigger": "T03_correct", "tone": "hype",        "message": "Payment matching done! You can already see the gaps — that's real AP intelligence right there. 📊",       "follow_up": "Which invoices came back with 0? Are you surprised by any of them?" },
+    { "trigger": "T05_correct", "tone": "professional", "message": "Outstanding balances calculated. $35,790 sitting unresolved — now you know exactly where the exposure is.",  "follow_up": "What would you do next if this were a real month-end?" },
+    { "trigger": "T07_correct", "tone": "hype",        "message": "Duplicate caught! That INV-2024-003 would have distorted every report that depended on it. 🎯",              "follow_up": "How would a duplicate invoice affect the Total Invoiced figure?" },
+    { "trigger": "T10_correct", "tone": "professional", "message": "Reconciliation complete. 75.5% collected, $35,790 outstanding — CFO-ready in 45 minutes. Analyst-level work. 📈", "follow_up": "If you had to write one sentence to the CFO about the most urgent item, what would you say?" },
+    { "trigger": "all_complete", "tone": "hype",       "message": "Full scenario complete! You just ran a real month-end AP reconciliation — end to end, with messy data, and you caught everything. 🏆", "follow_up": "Ready to try the Sales Performance Pack next?" }
+  ],
+
+  "messiness_flags": [
+    {
+      "flag_id": "DUPE_001",
+      "type": "duplicate_row",
+      "affected_tab": "invoices",
+      "affected_rows": [3, 13],
+      "affected_field": "Invoice_ID",
+      "duplicate_value": "INV-2024-003",
+      "teaching_point": "Duplicate invoice IDs inflate Total Invoiced without adding real liability. Real AP systems use duplicate detection at entry — this is a manual export without that guard.",
+      "detection_task": "T07",
+      "impact_on_totals": "Inflates Total Invoiced by $8,500 and Total Amount_Paid by $8,500 — net outstanding unaffected, but headcount is wrong."
+    },
+    {
+      "flag_id": "MISS_001",
+      "type": "missing_value",
+      "affected_tab": "invoices",
+      "affected_row": 15,
+      "affected_field": "Vendor_ID",
+      "missing_value": "",
+      "teaching_point": "Missing Vendor_IDs are common when invoices are entered manually. IFERROR with 'UNKNOWN' keeps the row in your dataset without breaking formulas.",
+      "impact": "Cannot be grouped by vendor. Outstanding balance ($890) appears under 'Unknown / Missing Vendor' in the summary."
+    },
+    {
+      "flag_id": "PART_001",
+      "type": "partial_payment",
+      "affected_tab": "payments",
+      "affected_invoice": "INV-2024-002",
+      "invoice_amount": 12800.00,
+      "amount_paid": 6400.00,
+      "outstanding": 6400.00,
+      "teaching_point": "Partial payments are easy to miss if you only check 'paid vs unpaid'. A robust status classifier catches these as a third category.",
+      "notes": "Held pending dispute resolution per payment notes."
+    },
+    {
+      "flag_id": "PART_002",
+      "type": "partial_payment",
+      "affected_tab": "payments",
+      "affected_invoice": "INV-2024-009",
+      "invoice_amount": 28500.00,
+      "amount_paid": 15000.00,
+      "outstanding": 13500.00,
+      "teaching_point": "Large invoices on payment plans look like outstanding balances unless you check the notes. This is the largest single outstanding item.",
+      "notes": "1st installment per signed payment plan — 2nd installment expected Oct 15."
+    },
+    {
+      "flag_id": "MISS_PAY_001",
+      "type": "no_payment_record",
+      "affected_invoice": "INV-2024-007",
+      "vendor": "Clearview Analytics",
+      "invoice_amount": 15000.00,
+      "teaching_point": "Clearview Analytics has no payment record at all — the invoice is overdue and fully outstanding. This is the most urgent item in the reconciliation.",
+      "action_required": "Contact vendor and escalate to controller."
+    }
+  ],
+
+  "common_mistakes": [
+    {
+      "mistake_id": "CM-01",
+      "title": "Looking up from the wrong tab",
+      "description": "Learners reference column D of Recon_Working for Vendor_ID lookup, but D in that tab is Invoice_Amount. Vendor_ID is in Invoices!D.",
+      "affected_tasks": ["T01"]
+    },
+    {
+      "mistake_id": "CM-02",
+      "title": "IFERROR returning empty string instead of 0",
+      "description": "Using \"\" as the IFERROR fallback in T03 causes arithmetic errors in T05 and breaks SUMIFS in T08.",
+      "affected_tasks": ["T03", "T05", "T08"]
+    },
+    {
+      "mistake_id": "CM-03",
+      "title": "IF order wrong in payment status",
+      "description": "Testing G2>0 before G2=D2 means partially-paid invoices get classified as PAID.",
+      "affected_tasks": ["T04"]
+    },
+    {
+      "mistake_id": "CM-04",
+      "title": "Overdue flag ignores outstanding balance",
+      "description": "Using only C2<TODAY() flags fully-paid invoices as OVERDUE because their due dates are in the past.",
+      "affected_tasks": ["T06"]
+    },
+    {
+      "mistake_id": "CM-05",
+      "title": "COUNTIF range includes header",
+      "description": "Using A:A instead of $A$2:$A$16 in T07 may count header cell text if it accidentally matches an Invoice_ID.",
+      "affected_tasks": ["T07"]
+    },
+    {
+      "mistake_id": "CM-06",
+      "title": "SUMIFS sum_range and criteria_range swapped",
+      "description": "Putting the criteria range first in SUMIFS instead of the sum range. SUMIFS syntax is SUMIFS(sum_range, criteria_range1, criteria1, ...).",
+      "affected_tasks": ["T08"]
+    }
+  ],
+
+  "allowed_functions": {
+    "global": ["SUM", "IF", "IFERROR", "IFNA", "AND", "OR", "NOT", "arithmetic"],
+    "lookup": ["XLOOKUP", "VLOOKUP", "HLOOKUP", "INDEX", "MATCH"],
+    "conditional_sum": ["SUMIFS", "SUMIF"],
+    "conditional_count": ["COUNTIFS", "COUNTIF"],
+    "date": ["TODAY", "NOW", "DATE", "EDATE", "EOMONTH", "YEAR", "MONTH", "DAY", "DATEDIF"],
+    "text": ["TEXT", "TRIM", "UPPER", "LOWER", "LEFT", "RIGHT", "MID"],
+    "logical": ["IFS", "SWITCH"],
+    "not_recommended": ["VLOOKUP"],
+    "not_recommended_reason": "VLOOKUP is accepted but XLOOKUP is preferred — more readable and handles left-column lookups"
+  },
+
+  "validation_rules": {
+    "currency_tolerance": 0.01,
+    "text_match_case_sensitive": false,
+    "percentage_tolerance": 0.001,
+    "date_validation_reference_date": "2024-09-15",
+    "accept_formula_variations": true,
+    "formula_variation_note": "Any formula that produces the correct numeric or text output is accepted — we do not enforce a single function"
+  },
+
+  "expected_outputs": {
+    "recon_working_summary": {
+      "total_invoiced": 145815.00,
+      "total_paid": 110025.00,
+      "total_outstanding": 35790.00,
+      "count_paid": 11,
+      "count_partial": 2,
+      "count_outstanding": 2,
+      "count_duplicates": 2,
+      "count_missing_vendor": 1,
+      "count_overdue_as_of_reference_date": 4
+    },
+    "summary_report": {
+      "outstanding_by_vendor": {
+        "Apex Office Solutions":   0.00,
+        "Global Freight Partners": 6400.00,
+        "TechPro Services Ltd":    0.00,
+        "Meridian Consulting":     0.00,
+        "Summit Security Inc":     0.00,
+        "Clearview Analytics":     15000.00,
+        "BlueSky Media Group":     13500.00,
+        "Unknown / Missing Vendor":890.00
+      },
+      "count_by_status": {
+        "PAID": 11,
+        "PARTIAL": 2,
+        "OUTSTANDING": 2
+      },
+      "grand_totals": {
+        "total_invoiced":    145815.00,
+        "total_paid":        110025.00,
+        "total_outstanding": 35790.00,
+        "collection_rate_pct": 75.45
+      }
+    }
+  },
+
+  "workbook_notes": {
+    "generation_instructions": "When generating the Excel workbook from this template, populate Invoices and Payments tabs with the data arrays above. Populate Vendor_Map and Dept_Map reference tabs. In Recon_Working pre-fill columns A (Invoice_ID), B (Invoice_Date), C (Due_Date), D (Invoice_Amount) by referencing the Invoices tab. Leave columns E through K blank for learner input. In Summary_Report pre-fill all row labels in column A and the section headers. Leave column B cells blank for learner formulas.",
+    "formatting_notes": [
+      "Format currency columns with 2 decimal places and thousands separator",
+      "Format date columns as YYYY-MM-DD or locale date",
+      "Apply conditional formatting to Payment_Status column: green for PAID, amber for PARTIAL, red for OUTSTANDING",
+      "Apply conditional formatting to Overdue_Flag: red background for OVERDUE rows",
+      "Apply conditional formatting to Duplicate_Flag: orange background for DUPLICATE rows",
+      "Lock all pre-filled tabs and columns (Invoices, Payments, Vendor_Map, Dept_Map, and pre-filled columns of Recon_Working)"
+    ],
+    "tab_order": ["Invoices", "Payments", "Vendor_Map", "Dept_Map", "Recon_Working", "Summary_Report"],
+    "print_area": "Summary_Report!A1:B25",
+    "reuse_notes": "This scenario template can be reused for other skill branches by changing the data values while keeping the same structure. Variations could include: different industries (retail, manufacturing), different fiscal months, additional criteria columns, or more complex partial payment schedules.",
+    "python_generation_hint": "Use openpyxl or xlsxwriter to generate the workbook. Load tabs from the 'tabs' array. Use 'pre_filled: true' to populate data programmatically and 'learner_editable: false' to protect sheets. Tasks array drives the validation engine.",
+    "database_storage_hint": "Store scenario header fields at the scenario level. Store tabs in a scenario_tabs table. Store tasks in a scenario_tasks table with scenario_id foreign key. Store expected_outputs in a scenario_validations table for the grading engine."
+  }
+}

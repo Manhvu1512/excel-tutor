@@ -1,0 +1,36 @@
+Date,Vendor,Category,Department,GL_Account,Amount
+2024-07-01,Google Ads,Marketing,Marketing,5001,4250.00
+2024-07-02,Delta Airlines,Travel,Sales,5100,892.50
+2024-07-02,Slack,Software,IT,6001,1200.00
+2024-07-03,Staples,Office,Operations,6100,347.85
+2024-07-05,Deloitte,Professional Services,Finance,7001,12500.00
+2024-07-05,Marriott,Travel,Sales,5100,678.00
+2024-07-08,LinkedIn,Marketing,Marketing,5001,2100.00
+2024-07-08,ConEd,Utilities,Operations,6200,1845.20
+2024-07-09,Zoom,Software,IT,6001,450.00
+2024-07-10,Indeed,Marketing,HR,5001,1500.00
+2024-07-11,Uber,Travel,Sales,5100,124.50
+2024-07-12,Adobe,Software,Marketing,6001,599.00
+2024-07-15,Salesforce,Software,Sales,6001,8500.00
+2024-07-15,Google Ads,Marketing,Marketing,5001,3850.00
+2024-07-16,WeWork,Office,Operations,6100,4200.00
+2024-07-22,Facebook Ads,Marketing,Marketing,5001,5400.00
+2024-07-25,American Airlines,Travel,Sales,5100,1450.00
+2024-07-26,PwC,Professional Services,Finance,7001,8500.00
+2024-07-30,Google Ads,Marketing,Marketing,5001,2950.00
+2024-08-01,Atlassian,Software,IT,6001,890.00
+2024-08-05,Delta Airlines,Travel,Sales,5100,1180.00
+2024-08-06,Google Ads,Marketing,Marketing,5001,4100.00
+2024-08-13,EY,Professional Services,Finance,7001,15000.00
+2024-08-14,LinkedIn,Marketing,Marketing,5001,2400.00
+2024-08-16,Facebook Ads,Marketing,Marketing,5001,6200.00
+2024-08-20,Hilton,Travel,Sales,5100,720.00
+2024-08-27,Salesforce,Software,Sales,6001,8500.00
+2024-08-28,Google Ads,Marketing,Marketing,5001,3700.00
+2024-09-02,Microsoft,Software,IT,6001,3200.00
+2024-09-05,Google Ads,Marketing,Marketing,5001,4500.00
+2024-09-06,Deloitte,Professional Services,Finance,7001,11000.00
+2024-09-13,Facebook Ads,Marketing,Marketing,5001,5800.00
+2024-09-16,Hilton,Travel,Sales,5100,1120.00
+2024-09-25,Google Ads,Marketing,Marketing,5001,3950.00
+2024-09-30,PwC,Professional Services,Finance,7001,9500.00

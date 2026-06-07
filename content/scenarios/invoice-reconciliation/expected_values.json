@@ -1,0 +1,46 @@
+{
+  "T01_duplicate_invoice_count": 2,
+  "T01_duplicate_invoice_ids": [
+    "INV-2024-0020",
+    "INV-2024-0064"
+  ],
+  "T02_missing_vendor_count": 2,
+  "T03_total_invoice_amount_with_dupes": 1399507,
+  "T04_total_invoice_amount_unique": 1378423,
+  "T05_total_paid": 853597.12,
+  "T06_total_outstanding": 524825.88,
+  "T07_unpaid_count": 43,
+  "T08_partial_count": 12,
+  "T09_overdue_count": 23,
+  "T10_paid_count": 95,
+  "outstanding_by_vendor": {
+    "V020": 6078,
+    "V012": 4315.5,
+    "V002": 44313.42,
+    "V003": 14558,
+    "V015": 21677.2,
+    "V004": 55154,
+    "V005": 25596.45,
+    "V010": 17337,
+    "V009": 31370,
+    "V019": 48835.45,
+    "V018": 15322.8,
+    "V014": 21575,
+    "V007": 72025,
+    "V016": 13318,
+    "V017": 28753,
+    "V011": 0,
+    "V008": 31511.7,
+    "V006": 37555,
+    "V001": 7294.14,
+    "V013": 10736.22
+  },
+  "status_summary": {
+    "Paid": 95,
+    "Partial": 12,
+    "Unpaid": 43
+  },
+  "total_invoice_rows": 152,
+  "unique_invoice_ids": 150,
+  "total_payment_rows": 112
+}

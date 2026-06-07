@@ -1,0 +1,92 @@
+[
+  {
+    "dept_id": "D01",
+    "dept_name": "Finance",
+    "cost_center": "CC-1001",
+    "manager": "Sarah Mitchell"
+  },
+  {
+    "dept_id": "D02",
+    "dept_name": "Information Technology",
+    "cost_center": "CC-1002",
+    "manager": "James Rowe"
+  },
+  {
+    "dept_id": "D03",
+    "dept_name": "Human Resources",
+    "cost_center": "CC-1003",
+    "manager": "Angela Torres"
+  },
+  {
+    "dept_id": "D04",
+    "dept_name": "Sales",
+    "cost_center": "CC-1004",
+    "manager": "Brian Chen"
+  },
+  {
+    "dept_id": "D05",
+    "dept_name": "Marketing",
+    "cost_center": "CC-1005",
+    "manager": "Priya Nair"
+  },
+  {
+    "dept_id": "D06",
+    "dept_name": "Operations",
+    "cost_center": "CC-1006",
+    "manager": "Derek Walsh"
+  },
+  {
+    "dept_id": "D07",
+    "dept_name": "Legal",
+    "cost_center": "CC-1007",
+    "manager": "Natasha Burke"
+  },
+  {
+    "dept_id": "D08",
+    "dept_name": "Procurement",
+    "cost_center": "CC-1008",
+    "manager": "Carlos Mendez"
+  },
+  {
+    "dept_id": "D09",
+    "dept_name": "Executive",
+    "cost_center": "CC-1009",
+    "manager": "Olivia Grant"
+  },
+  {
+    "dept_id": "D10",
+    "dept_name": "Customer Success",
+    "cost_center": "CC-1010",
+    "manager": "Tom Ashford"
+  },
+  {
+    "dept_id": "D11",
+    "dept_name": "Research & Dev",
+    "cost_center": "CC-1011",
+    "manager": "Helen Park"
+  },
+  {
+    "dept_id": "D12",
+    "dept_name": "Facilities",
+    "cost_center": "CC-1012",
+    "manager": "Ray Sutton"
+  },
+  {
+    "dept_id": "D13",
+    "dept_name": "Product Management",
+    "cost_center": "CC-1013",
+    "manager": "Samira Holt"
+  },
+  {
+    "dept_id": "D14",
+    "dept_name": "Quality Assurance",
+    "cost_center": "CC-1014",
+    "manager": "Liam Foster"
+  },
+  {
+    "dept_id": "D15",
+    "dept_name": "Business Development",
+    "cost_center": "CC-1015",
+    "manager": "Eve Chambers"
+  }
+]

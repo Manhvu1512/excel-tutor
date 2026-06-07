@@ -1,0 +1,224 @@
+{
+  "scenario_id": "real-sales-commission-001",
+  "title": "Monthly Sales Commission Calculator — October Close",
+  "description": "RevOps analyst at CloudPulse Inc. calculates October commissions for 10 reps. CRM export has a cancelled deal, a zero-amount deal, a deal-type typo, and a 50/50 co-sell split. One rep joined mid-month (prorated quota). One rep has a clawback. One rep hits the $25,000 cap.",
+
+  "sheets": [
+    {
+      "name": "Deals",
+      "role": "Raw CRM export — source data for all revenue aggregation",
+      "columns": [
+        { "name": "DealID",    "col": "A", "format": "text",    "notes": "Unique deal identifier (D-1001 to D-1047, including D-1031B for split)" },
+        { "name": "RepID",     "col": "B", "format": "text",    "notes": "Foreign key to RepMaster col A (R001–R010)" },
+        { "name": "CloseDate", "col": "C", "format": "date",    "notes": "ISO date string YYYY-MM-DD" },
+        { "name": "DealType",  "col": "D", "format": "text",    "notes": "Valid values: New Business, Renewal, Expansion. D-1046 has typo 'New Biz'" },
+        { "name": "Amount",    "col": "E", "format": "number",  "notes": "Contract value in USD. D-1047 has Amount=0" },
+        { "name": "SplitPct",  "col": "F", "format": "decimal", "notes": "1.0 for sole deals; 0.5 for D-1031 (R001) and D-1031B (R005) — same contract split between two reps" },
+        { "name": "Status",    "col": "G", "format": "text",    "notes": "Active or Cancelled. D-1023 (R003) is Cancelled" },
+        { "name": "AuditFlag", "col": "H", "format": "text",    "notes": "LEARNER FILLS T01. 'Include' or 'Exclude'. Exclude if: Cancelled, Amount=0, or DealType not in valid set" }
+      ],
+      "data_characteristics": [
+        "47 deal rows (rows 2-48), header in row 1",
+        "Three deals must be excluded: D-1023 (Cancelled), D-1046 (DealType='New Biz' typo), D-1047 (Amount=0)",
+        "D-1031 and D-1031B represent the same $40,000 contract split 50/50 — two separate rows, same CloseDate, SplitPct=0.5 each",
+        "SUMPRODUCT on Amount*SplitPct correctly handles splits; plain SUMIFS on Amount would double-count D-1031 for Sarah and Jamie"
+      ]
+    },
+    {
+      "name": "RepMaster",
+      "role": "Reference — rep attributes for lookup tasks",
+      "columns": [
+        { "name": "RepID",           "col": "A", "format": "text",    "notes": "Primary key R001–R010" },
+        { "name": "RepName",         "col": "B", "format": "text",    "notes": "R006 'Jordan  Lee' has a double-space — TRIM required in T02" },
+        { "name": "PlanType",        "col": "C", "format": "text",    "notes": "Standard or Accelerator" },
+        { "name": "AnnualQuota",     "col": "D", "format": "number",  "notes": "Annual quota in USD (divide by 12 for monthly)" },
+        { "name": "HireDate",        "col": "E", "format": "text",    "notes": "ISO date string. R010 hired 2024-10-15" },
+        { "name": "Region",          "col": "F", "format": "text",    "notes": "West / East / Central" },
+        { "name": "ProrationFactor", "col": "G", "format": "decimal", "notes": "Pre-computed: 1.0 for all full-month reps; 17/31 ≈ 0.5484 for R010 (hired Oct 15)" }
+      ],
+      "data_characteristics": [
+        "10 rows (rows 2-11), header in row 1",
+        "R006 'Jordan  Lee' has a literal double-space between first and last name — TRIM() in T02 removes it",
+        "R010 Alex Chen ProrationFactor = 17/31 = 0.548387... — days from Oct 15 to Oct 31 inclusive divided by 31",
+        "ProrationFactor is pre-computed to avoid DATE math complexity in Univer"
+      ]
+    },
+    {
+      "name": "CommissionRates",
+      "role": "Reference — NB tier table (rows 2-5) and flat rates (rows 8-9)",
+      "columns": [
+        { "name": "TierMin",         "col": "A", "format": "decimal", "notes": "0, 0.5, 0.8, 1.0 — sorted ascending for VLOOKUP approx match. NULL for flat rates." },
+        { "name": "StandardRate",    "col": "B", "format": "decimal", "notes": "NB rate for Standard plan per tier: 0.07/0.10/0.12/0.15" },
+        { "name": "AcceleratorRate", "col": "C", "format": "decimal", "notes": "NB rate for Accelerator plan per tier: 0.08/0.12/0.15/0.18" },
+        { "name": "Label",           "col": "D", "format": "text",    "notes": "Human-readable tier label (0-50%, 50-80%, etc.)" },
+        { "name": "DealType",        "col": "E", "format": "text",    "notes": "New Business for tier rows; Renewal or Expansion for flat rate rows" }
+      ],
+      "data_characteristics": [
+        "NB tier rows 2-5 sorted ascending by TierMin — required for VLOOKUP TRUE (approximate match)",
+        "VLOOKUP(attainment, A2:C5, col, TRUE) finds the largest TierMin <= attainment",
+        "Flat rate rows 8-9: Standard Renewal 5%, Accelerator Renewal 7%, Standard Expansion 8%, Accelerator Expansion 10%",
+        "No rounding in the rates — they are exact decimals"
+      ]
+    },
+    {
+      "name": "Commission_Calculator",
+      "role": "Learner workspace — one row per rep, columns B-K and M are formula tasks",
+      "columns": [
+        { "name": "RepID",            "col": "A",  "format": "text",    "notes": "Pre-filled R001–R010" },
+        { "name": "RepName",          "col": "B",  "format": "text",    "notes": "T02: XLOOKUP+TRIM from RepMaster" },
+        { "name": "PlanType",         "col": "C",  "format": "text",    "notes": "T03: XLOOKUP from RepMaster" },
+        { "name": "AdjMonthlyQuota",  "col": "D",  "format": "number",  "notes": "T04: AnnualQuota/12 * ProrationFactor" },
+        { "name": "NBRevenue",        "col": "E",  "format": "number",  "notes": "T05: SUMPRODUCT(NB included deals, Amount*SplitPct)" },
+        { "name": "RenewalRevenue",   "col": "F",  "format": "number",  "notes": "T06: SUMPRODUCT Renewal" },
+        { "name": "ExpansionRevenue", "col": "G",  "format": "number",  "notes": "T07: SUMPRODUCT Expansion" },
+        { "name": "DealCount",        "col": "H",  "format": "integer", "notes": "T08: COUNTIFS included deals" },
+        { "name": "QuotaAttainment",  "col": "I",  "format": "percent", "notes": "T09: E/D — NB / AdjQuota" },
+        { "name": "CommissionRate",   "col": "J",  "format": "percent", "notes": "T10: VLOOKUP approx match into CommissionRates NB tier table" },
+        { "name": "BaseCommission",   "col": "K",  "format": "number",  "notes": "T11: E*J + F*flatRenewal + G*flatExpansion, flat rates by plan type" },
+        { "name": "ClawbackAdj",      "col": "L",  "format": "number",  "notes": "Pre-filled: -1200 for R003 Jennifer Walsh, 0 for all others" },
+        { "name": "FinalCommission",  "col": "M",  "format": "number",  "notes": "T12: MIN(K+L, 25000)" }
+      ],
+      "data_characteristics": [
+        "10 data rows (rows 2-11), one per rep",
+        "Column A (RepID) and Column L (ClawbackAdj) are pre-filled read-only",
+        "R003 row 4 has ClawbackAdj = -1200",
+        "R008 Michael Torres FinalCommission is capped at 25000 (BaseCommission = 25700)"
+      ]
+    },
+    {
+      "name": "Settings",
+      "role": "Reference — plan configuration constants",
+      "columns": [
+        { "name": "Setting", "col": "A", "format": "text",   "notes": "Setting name" },
+        { "name": "Value",   "col": "B", "format": "varies", "notes": "CommissionCap=25000, flat rates for reference" }
+      ],
+      "data_characteristics": [
+        "CommissionCap is 25000 — learner can reference Settings!$B$2 or use literal 25000 in T12",
+        "Flat rates also listed here for reference but learner can hardcode them in T11"
+      ]
+    }
+  ],
+
+  "tasks": [
+    {
+      "id": "T01",
+      "number": 1,
+      "title": "Flag Problem Deals",
+      "answer_sheet": "Deals",
+      "answer_range": "H2:H48",
+      "controllerAsk": "Fill H2:H48 in the Deals sheet with 'Include' or 'Exclude'. Exclude a deal if Status is 'Cancelled', Amount is $0, or DealType is not one of the three valid types. All other deals should be 'Include'.",
+      "tutorFocus": "=IF(OR(G2=\"Cancelled\",E2=0,AND(D2<>\"New Business\",D2<>\"Renewal\",D2<>\"Expansion\")),\"Exclude\",\"Include\")",
+      "sample_expected": ["Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Include","Exclude","Include","Include"]
+    },
+    {
+      "id": "T02",
+      "number": 2,
+      "title": "Look Up Rep Names (with TRIM)",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "B2:B11",
+      "controllerAsk": "Fill B2:B11 with each rep's name from RepMaster. Use TRIM to clean a hidden double-space.",
+      "tutorFocus": "=TRIM(XLOOKUP(A2,RepMaster!$A:$A,RepMaster!$B:$B))",
+      "sample_expected": ["Sarah Chen","Marcus Williams","Jennifer Walsh","David Martinez","Jamie Park","Jordan Lee","Aisha Thompson","Michael Torres","Rachel Kim","Alex Chen"]
+    },
+    {
+      "id": "T03",
+      "number": 3,
+      "title": "Look Up Plan Types",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "C2:C11",
+      "controllerAsk": "Fill C2:C11 with each rep's plan type from RepMaster.",
+      "tutorFocus": "=XLOOKUP(A2,RepMaster!$A:$A,RepMaster!$C:$C)",
+      "sample_expected": ["Standard","Standard","Accelerator","Standard","Accelerator","Standard","Standard","Accelerator","Standard","Standard"]
+    },
+    {
+      "id": "T04",
+      "number": 4,
+      "title": "Calculate Adjusted Monthly Quota",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "D2:D11",
+      "controllerAsk": "Fill D2:D11 with AnnualQuota/12 * ProrationFactor from RepMaster. One rep gets a prorated quota.",
+      "tutorFocus": "=XLOOKUP(A2,RepMaster!$A:$A,RepMaster!$D:$D)/12*XLOOKUP(A2,RepMaster!$A:$A,RepMaster!$G:$G)",
+      "sample_expected": [60000,50000,70000,55000,65000,50000,60000,75000,45000,27419.35]
+    },
+    {
+      "id": "T05",
+      "number": 5,
+      "title": "Sum New Business Revenue (SUMPRODUCT)",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "E2:E11",
+      "controllerAsk": "Fill E2:E11 with each rep's NB revenue from included deals, multiplying Amount by SplitPct to handle splits.",
+      "tutorFocus": "=SUMPRODUCT((Deals!$B$2:$B$48=A2)*(Deals!$D$2:$D$48=\"New Business\")*(Deals!$H$2:$H$48=\"Include\")*Deals!$E$2:$E$48*Deals!$F$2:$F$48)",
+      "sample_expected": [48000,30000,66500,24750,71500,35000,51000,120000,24750,17800]
+    },
+    {
+      "id": "T06",
+      "number": 6,
+      "title": "Sum Renewal Revenue",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "F2:F11",
+      "controllerAsk": "Fill F2:F11 with each rep's total Renewal revenue from included deals.",
+      "tutorFocus": "=SUMPRODUCT((Deals!$B$2:$B$48=A2)*(Deals!$D$2:$D$48=\"Renewal\")*(Deals!$H$2:$H$48=\"Include\")*Deals!$E$2:$E$48*Deals!$F$2:$F$48)",
+      "sample_expected": [18000,22000,25000,20000,28000,16000,19000,30000,17000,8000]
+    },
+    {
+      "id": "T07",
+      "number": 7,
+      "title": "Sum Expansion Revenue",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "G2:G11",
+      "controllerAsk": "Fill G2:G11 with each rep's total Expansion revenue from included deals. One rep returns 0 — this is correct.",
+      "tutorFocus": "=SUMPRODUCT((Deals!$B$2:$B$48=A2)*(Deals!$D$2:$D$48=\"Expansion\")*(Deals!$H$2:$H$48=\"Include\")*Deals!$E$2:$E$48*Deals!$F$2:$F$48)",
+      "sample_expected": [10000,14000,18000,12000,15000,9000,11000,20000,13000,0]
+    },
+    {
+      "id": "T08",
+      "number": 8,
+      "title": "Count Closed Deals per Rep",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "H2:H11",
+      "controllerAsk": "Fill H2:H11 with each rep's count of included deals (any type).",
+      "tutorFocus": "=COUNTIFS(Deals!$B$2:$B$48,A2,Deals!$H$2:$H$48,\"Include\")",
+      "sample_expected": [4,4,4,4,5,4,4,8,4,3]
+    },
+    {
+      "id": "T09",
+      "number": 9,
+      "title": "Calculate Quota Attainment",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "I2:I11",
+      "controllerAsk": "Fill I2:I11 with each rep's NB quota attainment as a decimal (NB Revenue / Adjusted Quota). Format as %.",
+      "tutorFocus": "=E2/D2",
+      "sample_expected": [0.8,0.6,0.95,0.45,1.1,0.7,0.85,1.6,0.55,0.649]
+    },
+    {
+      "id": "T10",
+      "number": 10,
+      "title": "Look Up Commission Rate (Approx Match)",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "J2:J11",
+      "controllerAsk": "Fill J2:J11 with each rep's NB commission rate using VLOOKUP approximate match on the CommissionRates table. Rate column depends on plan type.",
+      "tutorFocus": "=IF(C2=\"Accelerator\",VLOOKUP(I2,CommissionRates!$A$2:$C$5,3,TRUE),VLOOKUP(I2,CommissionRates!$A$2:$B$5,2,TRUE))",
+      "sample_expected": [0.12,0.10,0.15,0.07,0.18,0.10,0.12,0.18,0.10,0.10]
+    },
+    {
+      "id": "T11",
+      "number": 11,
+      "title": "Calculate Base Commission",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "K2:K11",
+      "controllerAsk": "Fill K2:K11 with total base commission: NB×rate + Renewal×flat + Expansion×flat. Flat rates differ by plan type.",
+      "tutorFocus": "=E2*J2+F2*IF(C2=\"Accelerator\",0.07,0.05)+G2*IF(C2=\"Accelerator\",0.10,0.08)",
+      "sample_expected": [7460,5220,13525,3692.5,16330,5020,7950,25700,4365,2180]
+    },
+    {
+      "id": "T12",
+      "number": 12,
+      "title": "Apply Cap and Clawback for Final Commission",
+      "answer_sheet": "Commission_Calculator",
+      "answer_range": "M2:M11",
+      "controllerAsk": "Fill M2:M11 with final commission = MIN(BaseCommission + ClawbackAdj, 25000). Col L is pre-filled with clawback amounts.",
+      "tutorFocus": "=MIN(K2+L2,25000)",
+      "sample_expected": [7460,5220,12325,3692.5,16330,5020,7950,25000,4365,2180]
+    }
+  ]
+}

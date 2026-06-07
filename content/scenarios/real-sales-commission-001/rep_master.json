@@ -1,0 +1,12 @@
+[
+  {"rep_id":"R001","rep_name":"Sarah Chen","plan_type":"Standard","annual_quota":720000,"hire_date":"2022-03-15","region":"West","proration_factor":1.0},
+  {"rep_id":"R002","rep_name":"Marcus Williams","plan_type":"Standard","annual_quota":600000,"hire_date":"2021-06-01","region":"East","proration_factor":1.0},
+  {"rep_id":"R003","rep_name":"Jennifer Walsh","plan_type":"Accelerator","annual_quota":840000,"hire_date":"2020-09-12","region":"Central","proration_factor":1.0},
+  {"rep_id":"R004","rep_name":"David Martinez","plan_type":"Standard","annual_quota":660000,"hire_date":"2022-01-20","region":"West","proration_factor":1.0},
+  {"rep_id":"R005","rep_name":"Jamie Park","plan_type":"Accelerator","annual_quota":780000,"hire_date":"2021-11-08","region":"East","proration_factor":1.0},
+  {"rep_id":"R006","rep_name":"Jordan  Lee","plan_type":"Standard","annual_quota":600000,"hire_date":"2023-04-03","region":"Central","proration_factor":1.0},
+  {"rep_id":"R007","rep_name":"Aisha Thompson","plan_type":"Standard","annual_quota":720000,"hire_date":"2022-08-15","region":"East","proration_factor":1.0},
+  {"rep_id":"R008","rep_name":"Michael Torres","plan_type":"Accelerator","annual_quota":900000,"hire_date":"2019-05-22","region":"West","proration_factor":1.0},
+  {"rep_id":"R009","rep_name":"Rachel Kim","plan_type":"Standard","annual_quota":540000,"hire_date":"2023-07-10","region":"Central","proration_factor":1.0},
+  {"rep_id":"R010","rep_name":"Alex Chen","plan_type":"Standard","annual_quota":600000,"hire_date":"2024-10-15","region":"West","proration_factor":0.5483870968}
+]

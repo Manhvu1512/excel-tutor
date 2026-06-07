@@ -1,0 +1,1522 @@
+[
+  {
+    "invoice_id": "INV-2024-0001",
+    "invoice_date": "2024-07-09",
+    "due_date": "2024-08-08",
+    "vendor_id": "V020",
+    "dept_id": "D04",
+    "amount": 6508,
+    "description": "Facilities services - 2024-07",
+    "po_number": "PO-637"
+  },
+  {
+    "invoice_id": "INV-2024-0002",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-09-30",
+    "vendor_id": "V012",
+    "dept_id": "D09",
+    "amount": 3096,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-089"
+  },
+  {
+    "invoice_id": "INV-2024-0003",
+    "invoice_date": "2024-07-24",
+    "due_date": "2024-09-07",
+    "vendor_id": "V002",
+    "dept_id": "D03",
+    "amount": 18017,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-660"
+  },
+  {
+    "invoice_id": "INV-2024-0004",
+    "invoice_date": "2024-08-17",
+    "due_date": "2024-09-16",
+    "vendor_id": "V003",
+    "dept_id": "D13",
+    "amount": 22522,
+    "description": "Analytics services - 2024-08",
+    "po_number": "PO-967"
+  },
+  {
+    "invoice_id": "INV-2024-0005",
+    "invoice_date": "2024-07-20",
+    "due_date": "2024-09-03",
+    "vendor_id": "V015",
+    "dept_id": "D06",
+    "amount": 9062,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-863"
+  },
+  {
+    "invoice_id": "INV-2024-0006",
+    "invoice_date": "2024-07-19",
+    "due_date": "2024-08-03",
+    "vendor_id": "V004",
+    "dept_id": "D11",
+    "amount": 25096,
+    "description": "Supplies services - 2024-07",
+    "po_number": "PO-940"
+  },
+  {
+    "invoice_id": "INV-2024-0007",
+    "invoice_date": "2024-07-19",
+    "due_date": "2024-08-18",
+    "vendor_id": "V005",
+    "dept_id": "D10",
+    "amount": 2830,
+    "description": "Logistics services - 2024-07",
+    "po_number": "PO-706"
+  },
+  {
+    "invoice_id": "INV-2024-0008",
+    "invoice_date": "2024-08-14",
+    "due_date": "2024-09-28",
+    "vendor_id": "V010",
+    "dept_id": "D05",
+    "amount": 1565,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-218"
+  },
+  {
+    "invoice_id": "INV-2024-0009",
+    "invoice_date": "2024-08-08",
+    "due_date": "2024-09-07",
+    "vendor_id": "V009",
+    "dept_id": "D04",
+    "amount": 8529,
+    "description": "Security services - 2024-08",
+    "po_number": "PO-875"
+  },
+  {
+    "invoice_id": "INV-2024-0010",
+    "invoice_date": "2024-08-29",
+    "due_date": "2024-10-13",
+    "vendor_id": "V012",
+    "dept_id": "D06",
+    "amount": 1822,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-302"
+  },
+  {
+    "invoice_id": "INV-2024-0011",
+    "invoice_date": "2024-07-21",
+    "due_date": "2024-09-04",
+    "vendor_id": "V012",
+    "dept_id": "D05",
+    "amount": 2439,
+    "description": "Marketing services - 2024-07",
+    "po_number": "PO-933"
+  },
+  {
+    "invoice_id": "INV-2024-0012",
+    "invoice_date": "2024-08-08",
+    "due_date": "2024-09-07",
+    "vendor_id": "V003",
+    "dept_id": "D02",
+    "amount": 2091,
+    "description": "Analytics services - 2024-08",
+    "po_number": "PO-801"
+  },
+  {
+    "invoice_id": "INV-2024-0013",
+    "invoice_date": "2024-08-21",
+    "due_date": "2024-09-20",
+    "vendor_id": "V009",
+    "dept_id": "D08",
+    "amount": 9675,
+    "description": "Security services - 2024-08",
+    "po_number": "PO-923"
+  },
+  {
+    "invoice_id": "INV-2024-0014",
+    "invoice_date": "2024-08-07",
+    "due_date": "2024-09-06",
+    "vendor_id": "V019",
+    "dept_id": "D05",
+    "amount": 25073,
+    "description": "Accounting services - 2024-08",
+    "po_number": "PO-255"
+  },
+  {
+    "invoice_id": "INV-2024-0015",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-08-31",
+    "vendor_id": "V018",
+    "dept_id": "D06",
+    "amount": 3087,
+    "description": "Logistics services - 2024-08",
+    "po_number": "PO-758"
+  },
+  {
+    "invoice_id": "INV-2024-0016",
+    "invoice_date": "2024-08-03",
+    "due_date": "2024-08-18",
+    "vendor_id": "V014",
+    "dept_id": "D08",
+    "amount": 20035,
+    "description": "Catering services - 2024-08",
+    "po_number": "PO-393"
+  },
+  {
+    "invoice_id": "INV-2024-0017",
+    "invoice_date": "2024-08-02",
+    "due_date": "2024-09-16",
+    "vendor_id": "V002",
+    "dept_id": "D05",
+    "amount": 20029,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-864"
+  },
+  {
+    "invoice_id": "INV-2024-0018",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-09-15",
+    "vendor_id": "V019",
+    "dept_id": "D15",
+    "amount": 3025,
+    "description": "Accounting services - 2024-08",
+    "po_number": "PO-912"
+  },
+  {
+    "invoice_id": "INV-2024-0019",
+    "invoice_date": "2024-07-02",
+    "due_date": "2024-08-16",
+    "vendor_id": "V007",
+    "dept_id": "D09",
+    "amount": 2479,
+    "description": "Marketing services - 2024-07",
+    "po_number": "PO-236"
+  },
+  {
+    "invoice_id": "INV-2024-0020",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-09-15",
+    "vendor_id": "V016",
+    "dept_id": "D09",
+    "amount": 5048,
+    "description": "Training services - 2024-08",
+    "po_number": "PO-625"
+  },
+  {
+    "invoice_id": "INV-2024-0021",
+    "invoice_date": "2024-08-11",
+    "due_date": "2024-08-26",
+    "vendor_id": "V014",
+    "dept_id": "D15",
+    "amount": 1879,
+    "description": "Catering services - 2024-08",
+    "po_number": "PO-560"
+  },
+  {
+    "invoice_id": "INV-2024-0022",
+    "invoice_date": "2024-07-09",
+    "due_date": "2024-08-23",
+    "vendor_id": "V002",
+    "dept_id": "D05",
+    "amount": 14584,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-119"
+  },
+  {
+    "invoice_id": "INV-2024-0023",
+    "invoice_date": "2024-07-20",
+    "due_date": "2024-08-19",
+    "vendor_id": "V017",
+    "dept_id": "D03",
+    "amount": 9051,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-918"
+  },
+  {
+    "invoice_id": "INV-2024-0024",
+    "invoice_date": "2024-08-08",
+    "due_date": "2024-09-07",
+    "vendor_id": "V003",
+    "dept_id": "D12",
+    "amount": 14558,
+    "description": "Analytics services - 2024-08",
+    "po_number": "PO-654"
+  },
+  {
+    "invoice_id": "INV-2024-0025",
+    "invoice_date": "2024-08-17",
+    "due_date": "2024-09-01",
+    "vendor_id": "V004",
+    "dept_id": "D02",
+    "amount": 22512,
+    "description": "Supplies services - 2024-08",
+    "po_number": "PO-168"
+  },
+  {
+    "invoice_id": "INV-2024-0026",
+    "invoice_date": "2024-08-24",
+    "due_date": "2024-09-23",
+    "vendor_id": "V011",
+    "dept_id": "D07",
+    "amount": 1554,
+    "description": "Facilities services - 2024-08",
+    "po_number": "PO-054"
+  },
+  {
+    "invoice_id": "INV-2024-0027",
+    "invoice_date": "2024-08-10",
+    "due_date": "2024-09-24",
+    "vendor_id": "V002",
+    "dept_id": "D05",
+    "amount": 13050,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-061"
+  },
+  {
+    "invoice_id": "INV-2024-0028",
+    "invoice_date": "2024-07-16",
+    "due_date": "2024-08-15",
+    "vendor_id": "V016",
+    "dept_id": "D04",
+    "amount": 22518,
+    "description": "Training services - 2024-07",
+    "po_number": "PO-937"
+  },
+  {
+    "invoice_id": "INV-2024-0029",
+    "invoice_date": "2024-08-06",
+    "due_date": "2024-09-05",
+    "vendor_id": "V016",
+    "dept_id": "D15",
+    "amount": 1598,
+    "description": "Training services - 2024-08",
+    "po_number": "PO-092"
+  },
+  {
+    "invoice_id": "INV-2024-0030",
+    "invoice_date": "2024-07-30",
+    "due_date": "2024-08-29",
+    "vendor_id": "V008",
+    "dept_id": "D12",
+    "amount": 7290,
+    "description": "Legal services - 2024-07",
+    "po_number": "PO-133"
+  },
+  {
+    "invoice_id": "INV-2024-0031",
+    "invoice_date": "2024-07-04",
+    "due_date": "2024-08-18",
+    "vendor_id": "V010",
+    "dept_id": "D07",
+    "amount": 1299,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-288"
+  },
+  {
+    "invoice_id": "INV-2024-0032",
+    "invoice_date": "2024-08-06",
+    "due_date": "2024-09-05",
+    "vendor_id": "V008",
+    "dept_id": "D12",
+    "amount": 14500,
+    "description": "Legal services - 2024-08",
+    "po_number": "PO-385"
+  },
+  {
+    "invoice_id": "INV-2024-0033",
+    "invoice_date": "2024-07-04",
+    "due_date": "2024-07-19",
+    "vendor_id": "V014",
+    "dept_id": "D12",
+    "amount": 13011,
+    "description": "Catering services - 2024-07",
+    "po_number": "PO-696"
+  },
+  {
+    "invoice_id": "INV-2024-0034",
+    "invoice_date": "2024-07-15",
+    "due_date": "2024-08-14",
+    "vendor_id": "V006",
+    "dept_id": "D04",
+    "amount": 20047,
+    "description": "HR Services services - 2024-07",
+    "po_number": "PO-751"
+  },
+  {
+    "invoice_id": "INV-2024-0035",
+    "invoice_date": "2024-08-29",
+    "due_date": "2024-09-28",
+    "vendor_id": "V016",
+    "dept_id": "D11",
+    "amount": 4513,
+    "description": "Training services - 2024-08",
+    "po_number": "PO-756"
+  },
+  {
+    "invoice_id": "INV-2024-0036",
+    "invoice_date": "2024-07-01",
+    "due_date": "2024-08-15",
+    "vendor_id": "V002",
+    "dept_id": "D08",
+    "amount": 2795,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-075"
+  },
+  {
+    "invoice_id": "INV-2024-0037",
+    "invoice_date": "2024-08-03",
+    "due_date": "2024-09-02",
+    "vendor_id": "V008",
+    "dept_id": "D09",
+    "amount": 4073,
+    "description": "Legal services - 2024-08",
+    "po_number": "PO-092"
+  },
+  {
+    "invoice_id": "INV-2024-0038",
+    "invoice_date": "2024-07-23",
+    "due_date": "2024-08-22",
+    "vendor_id": "V017",
+    "dept_id": "D08",
+    "amount": 4507,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-388"
+  },
+  {
+    "invoice_id": "INV-2024-0039",
+    "invoice_date": "2024-07-05",
+    "due_date": "2024-08-19",
+    "vendor_id": "V015",
+    "dept_id": "D15",
+    "amount": 13057,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-596"
+  },
+  {
+    "invoice_id": "INV-2024-0040",
+    "invoice_date": "2024-07-05",
+    "due_date": "2024-07-20",
+    "vendor_id": "V014",
+    "dept_id": "D08",
+    "amount": 6005,
+    "description": "Catering services - 2024-07",
+    "po_number": "PO-006"
+  },
+  {
+    "invoice_id": "INV-2024-0041",
+    "invoice_date": "2024-07-29",
+    "due_date": "2024-08-28",
+    "vendor_id": "V020",
+    "dept_id": "D04",
+    "amount": 10072,
+    "description": "Facilities services - 2024-07",
+    "po_number": "PO-651"
+  },
+  {
+    "invoice_id": "INV-2024-0042",
+    "invoice_date": "2024-08-29",
+    "due_date": "2024-10-13",
+    "vendor_id": "V012",
+    "dept_id": "D13",
+    "amount": 2000,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-953"
+  },
+  {
+    "invoice_id": "INV-2024-0043",
+    "invoice_date": "2024-07-17",
+    "due_date": "2024-08-16",
+    "vendor_id": "V001",
+    "dept_id": "D08",
+    "amount": 9666,
+    "description": "Consulting services - 2024-07",
+    "po_number": "PO-498"
+  },
+  {
+    "invoice_id": "INV-2024-0044",
+    "invoice_date": "2024-08-24",
+    "due_date": "2024-09-08",
+    "vendor_id": "V014",
+    "dept_id": "D11",
+    "amount": 1550,
+    "description": "Catering services - 2024-08",
+    "po_number": "PO-787"
+  },
+  {
+    "invoice_id": "INV-2024-0045",
+    "invoice_date": "2024-08-18",
+    "due_date": "2024-09-17",
+    "vendor_id": "V016",
+    "dept_id": "D10",
+    "amount": 8082,
+    "description": "Training services - 2024-08",
+    "po_number": "PO-198"
+  },
+  {
+    "invoice_id": "INV-2024-0046",
+    "invoice_date": "2024-07-27",
+    "due_date": "2024-08-26",
+    "vendor_id": "V017",
+    "dept_id": "D05",
+    "amount": 4540,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-351"
+  },
+  {
+    "invoice_id": "INV-2024-0047",
+    "invoice_date": "2024-07-14",
+    "due_date": "2024-08-13",
+    "vendor_id": "V001",
+    "dept_id": "D09",
+    "amount": 2009,
+    "description": "Consulting services - 2024-07",
+    "po_number": "PO-126"
+  },
+  {
+    "invoice_id": "INV-2024-0048",
+    "invoice_date": "2024-07-15",
+    "due_date": "2024-08-14",
+    "vendor_id": "V011",
+    "dept_id": "D12",
+    "amount": 9699,
+    "description": "Facilities services - 2024-07",
+    "po_number": "PO-434"
+  },
+  {
+    "invoice_id": "INV-2024-0049",
+    "invoice_date": "2024-08-05",
+    "due_date": "2024-09-19",
+    "vendor_id": "V007",
+    "dept_id": "D08",
+    "amount": 8595,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-696"
+  },
+  {
+    "invoice_id": "INV-2024-0050",
+    "invoice_date": "2024-07-10",
+    "due_date": "2024-08-24",
+    "vendor_id": "V002",
+    "dept_id": "D10",
+    "amount": 22585,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-068"
+  },
+  {
+    "invoice_id": "INV-2024-0051",
+    "invoice_date": "2024-08-08",
+    "due_date": "2024-09-07",
+    "vendor_id": "V016",
+    "dept_id": "D04",
+    "amount": 10074,
+    "description": "Training services - 2024-08",
+    "po_number": "PO-287"
+  },
+  {
+    "invoice_id": "INV-2024-0052",
+    "invoice_date": "2024-08-27",
+    "due_date": "2024-09-26",
+    "vendor_id": "V019",
+    "dept_id": "D01",
+    "amount": 17516,
+    "description": "Accounting services - 2024-08",
+    "po_number": "PO-058"
+  },
+  {
+    "invoice_id": "INV-2024-0053",
+    "invoice_date": "2024-08-13",
+    "due_date": "2024-09-27",
+    "vendor_id": "V007",
+    "dept_id": "D04",
+    "amount": 12078,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-322"
+  },
+  {
+    "invoice_id": "INV-2024-0054",
+    "invoice_date": "2024-07-05",
+    "due_date": "2024-08-04",
+    "vendor_id": "V003",
+    "dept_id": "D06",
+    "amount": 4050,
+    "description": "Analytics services - 2024-07",
+    "po_number": "PO-944"
+  },
+  {
+    "invoice_id": "INV-2024-0055",
+    "invoice_date": "2024-07-02",
+    "due_date": "2024-07-17",
+    "vendor_id": "V018",
+    "dept_id": "D06",
+    "amount": 15013,
+    "description": "Logistics services - 2024-07",
+    "po_number": "PO-426"
+  },
+  {
+    "invoice_id": "INV-2024-0056",
+    "invoice_date": "2024-07-30",
+    "due_date": "2024-08-29",
+    "vendor_id": "V005",
+    "dept_id": "D10",
+    "amount": 6080,
+    "description": "Logistics services - 2024-07",
+    "po_number": "PO-110"
+  },
+  {
+    "invoice_id": "INV-2024-0057",
+    "invoice_date": "2024-07-07",
+    "due_date": "2024-08-06",
+    "vendor_id": "V005",
+    "dept_id": "D11",
+    "amount": 6549,
+    "description": "Logistics services - 2024-07",
+    "po_number": "PO-541"
+  },
+  {
+    "invoice_id": "INV-2024-0058",
+    "invoice_date": "2024-08-03",
+    "due_date": "2024-09-02",
+    "vendor_id": "V008",
+    "dept_id": "D08",
+    "amount": 18062,
+    "description": "Legal services - 2024-08",
+    "po_number": "PO-429"
+  },
+  {
+    "invoice_id": "INV-2024-0059",
+    "invoice_date": "2024-08-27",
+    "due_date": "2024-10-11",
+    "vendor_id": "V007",
+    "dept_id": "D13",
+    "amount": 12036,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-899"
+  },
+  {
+    "invoice_id": "INV-2024-0060",
+    "invoice_date": "2024-08-17",
+    "due_date": "2024-09-16",
+    "vendor_id": "V019",
+    "dept_id": "D15",
+    "amount": 11594,
+    "description": "Accounting services - 2024-08",
+    "po_number": "PO-724"
+  },
+  {
+    "invoice_id": "INV-2024-0061",
+    "invoice_date": "2024-08-14",
+    "due_date": "2024-09-28",
+    "vendor_id": "V012",
+    "dept_id": "D01",
+    "amount": 14572,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-584"
+  },
+  {
+    "invoice_id": "INV-2024-0062",
+    "invoice_date": "2024-08-29",
+    "due_date": "2024-10-13",
+    "vendor_id": "V012",
+    "dept_id": "D03",
+    "amount": 1570,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-459"
+  },
+  {
+    "invoice_id": "INV-2024-0063",
+    "invoice_date": "2024-07-08",
+    "due_date": "2024-08-07",
+    "vendor_id": "V011",
+    "dept_id": "D02",
+    "amount": 15041,
+    "description": "Facilities services - 2024-07",
+    "po_number": "PO-375"
+  },
+  {
+    "invoice_id": "INV-2024-0064",
+    "invoice_date": "2024-08-18",
+    "due_date": "2024-09-17",
+    "vendor_id": "V011",
+    "dept_id": "D01",
+    "amount": 16036,
+    "description": "Facilities services - 2024-08",
+    "po_number": "PO-710"
+  },
+  {
+    "invoice_id": "INV-2024-0065",
+    "invoice_date": "2024-07-17",
+    "due_date": "2024-08-01",
+    "vendor_id": "V014",
+    "dept_id": "D02",
+    "amount": 1540,
+    "description": "Catering services - 2024-07",
+    "po_number": "PO-633"
+  },
+  {
+    "invoice_id": "INV-2024-0066",
+    "invoice_date": "2024-08-30",
+    "due_date": "2024-09-29",
+    "vendor_id": "V005",
+    "dept_id": "D10",
+    "amount": 3515,
+    "description": "Logistics services - 2024-08",
+    "po_number": "PO-725"
+  },
+  {
+    "invoice_id": "INV-2024-0067",
+    "invoice_date": "2024-08-07",
+    "due_date": "2024-09-06",
+    "vendor_id": "V013",
+    "dept_id": "D13",
+    "amount": 15067,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-785"
+  },
+  {
+    "invoice_id": "INV-2024-0068",
+    "invoice_date": "2024-08-09",
+    "due_date": "2024-09-08",
+    "vendor_id": "V006",
+    "dept_id": "D15",
+    "amount": 8576,
+    "description": "HR Services services - 2024-08",
+    "po_number": "PO-827"
+  },
+  {
+    "invoice_id": "INV-2024-0069",
+    "invoice_date": "2024-07-08",
+    "due_date": "2024-07-23",
+    "vendor_id": "V014",
+    "dept_id": "D13",
+    "amount": 2480,
+    "description": "Catering services - 2024-07",
+    "po_number": "PO-615"
+  },
+  {
+    "invoice_id": "INV-2024-0070",
+    "invoice_date": "2024-07-03",
+    "due_date": "2024-08-02",
+    "vendor_id": "V001",
+    "dept_id": "D04",
+    "amount": 8551,
+    "description": "Consulting services - 2024-07",
+    "po_number": "PO-391"
+  },
+  {
+    "invoice_id": "INV-2024-0071",
+    "invoice_date": "2024-07-05",
+    "due_date": "2024-08-19",
+    "vendor_id": "V002",
+    "dept_id": "D13",
+    "amount": 8066,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-068"
+  },
+  {
+    "invoice_id": "INV-2024-0072",
+    "invoice_date": "2024-07-03",
+    "due_date": "2024-08-17",
+    "vendor_id": "V012",
+    "dept_id": "D13",
+    "amount": 7250,
+    "description": "Marketing services - 2024-07",
+    "po_number": "PO-539"
+  },
+  {
+    "invoice_id": "INV-2024-0073",
+    "invoice_date": "2024-08-09",
+    "due_date": "2024-09-23",
+    "vendor_id": "V012",
+    "dept_id": "D07",
+    "amount": 9645,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-245"
+  },
+  {
+    "invoice_id": "INV-2024-0074",
+    "invoice_date": "2024-08-14",
+    "due_date": "2024-08-29",
+    "vendor_id": "V018",
+    "dept_id": "D10",
+    "amount": 12000,
+    "description": "Logistics services - 2024-08",
+    "po_number": "PO-158"
+  },
+  {
+    "invoice_id": "INV-2024-0075",
+    "invoice_date": "2024-08-14",
+    "due_date": "2024-09-28",
+    "vendor_id": "V002",
+    "dept_id": "D15",
+    "amount": 2099,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-072"
+  },
+  {
+    "invoice_id": "INV-2024-0076",
+    "invoice_date": "2024-07-14",
+    "due_date": "2024-08-13",
+    "vendor_id": "V003",
+    "dept_id": "D06",
+    "amount": 18021,
+    "description": "Analytics services - 2024-07",
+    "po_number": "PO-379"
+  },
+  {
+    "invoice_id": "INV-2024-0077",
+    "invoice_date": "2024-07-04",
+    "due_date": "2024-07-19",
+    "vendor_id": "V014",
+    "dept_id": "D07",
+    "amount": 3044,
+    "description": "Catering services - 2024-07",
+    "po_number": "PO-837"
+  },
+  {
+    "invoice_id": "INV-2024-0078",
+    "invoice_date": "2024-07-29",
+    "due_date": "2024-08-28",
+    "vendor_id": "V003",
+    "dept_id": "D14",
+    "amount": 2433,
+    "description": "Analytics services - 2024-07",
+    "po_number": "PO-491"
+  },
+  {
+    "invoice_id": "INV-2024-0079",
+    "invoice_date": "2024-08-03",
+    "due_date": "2024-09-17",
+    "vendor_id": "V007",
+    "dept_id": "D07",
+    "amount": 8558,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-915"
+  },
+  {
+    "invoice_id": "INV-2024-0080",
+    "invoice_date": "2024-08-21",
+    "due_date": "2024-09-20",
+    "vendor_id": "V001",
+    "dept_id": "D08",
+    "amount": 2806,
+    "description": "Consulting services - 2024-08",
+    "po_number": "PO-569"
+  },
+  {
+    "invoice_id": "INV-2024-0081",
+    "invoice_date": "2024-07-11",
+    "due_date": "2024-07-26",
+    "vendor_id": "V014",
+    "dept_id": "D02",
+    "amount": 20049,
+    "description": "Catering services - 2024-07",
+    "po_number": "PO-459"
+  },
+  {
+    "invoice_id": "INV-2024-0082",
+    "invoice_date": "2024-08-18",
+    "due_date": "2024-09-17",
+    "vendor_id": "V008",
+    "dept_id": "D11",
+    "amount": 10058,
+    "description": "Legal services - 2024-08",
+    "po_number": "PO-147"
+  },
+  {
+    "invoice_id": "INV-2024-0083",
+    "invoice_date": "2024-08-26",
+    "due_date": "2024-09-25",
+    "vendor_id": "V009",
+    "dept_id": "D13",
+    "amount": 1582,
+    "description": "Security services - 2024-08",
+    "po_number": "PO-631"
+  },
+  {
+    "invoice_id": "INV-2024-0084",
+    "invoice_date": "2024-08-04",
+    "due_date": "2024-09-03",
+    "vendor_id": "V006",
+    "dept_id": "D14",
+    "amount": 6092,
+    "description": "HR Services services - 2024-08",
+    "po_number": "PO-042"
+  },
+  {
+    "invoice_id": "INV-2024-0085",
+    "invoice_date": "2024-07-30",
+    "due_date": "2024-09-13",
+    "vendor_id": "V007",
+    "dept_id": "D13",
+    "amount": 1262,
+    "description": "Marketing services - 2024-07",
+    "po_number": "PO-141"
+  },
+  {
+    "invoice_id": "INV-2024-0086",
+    "invoice_date": "2024-07-09",
+    "due_date": "2024-08-23",
+    "vendor_id": "V015",
+    "dept_id": "D03",
+    "amount": 6040,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-852"
+  },
+  {
+    "invoice_id": "INV-2024-0087",
+    "invoice_date": "2024-07-19",
+    "due_date": "2024-08-03",
+    "vendor_id": "V018",
+    "dept_id": "D01",
+    "amount": 8589,
+    "description": "Logistics services - 2024-07",
+    "po_number": "PO-334"
+  },
+  {
+    "invoice_id": "INV-2024-0088",
+    "invoice_date": "2024-07-21",
+    "due_date": "2024-08-20",
+    "vendor_id": "V017",
+    "dept_id": "D13",
+    "amount": 2078,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-898"
+  },
+  {
+    "invoice_id": "INV-2024-0089",
+    "invoice_date": "2024-08-21",
+    "due_date": "2024-09-05",
+    "vendor_id": "V004",
+    "dept_id": "D03",
+    "amount": 18022,
+    "description": "Supplies services - 2024-08",
+    "po_number": "PO-282"
+  },
+  {
+    "invoice_id": "INV-2024-0090",
+    "invoice_date": "2024-07-18",
+    "due_date": "2024-09-01",
+    "vendor_id": "V010",
+    "dept_id": "D05",
+    "amount": 7217,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-691"
+  },
+  {
+    "invoice_id": "INV-2024-0091",
+    "invoice_date": "2024-07-30",
+    "due_date": "2024-08-29",
+    "vendor_id": "V009",
+    "dept_id": "D04",
+    "amount": 2033,
+    "description": "Security services - 2024-07",
+    "po_number": "PO-456"
+  },
+  {
+    "invoice_id": "INV-2024-0092",
+    "invoice_date": "2024-07-14",
+    "due_date": "2024-07-29",
+    "vendor_id": "V018",
+    "dept_id": "D07",
+    "amount": 4536,
+    "description": "Logistics services - 2024-07",
+    "po_number": "PO-028"
+  },
+  {
+    "invoice_id": "INV-2024-0093",
+    "invoice_date": "2024-07-20",
+    "due_date": "2024-08-19",
+    "vendor_id": "V017",
+    "dept_id": "D05",
+    "amount": 4094,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-731"
+  },
+  {
+    "invoice_id": "INV-2024-0094",
+    "invoice_date": "2024-08-22",
+    "due_date": "2024-10-06",
+    "vendor_id": "V007",
+    "dept_id": "D04",
+    "amount": 2795,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-380"
+  },
+  {
+    "invoice_id": "INV-2024-0095",
+    "invoice_date": "2024-07-27",
+    "due_date": "2024-08-26",
+    "vendor_id": "V020",
+    "dept_id": "D05",
+    "amount": 15048,
+    "description": "Facilities services - 2024-07",
+    "po_number": "PO-026"
+  },
+  {
+    "invoice_id": "INV-2024-0096",
+    "invoice_date": "2024-08-05",
+    "due_date": "2024-09-19",
+    "vendor_id": "V007",
+    "dept_id": "D04",
+    "amount": 1233,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-470"
+  },
+  {
+    "invoice_id": "INV-2024-0097",
+    "invoice_date": "2024-07-28",
+    "due_date": "2024-08-12",
+    "vendor_id": "V018",
+    "dept_id": "D10",
+    "amount": 11596,
+    "description": "Logistics services - 2024-07",
+    "po_number": "PO-775"
+  },
+  {
+    "invoice_id": "INV-2024-0098",
+    "invoice_date": "2024-07-09",
+    "due_date": "2024-08-08",
+    "vendor_id": "V011",
+    "dept_id": "D04",
+    "amount": 5079,
+    "description": "Facilities services - 2024-07",
+    "po_number": "PO-936"
+  },
+  {
+    "invoice_id": "INV-2024-0099",
+    "invoice_date": "2024-07-03",
+    "due_date": "2024-08-02",
+    "vendor_id": "V017",
+    "dept_id": "D14",
+    "amount": 6592,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-536"
+  },
+  {
+    "invoice_id": "INV-2024-0100",
+    "invoice_date": "2024-08-10",
+    "due_date": "2024-09-09",
+    "vendor_id": "V016",
+    "dept_id": "D06",
+    "amount": 5048,
+    "description": "Training services - 2024-08",
+    "po_number": "PO-782"
+  },
+  {
+    "invoice_id": "INV-2024-0101",
+    "invoice_date": "2024-07-09",
+    "due_date": "2024-07-24",
+    "vendor_id": "V014",
+    "dept_id": "D13",
+    "amount": 4500,
+    "description": "Catering services - 2024-07",
+    "po_number": "PO-045"
+  },
+  {
+    "invoice_id": "INV-2024-0102",
+    "invoice_date": "2024-07-03",
+    "due_date": "2024-07-18",
+    "vendor_id": "V018",
+    "dept_id": "D03",
+    "amount": 9600,
+    "description": "Logistics services - 2024-07",
+    "po_number": "PO-293"
+  },
+  {
+    "invoice_id": "INV-2024-0103",
+    "invoice_date": "2024-07-09",
+    "due_date": "2024-07-24",
+    "vendor_id": "V014",
+    "dept_id": "D09",
+    "amount": 8560,
+    "description": "Catering services - 2024-07",
+    "po_number": "PO-094"
+  },
+  {
+    "invoice_id": "INV-2024-0104",
+    "invoice_date": "2024-08-23",
+    "due_date": "2024-10-07",
+    "vendor_id": "V010",
+    "dept_id": "D12",
+    "amount": 3091,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-061"
+  },
+  {
+    "invoice_id": "INV-2024-0105",
+    "invoice_date": "2024-08-05",
+    "due_date": "2024-08-20",
+    "vendor_id": "V018",
+    "dept_id": "D09",
+    "amount": 1292,
+    "description": "Logistics services - 2024-08",
+    "po_number": "PO-114"
+  },
+  {
+    "invoice_id": "INV-2024-0106",
+    "invoice_date": "2024-08-07",
+    "due_date": "2024-08-22",
+    "vendor_id": "V004",
+    "dept_id": "D15",
+    "amount": 12036,
+    "description": "Supplies services - 2024-08",
+    "po_number": "PO-929"
+  },
+  {
+    "invoice_id": "INV-2024-0107",
+    "invoice_date": "2024-08-17",
+    "due_date": "2024-09-16",
+    "vendor_id": "V001",
+    "dept_id": "D11",
+    "amount": 16011,
+    "description": "Consulting services - 2024-08",
+    "po_number": "PO-169"
+  },
+  {
+    "invoice_id": "INV-2024-0108",
+    "invoice_date": "2024-07-12",
+    "due_date": "2024-08-26",
+    "vendor_id": "V012",
+    "dept_id": "D05",
+    "amount": 12088,
+    "description": "Marketing services - 2024-07",
+    "po_number": "PO-913"
+  },
+  {
+    "invoice_id": "INV-2024-0109",
+    "invoice_date": "2024-08-12",
+    "due_date": "2024-09-26",
+    "vendor_id": "V002",
+    "dept_id": "D07",
+    "amount": 4052,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-229"
+  },
+  {
+    "invoice_id": "INV-2024-0110",
+    "invoice_date": "2024-07-14",
+    "due_date": "2024-08-13",
+    "vendor_id": "V017",
+    "dept_id": "D14",
+    "amount": 7285,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-941"
+  },
+  {
+    "invoice_id": "INV-2024-0111",
+    "invoice_date": "2024-07-25",
+    "due_date": "2024-08-09",
+    "vendor_id": "V004",
+    "dept_id": "D08",
+    "amount": 6582,
+    "description": "Supplies services - 2024-07",
+    "po_number": "PO-211"
+  },
+  {
+    "invoice_id": "INV-2024-0112",
+    "invoice_date": "2024-08-13",
+    "due_date": "2024-09-12",
+    "vendor_id": "V009",
+    "dept_id": "D10",
+    "amount": 25070,
+    "description": "Security services - 2024-08",
+    "po_number": "PO-546"
+  },
+  {
+    "invoice_id": "INV-2024-0113",
+    "invoice_date": "2024-07-30",
+    "due_date": "2024-08-29",
+    "vendor_id": "V017",
+    "dept_id": "D14",
+    "amount": 3510,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-907"
+  },
+  {
+    "invoice_id": "INV-2024-0114",
+    "invoice_date": "2024-08-24",
+    "due_date": "2024-09-23",
+    "vendor_id": "V020",
+    "dept_id": "D01",
+    "amount": 9641,
+    "description": "Facilities services - 2024-08",
+    "po_number": "PO-543"
+  },
+  {
+    "invoice_id": "INV-2024-0115",
+    "invoice_date": "2024-08-18",
+    "due_date": "2024-10-02",
+    "vendor_id": "V015",
+    "dept_id": "D12",
+    "amount": 25047,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-771"
+  },
+  {
+    "invoice_id": "INV-2024-0116",
+    "invoice_date": "2024-08-04",
+    "due_date": "2024-09-03",
+    "vendor_id": "V009",
+    "dept_id": "D11",
+    "amount": 4000,
+    "description": "Security services - 2024-08",
+    "po_number": "PO-642"
+  },
+  {
+    "invoice_id": "INV-2024-0117",
+    "invoice_date": "2024-07-27",
+    "due_date": "2024-08-26",
+    "vendor_id": "V008",
+    "dept_id": "D08",
+    "amount": 9602,
+    "description": "Legal services - 2024-07",
+    "po_number": "PO-215"
+  },
+  {
+    "invoice_id": "INV-2024-0118",
+    "invoice_date": "2024-08-07",
+    "due_date": "2024-09-06",
+    "vendor_id": "V009",
+    "dept_id": "D05",
+    "amount": 3539,
+    "description": "Security services - 2024-08",
+    "po_number": "PO-510"
+  },
+  {
+    "invoice_id": "INV-2024-0119",
+    "invoice_date": "2024-07-01",
+    "due_date": "2024-07-31",
+    "vendor_id": "V016",
+    "dept_id": "D06",
+    "amount": 8055,
+    "description": "Training services - 2024-07",
+    "po_number": "PO-010"
+  },
+  {
+    "invoice_id": "INV-2024-0120",
+    "invoice_date": "2024-07-16",
+    "due_date": "2024-08-15",
+    "vendor_id": "V006",
+    "dept_id": "D04",
+    "amount": 20053,
+    "description": "HR Services services - 2024-07",
+    "po_number": "PO-972"
+  },
+  {
+    "invoice_id": "INV-2024-0121",
+    "invoice_date": "2024-07-18",
+    "due_date": "2024-08-17",
+    "vendor_id": "V013",
+    "dept_id": "D15",
+    "amount": 10097,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-616"
+  },
+  {
+    "invoice_id": "INV-2024-0122",
+    "invoice_date": "2024-07-21",
+    "due_date": "2024-08-20",
+    "vendor_id": "V006",
+    "dept_id": "D09",
+    "amount": 17502,
+    "description": "HR Services services - 2024-07",
+    "po_number": "PO-040"
+  },
+  {
+    "invoice_id": "INV-2024-0123",
+    "invoice_date": "2024-07-20",
+    "due_date": "2024-09-03",
+    "vendor_id": "V015",
+    "dept_id": "D09",
+    "amount": 14547,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-866"
+  },
+  {
+    "invoice_id": "INV-2024-0124",
+    "invoice_date": "2024-07-20",
+    "due_date": "2024-09-03",
+    "vendor_id": "V015",
+    "dept_id": "D11",
+    "amount": 8001,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-515"
+  },
+  {
+    "invoice_id": "INV-2024-0125",
+    "invoice_date": "2024-08-08",
+    "due_date": "2024-09-22",
+    "vendor_id": "V007",
+    "dept_id": "D12",
+    "amount": 13075,
+    "description": "Marketing services - 2024-08",
+    "po_number": "PO-527"
+  },
+  {
+    "invoice_id": "INV-2024-0126",
+    "invoice_date": "2024-07-28",
+    "due_date": "2024-09-11",
+    "vendor_id": "V012",
+    "dept_id": "D07",
+    "amount": 2445,
+    "description": "Marketing services - 2024-07",
+    "po_number": "PO-062"
+  },
+  {
+    "invoice_id": "INV-2024-0127",
+    "invoice_date": "2024-08-14",
+    "due_date": "2024-09-13",
+    "vendor_id": "V005",
+    "dept_id": "D14",
+    "amount": 17503,
+    "description": "Logistics services - 2024-08",
+    "po_number": "PO-180"
+  },
+  {
+    "invoice_id": "INV-2024-0128",
+    "invoice_date": "2024-08-06",
+    "due_date": "2024-09-05",
+    "vendor_id": "V020",
+    "dept_id": "D01",
+    "amount": 6078,
+    "description": "Facilities services - 2024-08",
+    "po_number": "PO-954"
+  },
+  {
+    "invoice_id": "INV-2024-0129",
+    "invoice_date": "2024-07-16",
+    "due_date": "2024-08-30",
+    "vendor_id": "V015",
+    "dept_id": "D04",
+    "amount": 10018,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-582"
+  },
+  {
+    "invoice_id": "INV-2024-0130",
+    "invoice_date": "2024-07-27",
+    "due_date": "2024-08-26",
+    "vendor_id": "V009",
+    "dept_id": "D04",
+    "amount": 9627,
+    "description": "Security services - 2024-07",
+    "po_number": "PO-800"
+  },
+  {
+    "invoice_id": "INV-2024-0131",
+    "invoice_date": "2024-08-12",
+    "due_date": "2024-09-11",
+    "vendor_id": "V008",
+    "dept_id": "D01",
+    "amount": 9075,
+    "description": "Legal services - 2024-08",
+    "po_number": "PO-352"
+  },
+  {
+    "invoice_id": "INV-2024-0132",
+    "invoice_date": "2024-08-28",
+    "due_date": "2024-10-12",
+    "vendor_id": "V010",
+    "dept_id": "D09",
+    "amount": 16038,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-765"
+  },
+  {
+    "invoice_id": "INV-2024-0133",
+    "invoice_date": "2024-07-09",
+    "due_date": "2024-08-23",
+    "vendor_id": "V007",
+    "dept_id": "D03",
+    "amount": 2431,
+    "description": "Marketing services - 2024-07",
+    "po_number": "PO-672"
+  },
+  {
+    "invoice_id": "INV-2024-0134",
+    "invoice_date": "2024-08-23",
+    "due_date": "2024-09-22",
+    "vendor_id": "V019",
+    "dept_id": "D13",
+    "amount": 15022,
+    "description": "Accounting services - 2024-08",
+    "po_number": "PO-852"
+  },
+  {
+    "invoice_id": "INV-2024-0135",
+    "invoice_date": "2024-08-09",
+    "due_date": "2024-09-08",
+    "vendor_id": "V001",
+    "dept_id": "D08",
+    "amount": 11578,
+    "description": "Consulting services - 2024-08",
+    "po_number": "PO-670"
+  },
+  {
+    "invoice_id": "INV-2024-0136",
+    "invoice_date": "2024-07-01",
+    "due_date": "2024-08-15",
+    "vendor_id": "V007",
+    "dept_id": "D14",
+    "amount": 25056,
+    "description": "Marketing services - 2024-07",
+    "po_number": "PO-067"
+  },
+  {
+    "invoice_id": "INV-2024-0137",
+    "invoice_date": "2024-07-19",
+    "due_date": "2024-09-02",
+    "vendor_id": "V002",
+    "dept_id": "D13",
+    "amount": 10017,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-822"
+  },
+  {
+    "invoice_id": "INV-2024-0138",
+    "invoice_date": "2024-07-25",
+    "due_date": "2024-08-24",
+    "vendor_id": "V017",
+    "dept_id": "D06",
+    "amount": 10009,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-192"
+  },
+  {
+    "invoice_id": "INV-2024-0139",
+    "invoice_date": "2024-08-14",
+    "due_date": "2024-09-13",
+    "vendor_id": "V016",
+    "dept_id": "D06",
+    "amount": 15028,
+    "description": "Training services - 2024-08",
+    "po_number": "PO-798"
+  },
+  {
+    "invoice_id": "INV-2024-0140",
+    "invoice_date": "2024-07-27",
+    "due_date": "2024-08-26",
+    "vendor_id": "V006",
+    "dept_id": "D03",
+    "amount": 2849,
+    "description": "HR Services services - 2024-07",
+    "po_number": "PO-498"
+  },
+  {
+    "invoice_id": "INV-2024-0141",
+    "invoice_date": "2024-07-26",
+    "due_date": "2024-08-25",
+    "vendor_id": "V020",
+    "dept_id": "D08",
+    "amount": 8002,
+    "description": "Facilities services - 2024-07",
+    "po_number": "PO-102"
+  },
+  {
+    "invoice_id": "INV-2024-0142",
+    "invoice_date": "2024-07-25",
+    "due_date": "2024-08-24",
+    "vendor_id": "V016",
+    "dept_id": "D14",
+    "amount": 15044,
+    "description": "Training services - 2024-07",
+    "po_number": "PO-755"
+  },
+  {
+    "invoice_id": "INV-2024-0143",
+    "invoice_date": "2024-08-07",
+    "due_date": "2024-09-06",
+    "vendor_id": "V005",
+    "dept_id": "D13",
+    "amount": 3049,
+    "description": "Logistics services - 2024-08",
+    "po_number": "PO-136"
+  },
+  {
+    "invoice_id": "INV-2024-0144",
+    "invoice_date": "2024-08-21",
+    "due_date": "2024-09-05",
+    "vendor_id": "V018",
+    "dept_id": "D12",
+    "amount": 1864,
+    "description": "Logistics services - 2024-08",
+    "po_number": "PO-852"
+  },
+  {
+    "invoice_id": "INV-2024-0145",
+    "invoice_date": "2024-07-03",
+    "due_date": "2024-08-17",
+    "vendor_id": "V007",
+    "dept_id": "D09",
+    "amount": 20025,
+    "description": "Marketing services - 2024-07",
+    "po_number": "PO-570"
+  },
+  {
+    "invoice_id": "INV-2024-0146",
+    "invoice_date": "2024-08-28",
+    "due_date": "2024-09-27",
+    "vendor_id": "V013",
+    "dept_id": "D03",
+    "amount": 2062,
+    "description": "IT Services services - 2024-08",
+    "po_number": "PO-749"
+  },
+  {
+    "invoice_id": "INV-2024-0147",
+    "invoice_date": "2024-07-05",
+    "due_date": "2024-08-19",
+    "vendor_id": "V015",
+    "dept_id": "D05",
+    "amount": 3582,
+    "description": "IT Services services - 2024-07",
+    "po_number": "PO-928"
+  },
+  {
+    "invoice_id": "INV-2024-0148",
+    "invoice_date": "2024-07-07",
+    "due_date": "2024-08-06",
+    "vendor_id": "V017",
+    "dept_id": "D03",
+    "amount": 9693,
+    "description": "Telecom services - 2024-07",
+    "po_number": "PO-802"
+  },
+  {
+    "invoice_id": "INV-2024-0020",
+    "invoice_date": "2024-08-16",
+    "due_date": "2024-09-15",
+    "vendor_id": "V016",
+    "dept_id": "D09",
+    "amount": 5048,
+    "description": "Training services - 2024-08",
+    "po_number": "PO-625"
+  },
+  {
+    "invoice_id": "INV-2024-0064",
+    "invoice_date": "2024-08-18",
+    "due_date": "2024-09-17",
+    "vendor_id": "V011",
+    "dept_id": "D01",
+    "amount": 16036,
+    "description": "Facilities services - 2024-08",
+    "po_number": "PO-710"
+  },
+  {
+    "invoice_id": "INV-2024-0149",
+    "invoice_date": "2024-08-02",
+    "due_date": "2024-09-25",
+    "vendor_id": "",
+    "dept_id": "D02",
+    "amount": 1800,
+    "description": "Consulting services - unknown vendor",
+    "po_number": "PO-934"
+  },
+  {
+    "invoice_id": "INV-2024-0150",
+    "invoice_date": "2024-07-27",
+    "due_date": "2024-09-27",
+    "vendor_id": "",
+    "dept_id": "D07",
+    "amount": 17500,
+    "description": "IT support - vendor TBD",
+    "po_number": "PO-918"
+  }
+]

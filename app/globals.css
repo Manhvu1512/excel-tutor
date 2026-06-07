@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+/* Markdown content styling */
+.markdown-body h1 { font-size: 1.5rem; font-weight: 700; margin-top: 0; margin-bottom: 0.75rem; }
+.markdown-body h2 { font-size: 1.05rem; font-weight: 600; margin-top: 1.1rem; margin-bottom: 0.4rem; color: #1d4ed8; }
+.markdown-body h3 { font-size: 0.95rem; font-weight: 600; margin-top: 0.9rem; margin-bottom: 0.3rem; }
+.markdown-body p { margin: 0.4rem 0; line-height: 1.55; }
+.markdown-body ul, .markdown-body ol { margin: 0.4rem 0; padding-left: 1.4rem; }
+.markdown-body li { margin: 0.2rem 0; line-height: 1.55; }
+.markdown-body code { background: #f1f5f9; padding: 0.1rem 0.3rem; border-radius: 0.2rem; font-family: "SF Mono", Menlo, monospace; font-size: 0.85em; color: #1e40af; }
+.markdown-body pre { background: #1e293b; color: #e2e8f0; padding: 0.6rem; border-radius: 0.4rem; overflow-x: auto; margin: 0.5rem 0; }
+.markdown-body pre code { background: transparent; color: inherit; padding: 0; }
+.markdown-body strong { font-weight: 600; }
+.markdown-body table { border-collapse: collapse; margin: 0.5rem 0; font-size: 0.85em; }
+.markdown-body th, .markdown-body td { border: 1px solid #cbd5e1; padding: 0.3rem 0.6rem; text-align: left; }
+.markdown-body th { background: #f1f5f9; font-weight: 600; }
+
+/* Lesson view code inline */
+.lesson-code {
+  background: #f1f5f9;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  font-family: "SF Mono", Menlo, "Consolas", monospace;
+  font-size: 0.82em;
+  color: #1e40af;
+}
+
+/* Excel-like table */
+.excel-table {
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-family: "Calibri", "Segoe UI", sans-serif;
+}
+.excel-corner {
+  background: #e9e9e9;
+  border: 1px solid #bdbdbd;
+  width: 36px;
+  min-width: 36px;
+}
+.excel-col-header {
+  background: #e9e9e9;
+  color: #3c3c3c;
+  font-weight: 600;
+  text-align: center;
+  padding: 2px 16px;
+  border: 1px solid #bdbdbd;
+  min-width: 120px;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+.excel-row-num {
+  background: #e9e9e9;
+  color: #3c3c3c;
+  font-weight: 600;
+  text-align: center;
+  padding: 2px 8px;
+  border: 1px solid #bdbdbd;
+  min-width: 36px;
+  user-select: none;
+}
+.excel-header-cell {
+  background: #fff;
+  font-weight: 700;
+  padding: 4px 10px;
+  border: 1px solid #d0d0d0;
+  min-width: 120px;
+}
+.excel-data-cell {
+  background: #fff;
+  padding: 4px 10px;
+  border: 1px solid #d0d0d0;
+  min-width: 120px;
+}
+
+/* Floating +XP badge */
+@keyframes float-xp {
+  0%   { transform: translateY(0)     scale(1);    opacity: 1; }
+  30%  { transform: translateY(-12px) scale(1.15); opacity: 1; }
+  100% { transform: translateY(-32px) scale(0.9);  opacity: 0; }
+}
+.animate-float-xp { animation: float-xp 1.5s ease-out forwards; }
+
+/* Mini level-up text */
+@keyframes bounce-up-sm {
+  0%,100% { transform: translateY(0); }
+  40%      { transform: translateY(-4px); }
+}
+.animate-bounce-up-sm { animation: bounce-up-sm 0.5s ease-in-out 2; }
+
+/* Shake animation for wrong answers */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+  20%, 40%, 60%, 80% { transform: translateX(6px); }
+}
+.animate-shake { animation: shake 0.5s ease-in-out; }
+
+/* Bounce-up animation for celebration */
+@keyframes bounce-up {
+  0% { transform: translateY(40px) scale(0.5); opacity: 0; }
+  30% { transform: translateY(-20px) scale(1.1); opacity: 1; }
+  60% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-100px) scale(0.9); opacity: 0; }
+}
+.animate-bounce-up { animation: bounce-up 1.8s ease-out forwards; }

@@ -76,7 +76,7 @@ export default function HomePage({ onStartSkill, onStartScenario, onShowScenario
         </div>
 
         {/* Nav links */}
-        <div className="flex items-center gap-1 flex-1 ml-4">
+        <div className="hidden md:flex items-center gap-1 flex-1 ml-4">
           {NAV_ITEMS.map((item) => (
             item.available ? (
               <button
@@ -104,7 +104,7 @@ export default function HomePage({ onStartSkill, onStartScenario, onShowScenario
         </div>
 
         {/* Right actions */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="hidden md:flex items-center gap-3 shrink-0">
           <button className="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -131,7 +131,7 @@ export default function HomePage({ onStartSkill, onStartScenario, onShowScenario
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
 
           {/* Row 1: Learn by Skill + Real Scenarios */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             {/* Learn by Skill */}
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
@@ -257,7 +257,7 @@ export default function HomePage({ onStartSkill, onStartScenario, onShowScenario
           </div>
 
           {/* Row 2: Continue Learning + Daily Challenge */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             {/* Continue Learning */}
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
@@ -335,7 +335,7 @@ export default function HomePage({ onStartSkill, onStartScenario, onShowScenario
           </div>
 
           {/* Row 3: Progress + Streak + Achievements */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
             {/* Your Progress */}
             <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center gap-4">
@@ -394,7 +394,7 @@ export default function HomePage({ onStartSkill, onStartScenario, onShowScenario
         </div>
 
         {/* ── Right sidebar: AI Tutor ──────────────────────────────────── */}
-        <div className="w-72 shrink-0 bg-white border-l border-slate-200 flex flex-col">
+        <div className="hidden md:flex w-72 shrink-0 bg-white border-l border-slate-200 flex-col">
           {/* Header */}
           <div className="px-4 py-3 border-b border-slate-200 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">

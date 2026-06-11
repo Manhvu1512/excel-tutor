@@ -8,6 +8,7 @@ import ClientApp from "./ClientApp";
 import ScenarioApp from "./ScenarioApp";
 import BudgetScenarioApp from "./BudgetScenarioApp";
 import SalesCommissionScenarioApp from "./SalesCommissionScenarioApp";
+import MobileGate from "@/components/MobileGate";
 
 type Props = {
   config: LessonConfig;
@@ -44,15 +45,15 @@ export default function AppRoot({ config, headers, rows }: Props) {
   }
 
   if (view === "scenario" && scenarioId === "budget") {
-    return <BudgetScenarioApp onNavigateHome={goHome} />;
+    return <MobileGate><BudgetScenarioApp onNavigateHome={goHome} /></MobileGate>;
   }
 
   if (view === "scenario" && scenarioId === "sales-commission") {
-    return <SalesCommissionScenarioApp onNavigateHome={goHome} />;
+    return <MobileGate><SalesCommissionScenarioApp onNavigateHome={goHome} /></MobileGate>;
   }
 
   if (view === "scenario" && scenarioId) {
-    return <ScenarioApp scenarioId={scenarioId} onNavigateHome={goHome} />;
+    return <MobileGate><ScenarioApp scenarioId={scenarioId} onNavigateHome={goHome} /></MobileGate>;
   }
 
   return (

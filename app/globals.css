@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Syncfusion Spreadsheet */
+@import '@syncfusion/ej2-react-spreadsheet/styles/material.css';
+
 html, body {
   height: 100%;
   margin: 0;

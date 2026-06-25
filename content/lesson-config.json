@@ -92,6 +92,28 @@
       "xpReward": 30,
       "_hint_mcq": "Which criteria string matches any GL code starting with 5? | A) \"5000\" | B) \"5???\" | C) \"5*\" | D) \">5000\" | correct: C",
       "_expected_formula": "=SUMIFS(F2:F37,E2:E37,\"5*\")"
+    },
+    {
+      "id": "cf-d1",
+      "number": 6,
+      "title": "Conditional Format — Flag Large Invoices",
+      "difficulty": 2,
+      "concept": "Conditional formatting highlights cells automatically based on a rule — no formula needed in the answer cell.",
+      "scenario": "The finance team wants to visually flag high-value transactions so auditors can spot them at a glance. Column F holds each invoice amount.",
+      "controllerAsk": "Select F2:F55, then open Conditional Formatting > Highlight Cells Rules > Greater Than, enter 10000, and choose any red fill. Click Submit when done.",
+      "tutorFocus": "This is a UI exercise, not a formula exercise. Select the range F2:F55 first, then apply the Conditional Formatting rule via the Home ribbon or Format menu. The grader checks that a GreaterThan rule with value 10000 exists — the exact colour does not matter.",
+      "expectedBehavior": "The exercise passes when a conditional format rule of type GreaterThan with value 10000 has been applied anywhere in the spreadsheet. The grader does not verify the exact range or colour — only that a matching rule exists. If the submit returns 0 (incorrect), the rule was not found: check that Conditional Formatting was applied (not just a manual fill colour) and that the value entered was 10000 without a comma or dollar sign.",
+      "answerCell": "F2",
+      "expectedValue": 1,
+      "tolerance": 0.01,
+      "xpReward": 15,
+      "uiCheck": {
+        "type": "conditionalFormat",
+        "params": {
+          "ruleType": "GreaterThan",
+          "value": 10000
+        }
+      }
     }
   ],
   "_comment_GAMIFICATION": "XP totals to 95 for a perfect run. Combo kicks in at 3-streak for 1.5x multiplier.",

@@ -219,6 +219,7 @@ export default function ClientApp({ config, headers, rows, onNavigateHome }: Pro
             resetKey={resetKey}
             allAnswerCells={config.exercises.map((e) => e.answerCell)}
             grading={false}
+            uiCheck={exercise.uiCheck as any}
           />
         </div>
 

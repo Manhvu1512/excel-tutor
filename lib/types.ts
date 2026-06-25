@@ -12,6 +12,7 @@ export type Exercise = {
   expectedValue: number;
   tolerance: number;
   xpReward: number;
+  uiCheck?: { type: string; params: Record<string, unknown> };
 };
 
 export type LessonConfig = {

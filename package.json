@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
-    "@univerjs/presets": "^0.5.4",
+    "@syncfusion/ej2-base": "^33.2.3",
+    "@syncfusion/ej2-react-spreadsheet": "^33.2.13",
     "@univerjs/preset-sheets-core": "^0.5.4",
+    "@univerjs/presets": "^0.5.4",
     "canvas-confetti": "^1.9.3",
     "next": "14.2.18",
     "papaparse": "^5.4.1",
